@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private bool TryMove(Vector2 direction) {
-        if(direction == Vector2.zero)
+        if(direction != Vector2.zero)
         {
             int count = rb.Cast(
                 movementInput,
@@ -108,4 +108,6 @@ public class PlayerController : MonoBehaviour
     {
         movementInput = movementValue.Get<Vector2>();
     }
+
+    void OnFire()
 }
