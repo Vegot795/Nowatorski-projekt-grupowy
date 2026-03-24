@@ -1,0 +1,38 @@
+using Unity.VisualScripting;
+using UnityEngine;
+
+public class FlyingEyeController : MonoBehaviour
+{
+    public int Damage = 10;
+
+    public float moveSpeed = 1f;
+    public float visionRange = 5f;
+
+    PlayerController Player;
+    PlayerController ClosestPlayer;
+
+    CapsuleCollider2D col;
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        col = GetComponent<CapsuleCollider2D>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        PlayerController hit = collision.gameObject.GetComponent<PlayerController>();
+        CharacterBasics CB = hit.GetComponent<CharacterBasics>();
+        if (hit != null)
+        {
+            CB.TakeDamage(Damage);
+        }
+        Debug.Log($"Hit Player: {hit.name}, current HP: {CB.CurrentHP}");
+    }
+}

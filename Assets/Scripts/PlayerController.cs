@@ -1,5 +1,7 @@
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,14 +12,18 @@ public class PlayerController : MonoBehaviour
     public ContactFilter2D movementFilter;
 
     Vector2 movementInput;
+    List<string> directions = new List<string>() { "Top", "Bottom", "Left", "Right" };
     SpriteRenderer spriteRenderer;
     Rigidbody2D rb;
     Animator animator;
+    CapsuleCollider2D damageCol;
+    CharacterBasics CB;
     List<RaycastHit2D> castCollisions = new List<RaycastHit2D>();
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        CB = GetComponent<CharacterBasics>();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -110,4 +116,48 @@ public class PlayerController : MonoBehaviour
     }
 
     void OnFire()
+    {
+        
+    }
+
+    /*List<string> CheckDirection(List directions)
+    {
+        if (animator.GetBool("isMovingTop"))
+        {
+            directions = "Top"
+            return Top;
+        }
+        else if (animator.GetBool("isMovingBottom"))
+        {
+            //Debug.Log("Moving down");
+        }
+        else if(animator.GetBool("isMoving"))
+        {
+            if (movementInput.x > 0)
+            {
+                //Debug.Log("Moving right");
+            }
+            else if (movementInput.x < 0)
+            {
+                //Debug.Log("Moving left");
+            }
+        }
+        else
+        {
+            direction = null;
+        }
+    }*/
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Enemy")
+        {
+            
+        }
+
+    }
+    public void TakeDamage(int damageAmount)
+    {
+        
+        CB.TakeDamage(damageAmount);
+    }
 }
