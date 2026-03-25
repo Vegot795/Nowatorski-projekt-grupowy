@@ -10,6 +10,7 @@ public partial class MoveToExactLocationAction : Action
 {
     [SerializeReference] public BlackboardVariable<GameObject> Self;
     [SerializeReference] public BlackboardVariable<GameObject> Target;
+    [SerializeReference] public BlackboardVariable<Vector2> DestinationPoint;
     [SerializeReference] public BlackboardVariable<float> Speed = new BlackboardVariable<float>(2.0f);
     [SerializeReference] public BlackboardVariable<float> SlowDownDistance = new BlackboardVariable<float>(1.5f);
 
@@ -17,6 +18,8 @@ public partial class MoveToExactLocationAction : Action
     private Vector2 m_LastTargetPosition;
     private float m_CurrentSpeed;
     private const float ARRIVAL_THRESHOLD = 0.05f; // Very small threshold for "exact" positioning
+    private bool m_IsInitialized = false;
+    private float m_ColliderOffset = 0.0f; // Additional distance to account for colliders  
 
     protected override Status OnStart()
     {
@@ -31,6 +34,11 @@ public partial class MoveToExactLocationAction : Action
     protected override Status OnUpdate()
     {
         if (Self.Value == null || Target.Value == null)
+        {
+            return Status.Failure;
+        }
+
+        if (!m_IsInitialized)
         {
             return Status.Failure;
         }
@@ -61,17 +69,34 @@ public partial class MoveToExactLocationAction : Action
             m_CurrentSpeed = MoveTowardTarget(distance);
         }
 
+        DestinationPoint.Value = currentTargetPosition;
         return Status.Running;
     }
 
     protected override void OnEnd()
     {
-        // Clean up if needed
+        m_IsInitialized = false;
     }
 
     private Status Initialize()
     {
         m_LastTargetPosition = Target.Value.transform.position;
+
+        // Calculate collider offset for stopping distance
+        m_ColliderOffset = 0.0f;
+        Collider2D selfCollider = Self.Value.GetComponentInChildren<Collider2D>();
+        if (selfCollider != null)
+        {
+            Vector2 colliderSize = selfCollider.bounds.size;
+            m_ColliderOffset += Mathf.Max(colliderSize.x, colliderSize.y) * 0.5f;
+        }
+
+        Collider2D playerCollider = Target.Value.GetComponentInChildren<Collider2D>();
+        if (playerCollider != null)
+        {
+            Vector2 colliderSize = playerCollider.bounds.size;
+            m_ColliderOffset += Mathf.Max(colliderSize.x, colliderSize.y) * 0.5f;
+        }
 
         // Check if already at exact destination
         if (GetDistanceToTarget() <= ARRIVAL_THRESHOLD)
@@ -81,6 +106,7 @@ public partial class MoveToExactLocationAction : Action
 
         // Get Rigidbody2D component for physics-based movement
         m_Rigidbody2D = Self.Value.GetComponent<Rigidbody2D>();
+        m_IsInitialized = true;
 
         return Status.Running;
     }
@@ -97,16 +123,10 @@ public partial class MoveToExactLocationAction : Action
         Vector2 selfPosition = Self.Value.transform.position;
         Vector2 targetPosition = Target.Value.transform.position;
 
-        // Calculate direction toward target's exact position
+        // Calculate direction toward target's exact position (NOT away from target)
         Vector2 direction = (targetPosition - selfPosition).normalized;
 
-        // Calculate speed with slowdown near target
         float currentSpeed = Speed.Value;
-        if (distance < SlowDownDistance.Value)
-        {
-            currentSpeed = Speed.Value * (distance / SlowDownDistance.Value);
-            currentSpeed = Mathf.Max(currentSpeed, Speed.Value * 0.1f); // Minimum speed
-        }
 
         // Apply movement
         Vector2 movement = direction * currentSpeed * Time.fixedDeltaTime;

@@ -5,12 +5,11 @@ using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
 [Serializable, GeneratePropertyBag]
-[NodeDescription(name: "Patrol", story: "[Agent] walks to random [Point] around him", category: "Action", id: "af63d86a38dd118a6ecbc39eb8449d7c")]
+[NodeDescription(name: "Patrol", story: "Patrol Nearby area", category: "Action", id: "af63d86a38dd118a6ecbc39eb8449d7c")]
 public partial class PatrolAction : Action
 {
-    [SerializeReference] public BlackboardVariable<GameObject> Agent;
-    [SerializeReference] public BlackboardVariable<Vector2> Point;
     [SerializeReference] public BlackboardVariable<float> Speed;
+    [SerializeReference] public BlackboardVariable<GameObject> Agent;
     [SerializeReference] public BlackboardVariable<float> VisionRange;
     [SerializeReference] public BlackboardVariable<float> ARRIVAL_THRESHOLD;
 
@@ -67,6 +66,7 @@ public partial class PatrolAction : Action
 
     protected override void OnEnd()
     {
+
     }
 
     private Status Initialize ()
@@ -78,14 +78,7 @@ public partial class PatrolAction : Action
         m_Rigidbody2D = Agent.Value.GetComponent<Rigidbody2D>();
 
         m_isInitialized = true;
-        Point.Value = m_TargetPoint;
 
-
-        float distance = Vector2.Distance(m_CurrentPosition, m_TargetPoint);
-        if(distance <= ARRIVAL_THRESHOLD)
-        {
-            return Status.Success;
-        }
 
         return Status.Running;
     }
