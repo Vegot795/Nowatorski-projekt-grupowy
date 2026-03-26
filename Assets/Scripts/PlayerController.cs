@@ -133,9 +133,9 @@ public class PlayerController : MonoBehaviour
     }
     public void TakeDamage(int damageAmount)
     {
-        
-        CB.TakeDamage(damageAmount);
 
+        CB.TakeDamage(damageAmount);
+    }
 
     public void SwordAttackFunc()
     {

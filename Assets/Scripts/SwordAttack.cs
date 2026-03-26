@@ -112,7 +112,7 @@ public class SwordAttack : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         var enemy = other.GetComponent<GameObject>();
         if (enemy != null) ;
