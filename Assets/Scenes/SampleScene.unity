@@ -14988,6 +14988,7 @@ GameObject:
   - component: {fileID: 1710291578}
   - component: {fileID: 1710291577}
   - component: {fileID: 1710291576}
+  - component: {fileID: 1710291581}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -15104,9 +15105,9 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 11.421186
   orthographic: 1
-  orthographic size: 5.625
+  orthographic size: 3.671875
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -15137,6 +15138,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1710291581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1710291575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72ece51f2901e7445ab60da3685d6b5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowDebugText: 0
+  ShowCameraFrustum: 1
+  IgnoreTimeScale: 0
+  WorldUpOverride: {fileID: 0}
+  ChannelMask: -1
+  UpdateMethod: 2
+  BlendUpdateMethod: 1
+  LensModeOverride:
+    Enabled: 0
+    DefaultMode: 2
+  DefaultBlend:
+    Style: 1
+    Time: 2
+    CustomCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  CustomBlends: {fileID: 0}
 --- !u!4 &2056043396 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6823459795230916344, guid: df39f441c40bda94ca331f2affe28adc,
@@ -15167,6 +15200,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -944628639613478452, guid: c684dd98f543e0a47a2fc6da687a9e36,
         type: 3}
+    - target: {fileID: 5530909701563980611, guid: df39f441c40bda94ca331f2affe28adc,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6823459795230916344, guid: df39f441c40bda94ca331f2affe28adc,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -72,19 +72,20 @@ public class SwordAttack : MonoBehaviour
     private void AttackTop()
     {
         swordCollider.enabled = true;
-        transform.localPosition = new Vector2(0f, 0.4f);
+        transform.localPosition = new Vector2(0.12f, 0.36f);
         animator.SetTrigger("onAttack");
     }
     private void AttackBottom()
     {
         swordCollider.enabled = true;
-        transform.localPosition = new Vector2(0f, -0.4f);
+        transform.localPosition = new Vector3(0.12f, -0.36f);
         animator.SetTrigger("onAttack");
     }
 
     public void StopAttack()
     {
         swordCollider.enabled = false;
+
     }
 
     void OnDrawGizmos()
@@ -109,5 +110,12 @@ public class SwordAttack : MonoBehaviour
             }
             // Add more collider types if needed
         }
+    }
+
+    private void OnTriggerEnter2D(Collider other)
+    {
+        var enemy = other.GetComponent<GameObject>();
+        if (enemy != null) ;
+        
     }
 }

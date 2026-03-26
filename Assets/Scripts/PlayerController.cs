@@ -18,7 +18,6 @@ public class PlayerController : MonoBehaviour
 
     bool canMove = true;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -135,6 +134,7 @@ public class PlayerController : MonoBehaviour
     public void UnlockMovement()
     {
         canMove = true;
+        animator.ResetTrigger("onAttack");
     }
 
     public void OnFire()
