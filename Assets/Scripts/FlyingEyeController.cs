@@ -11,7 +11,7 @@ public class FlyingEyeController : MonoBehaviour
     PlayerController Player;
     PlayerController ClosestPlayer;
 
-    CapsuleCollider2D col;
+    Collider2D col;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -27,12 +27,9 @@ public class FlyingEyeController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        PlayerController hit = collision.gameObject.GetComponent<PlayerController>();
-        CharacterBasics CB = hit.GetComponent<CharacterBasics>();
-        if (hit != null)
-        {
-            CB.TakeDamage(Damage);
-        }
-        Debug.Log($"Hit Player: {hit.name}, current HP: {CB.CurrentHP}");
+        if (!collision.CompareTag("PlayerHitbox")) return;
+
+        var player = collision.GetComponentInParent<CharacterBasics>();
+        player.TakeDamage(Damage, (collision.transform.position - transform.position).normalized);
     }
 }

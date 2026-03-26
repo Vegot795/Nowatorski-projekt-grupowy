@@ -4,6 +4,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class PlayerController : MonoBehaviour
     public float collisionOffset = 0.05f;
     public ContactFilter2D movementFilter;
     public SwordAttack swordAttack;
+    public int Damage = 10;
+    bool canMove = true;
 
     Vector2 movementInput;
     List<string> directions = new List<string>() { "Top", "Bottom", "Left", "Right" };
@@ -20,8 +23,8 @@ public class PlayerController : MonoBehaviour
     CapsuleCollider2D damageCol;
     CharacterBasics CB;
     List<RaycastHit2D> castCollisions = new List<RaycastHit2D>();
+    SwordAttack sword;
 
-    bool canMove = true;
 
     void Start()
     {
@@ -30,6 +33,7 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         UnlockMovement();
+        
     }
     private void FixedUpdate()
     {
@@ -54,8 +58,6 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("isMoving", false);
         }
 
-
-        //Set vertical direction of sprites to movement direction
         if(movementInput.x < 0)
         {
             spriteRenderer.flipX = true;
@@ -123,20 +125,6 @@ public class PlayerController : MonoBehaviour
         movementInput = movementValue.Get<Vector2>();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.tag == "Enemy")
-        {
-            
-        }
-
-    }
-    public void TakeDamage(int damageAmount)
-    {
-
-        CB.TakeDamage(damageAmount);
-    }
-
     public void SwordAttackFunc()
     {
         LockMovement();
@@ -154,6 +142,8 @@ public class PlayerController : MonoBehaviour
     {
         canMove = true;
         animator.ResetTrigger("onAttack");
+        swordAttack.StopAttack();
+
     }
 
     public void OnFire()

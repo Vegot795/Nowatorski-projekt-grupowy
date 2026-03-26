@@ -13,6 +13,7 @@ public partial class MoveToExactLocationAction : Action
     [SerializeReference] public BlackboardVariable<Vector2> DestinationPoint;
     [SerializeReference] public BlackboardVariable<float> Speed = new BlackboardVariable<float>(2.0f);
     [SerializeReference] public BlackboardVariable<float> SlowDownDistance = new BlackboardVariable<float>(1.5f);
+    [SerializeReference] public BlackboardVariable<float> Fov = new BlackboardVariable<float>(10f);
 
     private Rigidbody2D m_Rigidbody2D;
     private Vector2 m_LastTargetPosition;
@@ -43,6 +44,12 @@ public partial class MoveToExactLocationAction : Action
             return Status.Failure;
         }
 
+        var character = Self.Value.GetComponent<CharacterBasics>();
+        if (character != null && character.IsKnockedBack())
+        {
+            return Status.Running;
+        }
+
         // Get current target position
         Vector2 currentTargetPosition = Target.Value.transform.position;
 
@@ -67,6 +74,11 @@ public partial class MoveToExactLocationAction : Action
         {
             // Move toward target's exact position in 2D space
             m_CurrentSpeed = MoveTowardTarget(distance);
+        }
+
+        if (distance > Fov)
+        {
+            return Status.Failure; // Target is out of FOV, fail the action
         }
 
         DestinationPoint.Value = currentTargetPosition;

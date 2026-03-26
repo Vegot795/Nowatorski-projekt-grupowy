@@ -10,7 +10,7 @@ public partial class PatrolAction : Action
 {
     [SerializeReference] public BlackboardVariable<float> Speed;
     [SerializeReference] public BlackboardVariable<GameObject> Agent;
-    [SerializeReference] public BlackboardVariable<float> VisionRange;
+    [SerializeReference] public BlackboardVariable<float> PatrolRange;
     [SerializeReference] public BlackboardVariable<float> ARRIVAL_THRESHOLD;
 
     private Vector2 m_CurrentPosition;
@@ -20,7 +20,7 @@ public partial class PatrolAction : Action
 
     protected override Status OnStart()
     {
-        if (Agent == null || VisionRange == null || Speed == null)
+        if (Agent == null || PatrolRange == null || Speed == null)
         {
             return Status.Failure;
         }
@@ -29,7 +29,7 @@ public partial class PatrolAction : Action
 
     protected override Status OnUpdate()
     {
-        if (Agent == null || VisionRange == null || Speed == null)
+        if (Agent == null || PatrolRange == null || Speed == null)
         {
             return Status.Failure;
         }
@@ -71,9 +71,9 @@ public partial class PatrolAction : Action
 
     private Status Initialize ()
     {
-        float randomX = UnityEngine.Random.Range(m_CurrentPosition.x - VisionRange.Value, m_CurrentPosition.x + VisionRange.Value);
-        float randomY = UnityEngine.Random.Range(m_CurrentPosition.y - VisionRange.Value, m_CurrentPosition.y + VisionRange.Value);
-        m_TargetPoint = new Vector2(m_TargetPoint.x + randomX, m_TargetPoint.y + randomY);
+        float randomX = UnityEngine.Random.Range(m_CurrentPosition.x - PatrolRange.Value, m_CurrentPosition.x + PatrolRange.Value);
+        float randomY = UnityEngine.Random.Range(m_CurrentPosition.y - PatrolRange.Value, m_CurrentPosition.y + PatrolRange.Value);
+        m_TargetPoint = new Vector2(randomX, randomY);
 
         m_Rigidbody2D = Agent.Value.GetComponent<Rigidbody2D>();
 

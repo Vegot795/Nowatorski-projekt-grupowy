@@ -44,8 +44,9 @@ public partial class CheckIfInVisionRangeAction : Action
         {
             m_TargetPoint = closestGameObject.transform.position;
         }
-        float distance = Vector2.Distance(m_AgentPoint, m_TargetPoint);
-        if (distance <= VisionRange.Value)
+        //float distance = Vector2.Distance(m_AgentPoint, m_TargetPoint);
+        //if (distance <= VisionRange.Value)
+        if (closestGameObject != null)
         {
             Target.Value = closestGameObject; // Update the target to the closest one within vision range
             return Status.Success;

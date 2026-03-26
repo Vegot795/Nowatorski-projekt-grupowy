@@ -2,11 +2,12 @@ using UnityEngine;
 
 public class SwordAttack : MonoBehaviour
 {
-    Vector2 rightAttackOffset = new Vector2(0.36f, 0);
+    Vector2 rightAttackOffset = new Vector2(0.4f, 0);
     Vector2 topAttackOffset;
     Vector2 bottomAttackOffset;
     Vector2 swordColidPos;
     Collider2D swordCollider;
+    int Damage;
 
     Animator animator;
     
@@ -25,13 +26,10 @@ public class SwordAttack : MonoBehaviour
     void Start()
     {
         swordCollider = GetComponent<Collider2D>();
-        rightAttackOffset = transform.position;
         swordCollider.enabled = false;
         animator = GetComponentInParent<Animator>();
-        if(animator != null)
-        {
-            print("Animator found in parent");
-        }
+
+        Damage = GetComponentInParent<PlayerController>().Damage;
     }
 
 
@@ -108,14 +106,18 @@ public class SwordAttack : MonoBehaviour
                 Vector2 pos = (Vector2)transform.position + circle.offset;
                 Gizmos.DrawWireSphere(pos, circle.radius);
             }
-            // Add more collider types if needed
+
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        var enemy = other.GetComponent<GameObject>();
-        if (enemy != null) ;
-        
+
+        if (collision.CompareTag("Enemy"))
+        {
+            var enemy = collision.GetComponentInParent<CharacterBasics>();
+            //Debug.Log($"EnemyCB Found: {enemy}");
+            enemy.TakeDamage(Damage, (collision.transform.position - transform.position).normalized);
+        }
     }
 }
