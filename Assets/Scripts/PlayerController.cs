@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 2f;
     public float collisionOffset = 0.05f;
     public ContactFilter2D movementFilter;
+    public SwordAttack swordAttack;
 
     Vector2 movementInput;
     List<string> directions = new List<string>() { "Top", "Bottom", "Left", "Right" };
@@ -20,13 +21,15 @@ public class PlayerController : MonoBehaviour
     CharacterBasics CB;
     List<RaycastHit2D> castCollisions = new List<RaycastHit2D>();
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    bool canMove = true;
+
     void Start()
     {
         CB = GetComponent<CharacterBasics>();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        UnlockMovement();
     }
     private void FixedUpdate()
     {
@@ -56,21 +59,25 @@ public class PlayerController : MonoBehaviour
         if(movementInput.x < 0)
         {
             spriteRenderer.flipX = true;
+            swordAttack.attackDirection = SwordAttack.AttackDirection.Left;
         }
         else if (movementInput.x > 0)
         {
             spriteRenderer.flipX = false;
+            swordAttack.attackDirection = SwordAttack.AttackDirection.Right;
         }
 
         if(movementInput.y > 0)
         {
             animator.SetBool("isMovingTop", true);
             animator.SetBool("isMovingBottom", false);
+            swordAttack.attackDirection = SwordAttack.AttackDirection.Top;
         }
         else if (movementInput.y < 0)
         {
             animator.SetBool("isMovingTop", false);
             animator.SetBool("isMovingBottom", true);
+            swordAttack.attackDirection = SwordAttack.AttackDirection.Bottom;
         }
         else
         {
@@ -79,24 +86,26 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void GetDirection()
-    {
-
-    }
-
     private bool TryMove(Vector2 direction) {
-        if(direction != Vector2.zero)
-        {
-            int count = rb.Cast(
-                movementInput,
-                movementFilter,
-                castCollisions,
-                moveSpeed * Time.fixedDeltaTime + collisionOffset);
-
-            if (count == 0)
+        if (canMove)
+        {    
+            if (direction != Vector2.zero)
             {
-                rb.MovePosition(rb.position + movementInput * moveSpeed * Time.fixedDeltaTime);
-                return true;
+                int count = rb.Cast(
+                    movementInput,
+                    movementFilter,
+                    castCollisions,
+                    moveSpeed * Time.fixedDeltaTime + collisionOffset);
+
+                if (count == 0)
+                {
+                    rb.MovePosition(rb.position + movementInput * moveSpeed * Time.fixedDeltaTime);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
@@ -107,7 +116,6 @@ public class PlayerController : MonoBehaviour
         {
             return false;
         }
-        
     }
 
     void OnMove(InputValue movementValue)
@@ -115,38 +123,6 @@ public class PlayerController : MonoBehaviour
         movementInput = movementValue.Get<Vector2>();
     }
 
-    void OnFire()
-    {
-        
-    }
-
-    /*List<string> CheckDirection(List directions)
-    {
-        if (animator.GetBool("isMovingTop"))
-        {
-            directions = "Top"
-            return Top;
-        }
-        else if (animator.GetBool("isMovingBottom"))
-        {
-            //Debug.Log("Moving down");
-        }
-        else if(animator.GetBool("isMoving"))
-        {
-            if (movementInput.x > 0)
-            {
-                //Debug.Log("Moving right");
-            }
-            else if (movementInput.x < 0)
-            {
-                //Debug.Log("Moving left");
-            }
-        }
-        else
-        {
-            direction = null;
-        }
-    }*/
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Enemy")
@@ -159,5 +135,30 @@ public class PlayerController : MonoBehaviour
     {
         
         CB.TakeDamage(damageAmount);
+
+
+    public void SwordAttackFunc()
+    {
+        LockMovement();
+        
+        swordAttack.Attack();
+        print("Attacking in direction: " + swordAttack.attackDirection);
+    }
+
+    public void LockMovement()
+    {
+        canMove = false;
+    }
+
+    public void UnlockMovement()
+    {
+        canMove = true;
+        animator.ResetTrigger("onAttack");
+    }
+
+    public void OnFire()
+    {
+        print("Fire button pressed");
+        SwordAttackFunc();
     }
 }
