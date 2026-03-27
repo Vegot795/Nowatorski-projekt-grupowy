@@ -44,14 +44,17 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Layer 1
+  - name: Ground
     uniqueID: 2425651459
     locked: 0
-  - name: Layer 2
+  - name: WalkInFront
     uniqueID: 4250941897
     locked: 0
-  - name: Layer 3
+  - name: Collision
     uniqueID: 4189426099
+    locked: 0
+  - name: Player
+    uniqueID: 3309424107
     locked: 0
   m_RenderingLayers:
   - Default
