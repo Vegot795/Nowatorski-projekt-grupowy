@@ -8,6 +8,8 @@ public class FlyingEyeController : MonoBehaviour
     public float moveSpeed = 1f;
     public float visionRange = 5f;
 
+    private bool wasDamaged = false;
+
     PlayerController Player;
     PlayerController ClosestPlayer;
 
@@ -27,9 +29,33 @@ public class FlyingEyeController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.CompareTag("PlayerHitbox")) return;
+        if (!wasDamaged)
+        {
+            if (!collision.CompareTag("PlayerHitbox")) return;
 
-        var player = collision.GetComponentInParent<CharacterBasics>();
-        player.TakeDamage(Damage, (collision.transform.position - transform.position).normalized);
+            var player = collision.GetComponentInParent<CharacterBasics>();
+            player.TakeDamage(Damage, (collision.transform.position - transform.position).normalized);
+            wasDamaged = true;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (!wasDamaged)
+        {
+            if (!collision.CompareTag("PlayerHitbox")) return;
+
+            var player = collision.GetComponentInParent<CharacterBasics>();
+            player.TakeDamage(Damage, (collision.transform.position - transform.position).normalized);
+            wasDamaged = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("PlayerHitbox"))
+        {
+            wasDamaged = false;
+        }
     }
 }
