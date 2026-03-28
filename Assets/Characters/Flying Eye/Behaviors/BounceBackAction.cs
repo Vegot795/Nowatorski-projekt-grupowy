@@ -45,17 +45,14 @@ public partial class BounceBackAction : Action
         Vector2 currentPosition = Agent.Value.transform.position;
         float distance = Vector2.Distance(currentPosition, m_BounceDestination);
 
-        // Check if we've reached the bounce destination
         if (distance <= ARRIVAL_THRESHOLD)
         {
             return Status.Success;
         }
 
-        // Move toward bounce destination
         Vector2 direction = (m_BounceDestination - currentPosition).normalized;
         Vector2 movement = direction * Speed.Value * Time.fixedDeltaTime;
 
-        // Apply movement using Rigidbody2D if available, otherwise use transform
         if (m_Rigidbody2D != null)
         {
             m_Rigidbody2D.MovePosition(currentPosition + movement);
@@ -88,15 +85,9 @@ public partial class BounceBackAction : Action
             );
         }
 
-        // Calculate bounce destination
         m_BounceDestination = m_StartPosition + bounceDirection * BounceDistance.Value;
-
-        // Get Rigidbody2D for physics-based movement
         m_Rigidbody2D = Agent.Value.GetComponent<Rigidbody2D>();
-
         m_IsInitialized = true;
-
-        // Check if already at destination
         float distance = Vector2.Distance(m_StartPosition, m_BounceDestination);
         if (distance <= ARRIVAL_THRESHOLD)
         {

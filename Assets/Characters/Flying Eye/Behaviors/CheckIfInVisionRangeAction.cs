@@ -44,13 +44,10 @@ public partial class CheckIfInVisionRangeAction : Action
         {
             m_TargetPoint = closestGameObject.transform.position;
         }
-        //float distance = Vector2.Distance(m_AgentPoint, m_TargetPoint);
-        //if (distance <= VisionRange.Value)
         if (closestGameObject != null)
         {
-            Target.Value = closestGameObject; // Update the target to the closest one within vision range
+            Target.Value = closestGameObject;
             return Status.Success;
-
         }
         return Status.Running;
     }
@@ -65,14 +62,12 @@ public partial class CheckIfInVisionRangeAction : Action
         m_TargetPoint = Target.Value.transform.position;
         m_AgentPoint = Self.Value.transform.position;
         m_IsInitialized = true;
-
-
         return Status.Running;
     }
 
     private GameObject FindTarget()
     {
-               GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Player");
+        GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Player");
         float closestDistanceSq = Mathf.Infinity;
         GameObject closestGameObject = null;
         foreach (GameObject gameObject in gameObjects)
@@ -85,7 +80,6 @@ public partial class CheckIfInVisionRangeAction : Action
             }
         }
         return closestGameObject;
-
     }
 }
 

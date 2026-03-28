@@ -12,7 +12,7 @@ public class CharacterBasics : MonoBehaviour
 
     private bool isKnockedBack = false;
     private float knockbackTimer = 0f;
-    private float knockbackDuration = 0.2f; // Adjust as needed
+    private float knockbackDuration = 0.2f;
 
     void Start()
     {
@@ -21,7 +21,6 @@ public class CharacterBasics : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (isKnockedBack)
@@ -49,7 +48,6 @@ public class CharacterBasics : MonoBehaviour
 
     private void Die()
     {
-        //animator.SetTrigger("Die"); - for future development
         Destroy(gameObject);
     }
 

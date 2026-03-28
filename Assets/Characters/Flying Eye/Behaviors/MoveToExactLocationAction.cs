@@ -13,14 +13,14 @@ public partial class MoveToExactLocationAction : Action
     [SerializeReference] public BlackboardVariable<Vector2> DestinationPoint;
     [SerializeReference] public BlackboardVariable<float> Speed = new BlackboardVariable<float>(2.0f);
     [SerializeReference] public BlackboardVariable<float> SlowDownDistance = new BlackboardVariable<float>(1.5f);
-    [SerializeReference] public BlackboardVariable<float> Fov = new BlackboardVariable<float>(10f);
+    [SerializeReference] public BlackboardVariable<float> Fov = new BlackboardVariable<float>(3f);
 
     private Rigidbody2D m_Rigidbody2D;
     private Vector2 m_LastTargetPosition;
     private float m_CurrentSpeed;
-    private const float ARRIVAL_THRESHOLD = 0.05f; // Very small threshold for "exact" positioning
+    private const float ARRIVAL_THRESHOLD = 0.05f;
     private bool m_IsInitialized = false;
-    private float m_ColliderOffset = 0.0f; // Additional distance to account for colliders  
+    private float m_ColliderOffset = 0.0f;
 
     protected override Status OnStart()
     {
@@ -28,7 +28,6 @@ public partial class MoveToExactLocationAction : Action
         {
             return Status.Failure;
         }
-
         return Initialize();
     }
 
@@ -38,49 +37,36 @@ public partial class MoveToExactLocationAction : Action
         {
             return Status.Failure;
         }
-
         if (!m_IsInitialized)
         {
             return Status.Failure;
         }
-
         var character = Self.Value.GetComponent<CharacterBasics>();
         if (character != null && character.IsKnockedBack())
         {
             return Status.Running;
         }
-
-        // Get current target position
         Vector2 currentTargetPosition = Target.Value.transform.position;
-
-        // Update target if it has moved
         bool targetMoved = !Mathf.Approximately(m_LastTargetPosition.x, currentTargetPosition.x)
             || !Mathf.Approximately(m_LastTargetPosition.y, currentTargetPosition.y);
-
         if (targetMoved)
         {
             m_LastTargetPosition = currentTargetPosition;
         }
-
-        // Calculate distance to target's exact position
         float distance = GetDistanceToTarget();
         bool destinationReached = distance <= ARRIVAL_THRESHOLD;
-
         if (destinationReached)
         {
             return Status.Success;
         }
         else
         {
-            // Move toward target's exact position in 2D space
             m_CurrentSpeed = MoveTowardTarget(distance);
         }
-
         if (distance > Fov)
         {
-            return Status.Failure; // Target is out of FOV, fail the action
+            return Status.Failure;
         }
-
         DestinationPoint.Value = currentTargetPosition;
         return Status.Running;
     }
@@ -93,8 +79,6 @@ public partial class MoveToExactLocationAction : Action
     private Status Initialize()
     {
         m_LastTargetPosition = Target.Value.transform.position;
-
-        // Calculate collider offset for stopping distance
         m_ColliderOffset = 0.0f;
         Collider2D selfCollider = Self.Value.GetComponentInChildren<Collider2D>();
         if (selfCollider != null)
@@ -102,24 +86,18 @@ public partial class MoveToExactLocationAction : Action
             Vector2 colliderSize = selfCollider.bounds.size;
             m_ColliderOffset += Mathf.Max(colliderSize.x, colliderSize.y) * 0.5f;
         }
-
         Collider2D playerCollider = Target.Value.GetComponentInChildren<Collider2D>();
         if (playerCollider != null)
         {
             Vector2 colliderSize = playerCollider.bounds.size;
             m_ColliderOffset += Mathf.Max(colliderSize.x, colliderSize.y) * 0.5f;
         }
-
-        // Check if already at exact destination
         if (GetDistanceToTarget() <= ARRIVAL_THRESHOLD)
         {
             return Status.Success;
         }
-
-        // Get Rigidbody2D component for physics-based movement
         m_Rigidbody2D = Self.Value.GetComponent<Rigidbody2D>();
         m_IsInitialized = true;
-
         return Status.Running;
     }
 
@@ -134,26 +112,17 @@ public partial class MoveToExactLocationAction : Action
     {
         Vector2 selfPosition = Self.Value.transform.position;
         Vector2 targetPosition = Target.Value.transform.position;
-
-        // Calculate direction toward target's exact position (NOT away from target)
         Vector2 direction = (targetPosition - selfPosition).normalized;
-
         float currentSpeed = Speed.Value;
-
-        // Apply movement
         Vector2 movement = direction * currentSpeed * Time.fixedDeltaTime;
-
         if (m_Rigidbody2D != null)
         {
-            // Physics-based movement
             m_Rigidbody2D.MovePosition(selfPosition + movement);
         }
         else
         {
-            // Transform-based movement
             Self.Value.transform.position = selfPosition + movement;
         }
-
         return currentSpeed;
     }
 }

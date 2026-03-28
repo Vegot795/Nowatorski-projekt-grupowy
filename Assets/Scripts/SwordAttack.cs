@@ -22,7 +22,6 @@ public class SwordAttack : MonoBehaviour
 
     public AttackDirection attackDirection;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         swordCollider = GetComponent<Collider2D>();
@@ -116,7 +115,6 @@ public class SwordAttack : MonoBehaviour
         if (collision.CompareTag("Enemy"))
         {
             var enemy = collision.GetComponentInParent<CharacterBasics>();
-            //Debug.Log($"EnemyCB Found: {enemy}");
             enemy.TakeDamage(Damage, (collision.transform.position - transform.position).normalized);
         }
     }

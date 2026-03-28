@@ -17,27 +17,21 @@ public partial class CheckIfTargetIsInAttackRangeAction : Action
     {
         if(Player?.Value == null || Self?.Value == null || VisionRange?.Value == null)
             return Status.Failure;
-
-
         return Status.Running;
     }
 
     protected override Status OnUpdate()
     {
         float distanceToPlayer = Vector2.Distance(Self.Value.transform.position, Player.Value.transform.position);
-
         if (distanceToPlayer <= VisionRange)
         {
             return Status.Success;
         }
-
         return Status.Failure;
     }
 
     protected override void OnEnd()
     {
-
-
     }
 }
 

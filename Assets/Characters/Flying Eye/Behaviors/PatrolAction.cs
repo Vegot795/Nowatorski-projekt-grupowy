@@ -13,6 +13,7 @@ public partial class PatrolAction : Action
     [SerializeReference] public BlackboardVariable<float> PatrolRange;
     [SerializeReference] public BlackboardVariable<float> ARRIVAL_THRESHOLD;
 
+
     private Vector2 m_CurrentPosition;
     private Vector2 m_TargetPoint;
     private Rigidbody2D m_Rigidbody2D;
@@ -38,6 +39,7 @@ public partial class PatrolAction : Action
         {
             return Status.Failure;
         }
+        
 
         m_CurrentPosition = Agent.Value.transform.position;
         float distance = Vector2.Distance(m_CurrentPosition, m_TargetPoint);
@@ -82,7 +84,5 @@ public partial class PatrolAction : Action
 
         return Status.Running;
     }
-
-
 }
 

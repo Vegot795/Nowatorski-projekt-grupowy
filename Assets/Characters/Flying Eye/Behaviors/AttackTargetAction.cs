@@ -34,7 +34,6 @@ public partial class AttackTargetAction : Action
             return Status.Failure;
         }
 
-        // Calculate attack position based on target location
         Vector2 attackPos = CalculateAttackPosition();
 
         if (AttackPosition != null)
@@ -42,25 +41,22 @@ public partial class AttackTargetAction : Action
             AttackPosition.Value = attackPos;
         }
 
-        // Check if we can attack from current position
         if (IsInAttackRange())
         {
             return Status.Success;
         }
         else
         {
-            return Status.Running; // Need to move to attack position first
+            return Status.Running;
         }
     }
 
     protected override void OnEnd()
     {
-        // Clean up if needed
     }
 
     private Status Initialize()
     {
-        // Get colliders
         m_SelfCollider = Self.Value.GetComponentInChildren<Collider2D>();
         m_TargetCollider = Target.Value.GetComponentInChildren<Collider2D>();
 
@@ -81,23 +77,15 @@ public partial class AttackTargetAction : Action
 
     private Vector2 CalculateAttackPosition()
     {
-        // Get target's current position
         Vector2 targetPosition = Target.Value.transform.position;
         Vector2 selfPosition = Self.Value.transform.position;
-
-        // Calculate direction from self to target
         Vector2 direction = (targetPosition - selfPosition).normalized;
-
-        // Calculate ideal attack position (close enough to attack but not overlapping)
         float targetRadius = 0f;
         if (m_TargetCollider != null)
         {
             targetRadius = Mathf.Max(m_TargetCollider.bounds.extents.x, m_TargetCollider.bounds.extents.y);
         }
-
-        // Position ourselves at attack range from target
         Vector2 attackPosition = targetPosition - direction * (AttackRange.Value + targetRadius);
-
         return attackPosition;
     }
 
@@ -105,17 +93,12 @@ public partial class AttackTargetAction : Action
     {
         if (m_SelfCollider == null || m_TargetCollider == null)
             return false;
-
-        // Calculate distance between colliders
         Vector2 selfPosition = m_SelfCollider.bounds.center;
         Vector2 targetPosition = m_TargetCollider.bounds.center;
         float distance = Vector2.Distance(selfPosition, targetPosition);
-
-        // Account for collider sizes
         float selfRadius = Mathf.Max(m_SelfCollider.bounds.extents.x, m_SelfCollider.bounds.extents.y);
         float targetRadius = Mathf.Max(m_TargetCollider.bounds.extents.x, m_TargetCollider.bounds.extents.y);
         float totalRadius = selfRadius + targetRadius;
-
         return distance <= (AttackRange.Value + totalRadius);
     }
 }
