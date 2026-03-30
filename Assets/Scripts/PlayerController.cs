@@ -133,4 +133,6 @@ public class PlayerController : MonoBehaviour
         print("Fire button pressed");
         SwordAttackFunc();
     }
+
+
 }

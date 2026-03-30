@@ -7,6 +7,8 @@ TagManager:
   - Targets
   - Enemy
   - PlayerHitbox
+  - FarmField
+  - BuilderMenu
   layers:
   - Default
   - TransparentFX
@@ -55,6 +57,9 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 3309424107
+    locked: 0
+  - name: UI
+    uniqueID: 536446657
     locked: 0
   m_RenderingLayers:
   - Default
