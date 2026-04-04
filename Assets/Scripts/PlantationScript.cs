@@ -19,8 +19,8 @@ public class PlantationScript : MonoBehaviour
     void Start()
     {
         _fields = GetComponentsInChildren<FarmScript>();
-        maxFieldCount = 4 + level * 2; 
-        grid = GameObject.FindWithTag("FarmGrid").GetComponent<Grid>(); 
+        maxFieldCount = 2 + (level * 2);
+        grid = GameObject.FindWithTag("FarmGrid").GetComponent<Grid>();
     }
 
     private void Update()
@@ -56,7 +56,7 @@ public class PlantationScript : MonoBehaviour
         }
         else
         {
-            if(fieldPreviewInstance != null)
+            if (fieldPreviewInstance != null)
             {
                 Destroy(fieldPreviewInstance);
                 fieldPreviewInstance = null;
@@ -100,17 +100,68 @@ public class PlantationScript : MonoBehaviour
             Vector3Int cellPosition = grid.WorldToCell(worldPosition);
             Vector3 spawnPosition = grid.GetCellCenterWorld(cellPosition);
 
-            FieldPrefabInstance = Instantiate(fieldPrefab, spawnPosition, Quaternion.identity, transform);
-            FieldPrefabInstance.GetComponent<SpriteRenderer>().sortingLayerName = "Ground";
-            FieldPrefabInstance.GetComponent<SpriteRenderer>().sortingOrder = 1;
-            _fields = GetComponentsInChildren<FarmScript>();          
+            if (ValidateConditions())
+            {
+                FieldPrefabInstance = Instantiate(fieldPrefab, spawnPosition, Quaternion.identity, transform);
+                FieldPrefabInstance.GetComponent<SpriteRenderer>().sortingLayerName = "Ground";
+                FieldPrefabInstance.GetComponent<SpriteRenderer>().sortingOrder = 1;
+                _fields = GetComponentsInChildren<FarmScript>();
+            }
         }
     }
 
-    public void OnMouseLeftButtonClick()
+    public void RemoveField(FarmScript field)
     {
-        BuildNewField();
-        Debug.Log("ButtonPressed");
+        if (System.Array.Exists(_fields, f => f == field))
+        {
+            Destroy(field.gameObject);
+            _fields = GetComponentsInChildren<FarmScript>();
+        }
     }
 
+    private bool ValidateConditions()
+    {
+        if (_fields.Length >= maxFieldCount)
+        {
+            return false;
+        }
+
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition.z = Mathf.Abs(Camera.main.transform.position.z);
+        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        Vector3Int cellPosition = grid.WorldToCell(worldPosition);
+        Vector3 spawnPosition = grid.GetCellCenterWorld(cellPosition);
+        
+        if(IsFieldAtCell(cellPosition))
+        {
+            return false; 
+        }
+
+        int groundLayer = LayerMask.NameToLayer("Ground");
+        Collider2D[] colliders = Physics2D.OverlapPointAll(spawnPosition);
+
+        foreach (var col in colliders)
+        {
+            if (col.gameObject.layer != groundLayer)
+            {
+                Debug.Log("Cannot build here, object in the way: " + col.gameObject.name);
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private bool IsFieldAtCell(Vector3Int cellPosition)
+    {
+        Vector3 cellWorldPos = grid.GetCellCenterWorld(cellPosition);
+        foreach (var field in _fields)
+        {
+            if (field.transform.position == cellWorldPos)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class UI_Controller : MonoBehaviour
@@ -6,11 +7,23 @@ public class UI_Controller : MonoBehaviour
     public PlantationScript _plantation;
     public bool isBuildingEnabled = false;
     public GameObject _uiController;
+    public TextMeshProUGUI _FieldCount;
 
-    private void Start()
+    void Start()
     {
         _plantation = Object.FindFirstObjectByType<PlantationScript>();
         _uiController = GameObject.Find("UI");
+        _FieldCount = GameObject.Find("FieldCount").GetComponent<TextMeshProUGUI>();
+        if (_FieldCount == null)
+        {
+            Debug.Log("Field Count text not found.");
+        }
+    }
+
+
+    void Update()
+    {
+        UpdateFieldCount(); 
     }
 
     public void ToggleBuildMenu()
@@ -42,5 +55,16 @@ public class UI_Controller : MonoBehaviour
         _plantation.inBuildMenu = false;
         _uiController.SetActive(false);
         _plantation.inBuildMenu = false;
+    }
+
+    private void UpdateFieldCount()
+    {
+        if (_plantation == null || _FieldCount == null)
+            return;
+
+        var FieldCount = _plantation._fields.Length;
+        var MaxFieldCount = _plantation.maxFieldCount;
+
+        _FieldCount.text = $"{FieldCount}/{MaxFieldCount}";
     }
 }
