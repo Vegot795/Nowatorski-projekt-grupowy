@@ -164,4 +164,51 @@ public class PlantationScript : MonoBehaviour
         }
         return false;
     }
+
+    public void Save(string saveKey = "fields_save")
+    {
+        FieldDataList dataList = new FieldDataList();
+        foreach (var field in _fields)
+        {
+            dataList.fields.Add(new FieldData { position = field.transform.position });
+        }
+        string json = JsonUtility.ToJson(dataList);
+        PlayerPrefs.SetString(saveKey, json);
+        PlayerPrefs.Save();
+    }
+
+    public void Load(string saveKey = "fields_save")
+    {
+        if (PlayerPrefs.HasKey(saveKey))
+        {
+            string json = PlayerPrefs.GetString(saveKey);
+            FieldDataList dataList = JsonUtility.FromJson<FieldDataList>(json);
+            foreach (var fieldData in dataList.fields)
+            {
+                Instantiate(fieldPrefab, fieldData.position, Quaternion.identity, transform);
+            }
+            _fields = GetComponentsInChildren<FarmScript>();
+        }
+    }
+
+    public void LoadFields(string saveKey = "fields_save")
+    {
+        if (!PlayerPrefs.HasKey(saveKey)) return;
+
+        foreach (var field in _fields)
+        {
+            Destroy(field.gameObject);
+        }
+
+        string json = PlayerPrefs.GetString(saveKey);
+        FieldDataList dataList = JsonUtility.FromJson<FieldDataList>(json);
+
+        foreach (var fieldData in dataList.fields)
+        {
+            var newField = Instantiate(fieldPrefab, fieldData.position, Quaternion.identity, transform);
+            newField.GetComponent<SpriteRenderer>().sortingLayerName = "Ground";
+            newField.GetComponent<SpriteRenderer>().sortingOrder = 1;
+        }
+        _fields = GetComponentsInChildren<FarmScript>();
+    }
 }

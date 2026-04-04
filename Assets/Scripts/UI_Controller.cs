@@ -67,4 +67,14 @@ public class UI_Controller : MonoBehaviour
 
         _FieldCount.text = $"{FieldCount}/{MaxFieldCount}";
     }
+
+    public void OnSave()
+    {
+        _plantation.Save();
+    }
+
+    public void OnLoad()
+    {
+        _plantation.Load();
+    }
 }

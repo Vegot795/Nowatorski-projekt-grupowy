@@ -2124,6 +2124,11 @@ PrefabInstance:
       objectReference: {fileID: 653873427}
     - target: {fileID: 5201515951818788029, guid: df39f441c40bda94ca331f2affe28adc,
         type: 3}
+      propertyPath: m_DefaultActionMap
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5201515951818788029, guid: df39f441c40bda94ca331f2affe28adc,
+        type: 3}
       propertyPath: m_NotificationBehavior
       value: 0
       objectReference: {fileID: 0}
