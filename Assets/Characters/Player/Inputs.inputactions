@@ -34,9 +34,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Build",
+                    "name": "OpenBuildMenu",
                     "type": "Button",
                     "id": "ca56e545-66eb-4aa6-a7c1-1066731338b8",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "MouseLeftButtonClick",
+                    "type": "Button",
+                    "id": "5fa2e64c-4f35-4192-9acc-d42d65edac80",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -51,7 +60,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "Build",
+                    "action": "OpenBuildMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -272,6 +281,17 @@
                     "processors": "",
                     "groups": "XR",
                     "action": "Fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7456f087-1f37-4525-8275-403a8dfdb5cf",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseLeftButtonClick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

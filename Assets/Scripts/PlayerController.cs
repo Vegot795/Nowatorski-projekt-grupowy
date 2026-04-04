@@ -23,8 +23,12 @@ public class PlayerController : MonoBehaviour
     CharacterBasics CB;
     List<RaycastHit2D> castCollisions = new List<RaycastHit2D>();
     SwordAttack sword;
+    UI_Controller uiController;
+    PlantationScript _plantation;
     void Start()
     {
+        _plantation = Object.FindFirstObjectByType<PlantationScript>();
+        uiController = Object.FindFirstObjectByType<UI_Controller>();
         CB = GetComponent<CharacterBasics>();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
@@ -134,5 +138,14 @@ public class PlayerController : MonoBehaviour
         SwordAttackFunc();
     }
 
+    public void OnOpenBuildMenu()
+    {
+        uiController.ToggleBuildMenu();
+    }
 
+    public void OnMouseLeftButtonClick()
+    {
+        _plantation.BuildNewField();
+        Debug.Log("ButtonPressed");
+    }
 }

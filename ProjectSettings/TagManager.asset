@@ -9,6 +9,7 @@ TagManager:
   - PlayerHitbox
   - FarmField
   - BuilderMenu
+  - FarmGrid
   layers:
   - Default
   - TransparentFX
