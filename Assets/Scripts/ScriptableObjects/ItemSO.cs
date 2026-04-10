@@ -4,5 +4,5 @@ public class ItemSO : ScriptableObject
 {
     public Sprite Icon;
     public string Description;
-    public int MaxStackAmount;
+    public ushort MaxStackAmount;
 }
