@@ -15,20 +15,37 @@ public class InventoryManager : MonoBehaviour
     {
 
     }
-    void addItemToInv(ItemSO item, ushort amount)
+    void addItemToInv(ItemSO item, int amount)
     {
-        NextEmptySlot();
-        /*List<InventorySlot> thisItemSlots = inventorySlots.FindAll(x => x.ItemInSlot == item);
+        List<InventorySlot> thisItemSlots = inventorySlots.FindAll(x => x.ItemInSlot == item);
         if (thisItemSlots != null)
         {
+            //item w inv
+            int rest = amount;
+            for (int i = 0; i < thisItemSlots.Count; i++)
+            {
+                if (thisItemSlots[i].ItemAmount + rest == thisItemSlots[i].ItemInSlot.MaxStackAmount)
+                {
+                    thisItemSlots[i].AddItemAmount(rest);
+                }
+                else
+                {
+                    int diff = thisItemSlots[i].ItemInSlot.MaxStackAmount - thisItemSlots[i].ItemAmount;
+                    rest = rest - diff;
+                    thisItemSlots[i].AddItemAmount(diff);
+                }
+
+            }
 
         }
         else
         {
+            //nie ma takiego itemu w inv
+            //dodac do nastepnego wolnego
             NextEmptySlot();
         }
         //jesli juz jest tego typu item dodaje do stacku
-        inventorySlots.Find(x => x.ItemInSlot == item && x.ItemAmount < x.ItemInSlot.MaxStackAmount);
+        /*inventorySlots.Find(x => x.ItemInSlot == item && x.ItemAmount < x.ItemInSlot.MaxStackAmount);
         inventorySlots[k].ItemAmount += amount;
         if (inventorySlots[k].ItemAmount > inventorySlots[k].ItemInSlot.MaxStackAmount)
         {
