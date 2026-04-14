@@ -1,21 +1,26 @@
 using System;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "PlantData", menuName = "ScriptableObjects/PlantScript")]
+[CreateAssetMenu(fileName = "PlantData", menuName = "ScriptableObjects/PlantData")]
 
-public class PlantTimer_ScriptableObject : ScriptableObject
+public class PlantData : ScriptableObject
 {
     public string plantName;
     public float timeBetweenStages;
     public float timeToWater;
-    public Sprite[] growthStages;
+    public Sprite[] babyStage;
+    public Sprite[] adultStage;
+   
+
 
     [NonSerialized]
     public float currentTimeBetweenStages;
     [NonSerialized]
     public float currentTimeToWater;
     [NonSerialized]
-    public Sprite currentGrowthStage;
+    public int currentGrowthStage;
+
+
 
     public void SavePlantTimers()
     {
@@ -24,7 +29,7 @@ public class PlantTimer_ScriptableObject : ScriptableObject
         string stageKey = $"Plant_{plantName}_growthStage";
         PlayerPrefs.SetFloat(growKey, timeBetweenStages);
         PlayerPrefs.SetFloat(waterKey, timeToWater);
-        PlayerPrefs.SetInt(stageKey, Array.IndexOf(growthStages, currentGrowthStage));
+        PlayerPrefs.SetInt(stageKey, currentGrowthStage);
         PlayerPrefs.Save();
     }
 
@@ -46,7 +51,7 @@ public class PlantTimer_ScriptableObject : ScriptableObject
 
         if(PlayerPrefs.HasKey(stageKey))
         {
-            currentGrowthStage = growthStages[PlayerPrefs.GetInt(stageKey)];
+            currentGrowthStage = PlayerPrefs.GetInt(stageKey);
         }
 
     }

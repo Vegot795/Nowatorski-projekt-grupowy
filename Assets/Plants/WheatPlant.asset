@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 304922c2d613f4c40a73d048329766b8, type: 3}
+  m_Name: WheatPlant
+  m_EditorClassIdentifier: 
+  plantName: Wheat
+  timeBetweenStages: 50
+  timeToWater: 0
+  babyStage:
+  - {fileID: 21300000, guid: fb31671369ca73a46943a617c3785c40, type: 3}
+  - {fileID: 21300000, guid: 19910c4abc6f0b941829bacf6c857aa6, type: 3}
+  - {fileID: 21300000, guid: 02b1f9990e2c9464bba9cdd8c7936f13, type: 3}
+  - {fileID: 21300000, guid: 2fb0eb2ae40da354cbe7b9c9e2ba5770, type: 3}
+  adultStage:
+  - {fileID: 21300000, guid: b2e74a1ffd62ab3458273b3290ff9aae, type: 3}
+  - {fileID: 21300000, guid: 1d750f5092f05fb41a57b6b475a23cc6, type: 3}

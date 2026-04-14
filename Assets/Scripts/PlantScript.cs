@@ -2,38 +2,87 @@ using UnityEngine;
 
 public class PlantScript : MonoBehaviour
 {
-    public PlantTimer_ScriptableObject _plantTimer;
+    public PlantData plantData;
 
     private float currentGrowth;
     private float currentWater;
     private float baseTimeToWater;
-    private float baseGrowth;
+    private float baseGrowthTime;
     private bool isHarvestable = false;
+    private int currentStage = 0;
 
+    public Sprite[] growthStages;
+    public Sprite currentSprite;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public float dryTime = 50f;
+
     void Start() 
     {
-        currentGrowth = _plantTimer.currentTimeBetweenStages;
-        currentWater = _plantTimer.currentTimeToWater;
-        baseGrowth = _plantTimer.timeBetweenStages;
-        baseTimeToWater = _plantTimer.timeToWater;
+        // Initialize plant timers and growth stages
+        currentGrowth = plantData.currentTimeBetweenStages;
+        currentWater = plantData.currentTimeToWater;
+        baseGrowthTime = plantData.timeBetweenStages;
+        baseTimeToWater = plantData.timeToWater;
 
+        // Combine baby and adult stages into a single array for easier management
+        growthStages = new Sprite[plantData.babyStage.Length + plantData.adultStage.Length];
+        plantData.babyStage.CopyTo(growthStages, 0);
+        plantData.adultStage.CopyTo(growthStages, plantData.babyStage.Length);
+        currentStage = plantData.currentGrowthStage;
+
+        isHarvestable = false;
+        currentSprite = gameObject.GetComponent<Sprite>();
+        currentSprite = growthStages[currentStage];
     }
 
-    // Update is called once per frame
     void Update()
     {
-        currentWater -= Time.deltaTime;
+        if (currentWater > 0)
+        {
+            currentWater -= Time.deltaTime;            
+        }
 
-        PlantGrowth(currentWater);
+        PlantGrowth();
     }
 
-    private void PlantGrowth(float currentWater)
+    private void PlantGrowth()
     {
-        if (currentWater <= 0)
+        float timeToDry =  dryTime;
+        int stagesCount = growthStages.Length;
+        float timePerStage = baseGrowthTime / stagesCount;
+
+        // If the plant has water, it continues to grow
+        if (currentWater >= 0)
         {
-            currentGrowth -= Time.deltaTime;
+            if (currentGrowth > 0 && currentStage < stagesCount)
+            {
+                currentGrowth = timePerStage;
+                currentGrowth -= Time.deltaTime;
+
+            }
+            else if (currentGrowth == 0 && currentStage < stagesCount)
+            {
+                currentStage++;
+                plantData.currentGrowthStage = currentStage;
+                currentSprite = growthStages[plantData.currentGrowthStage];
+            }
+
+            if (currentGrowth == 0 && currentStage == stagesCount)
+            {
+                isHarvestable = true;
+            }
+        }
+        else // If the plant has run out of water, it starts drying out
+        {
+            while (timeToDry > 0)
+            {
+                timeToDry -= Time.deltaTime;
+            }
+
+            if(timeToDry <= 0)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 
@@ -44,6 +93,4 @@ public class PlantScript : MonoBehaviour
             currentWater = baseTimeToWater;
         }
     }
-
-
 }
