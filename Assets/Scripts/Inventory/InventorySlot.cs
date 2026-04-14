@@ -22,11 +22,13 @@ public class InventorySlot : MonoBehaviour
     }
     public void AddItem(ItemSO item, int amount)
     {
+        IsOccupied = true;
         ItemInSlot = item;
         ItemAmount += amount;
     }
     public void RemoveItem()
     {
+        IsOccupied = true;
         ItemInSlot = null;
         ItemAmount = 0;
     }
