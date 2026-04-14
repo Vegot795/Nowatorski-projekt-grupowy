@@ -22,7 +22,6 @@ public class FarmScript : MonoBehaviour
             if (waterTimer == 0)
             {
                 isWatered = false;
-
             }
         }
     }

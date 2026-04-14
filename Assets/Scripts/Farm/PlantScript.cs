@@ -10,9 +10,12 @@ public class PlantScript : MonoBehaviour
     private float baseGrowthTime;
     private bool isHarvestable = false;
     private int currentStage = 0;
+    private bool isWatered;
 
     public Sprite[] growthStages;
     public Sprite currentSprite;
+    public FarmScript farmScript;
+
 
     public float dryTime = 50f;
 
@@ -37,6 +40,11 @@ public class PlantScript : MonoBehaviour
 
     void Update()
     {
+        if (farmScript != null)
+        {
+            isWatered = farmScript.isWatered;
+        }
+
         if (currentWater > 0)
         {
             currentWater -= Time.deltaTime;            

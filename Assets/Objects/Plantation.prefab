@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3462032460063120835}
   - component: {fileID: 2683689559796664561}
+  - component: {fileID: 6197706847317682162}
   m_Layer: 0
   m_Name: Plantation
   m_TagString: Untagged
@@ -49,3 +50,21 @@ MonoBehaviour:
   _fields: []
   fieldPrefab: {fileID: 0}
   inBuildMenu: 0
+--- !u!114 &6197706847317682162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 596013367159295750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98c8c4d9c2381d847b4aa2c66c249188, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Seed: {fileID: 0}
+  Seeds:
+  - {fileID: 11400000, guid: a761bf78a6446964aa3535d43dfe5148, type: 2}
+  - {fileID: 11400000, guid: 194bd3649a1991f47934e29f20ff691b, type: 2}
+  - {fileID: 11400000, guid: 20556b9dbe2257143840b84ab1316152, type: 2}
+  - {fileID: 11400000, guid: 9bf444c92340bb64f80b59e16a597d78, type: 2}

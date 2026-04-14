@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "PlantData", menuName = "ScriptableObjects/PlantData")]
+[CreateAssetMenu(fileName = "PlantData", menuName = "SO/PlantData")]
 
 public class PlantData : ScriptableObject
 {
@@ -11,8 +11,6 @@ public class PlantData : ScriptableObject
     public Sprite[] babyStage;
     public Sprite[] adultStage;
    
-
-
     [NonSerialized]
     public float currentTimeBetweenStages;
     [NonSerialized]
