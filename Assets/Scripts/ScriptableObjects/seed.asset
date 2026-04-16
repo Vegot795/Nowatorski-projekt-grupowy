@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b3487c2cfdcef747b2ea84598f0ec9e, type: 3}
   m_Name: seed
   m_EditorClassIdentifier: 
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: bc31943776f9f3b4eb03c2e6294ce0a1, type: 3}
   Description: 
   MaxStackAmount: 64

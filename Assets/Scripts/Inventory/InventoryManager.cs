@@ -13,7 +13,7 @@ public class InventoryManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.O))
         {
-            addItemToInv(testItem, 30);
+            addItemToInv(testItem, 3);
         }
     }
 
@@ -31,12 +31,14 @@ public class InventoryManager : MonoBehaviour
             for (int i = 0; i < thisItemSlots.Count; i++)
             {
                 int difference = thisItemSlots[i].ItemInSlot.MaxStackAmount - thisItemSlots[i].ItemAmount;
-                thisItemSlots[i].AddItemAmount(difference);
-                int rest = newAmount - difference;
-                newAmount = rest;
+                int toAdd = Mathf.Min(difference, newAmount);
+
+                thisItemSlots[i].AddItemAmount(toAdd);
+
+                newAmount -= toAdd;
                 if (newAmount == 0) break;
             }
-            if (newAmount > 0)
+            if (newAmount > 0 && NextEmptySlot() != -1)
             {
                 inventorySlots[NextEmptySlot()].AddItem(item, newAmount);
             }
@@ -45,8 +47,11 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
-            //poprawic
-            inventorySlots[NextEmptySlot()].AddItem(item, amount);
+            if (NextEmptySlot() != -1)
+            {
+                inventorySlots[NextEmptySlot()].AddItem(item, amount);
+            }
+
         }
 
 
