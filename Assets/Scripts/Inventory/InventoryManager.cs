@@ -1,14 +1,20 @@
 using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InventoryManager : MonoBehaviour
 {
     [SerializeField] private List<InventorySlot> inventorySlots;
+    public ItemSO testItem;
 
-    void Start()
+
+    void Update()
     {
-        inventorySlots = new(); //initializing list with slots
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            addItemToInv(testItem, 3);
+        }
     }
 
     void removeItemToInv(ItemSO item)
@@ -18,77 +24,64 @@ public class InventoryManager : MonoBehaviour
     void addItemToInv(ItemSO item, int amount)
     {
         List<InventorySlot> thisItemSlots = inventorySlots.FindAll(x => x.ItemInSlot == item);
-        if (thisItemSlots != null)
+        if (thisItemSlots.Count > 0)
         {
             //item w inv
-            int rest = amount;
+            int newAmount = amount;
             for (int i = 0; i < thisItemSlots.Count; i++)
             {
-                if (thisItemSlots[i].ItemAmount + rest == thisItemSlots[i].ItemInSlot.MaxStackAmount)
-                {
-                    thisItemSlots[i].AddItemAmount(rest);
-                }
-                else
-                {
-                    int diff = thisItemSlots[i].ItemInSlot.MaxStackAmount - thisItemSlots[i].ItemAmount;
-                    rest = rest - diff;
-                    thisItemSlots[i].AddItemAmount(diff);
-                }
+                int difference = thisItemSlots[i].ItemInSlot.MaxStackAmount - thisItemSlots[i].ItemAmount;
+                int toAdd = Mathf.Min(difference, newAmount);
 
+                thisItemSlots[i].AddItemAmount(toAdd);
+
+                newAmount -= toAdd;
+                if (newAmount == 0) break;
             }
+            if (newAmount > 0 && NextEmptySlot() != -1)
+            {
+                inventorySlots[NextEmptySlot()].AddItem(item, newAmount);
+            }
+
 
         }
         else
         {
-            //nie ma takiego itemu w inv
-            //dodac do nastepnego wolnego
-            NextEmptySlot();
-        }
-        //jesli juz jest tego typu item dodaje do stacku
-        /*inventorySlots.Find(x => x.ItemInSlot == item && x.ItemAmount < x.ItemInSlot.MaxStackAmount);
-        inventorySlots[k].ItemAmount += amount;
-        if (inventorySlots[k].ItemAmount > inventorySlots[k].ItemInSlot.MaxStackAmount)
-        {
-            NextEmptySlot();
-            inventorySlots[i].ItemInSlot = item;
-            ushort newAmount = inventorySlots[k].ItemAmount - inventorySlots[k].ItemInSlot.MaxStackAmount;
-            inventorySlots[i].ItemAmount += newAmount;
-        }
+            if (NextEmptySlot() != -1)
+            {
+                inventorySlots[NextEmptySlot()].AddItem(item, amount);
+            }
 
-
-        //jesli nie ma tego typu itemu lub pełny stack typu itemu szuka pustego slotu i tam dodaje item i amount
-        NextEmptySlot()
-        inventorySlots[NextEmptySlot()].
-        inventorySlots[NextEmptySlot()].
+        }
 
 
     }
     int FindSameItemInInv(ItemSO item)
     {
-
-    }*/
-        int NextEmptySlot()
+        return 0;
+    }
+    int NextEmptySlot()
+    {
+        if (inventorySlots == null || inventorySlots.Count == 0)
         {
-            if (inventorySlots == null || inventorySlots.Count == 0)
-            {
-                Debug.Log("not found slots ");
-                return -1; //there is no slot with this pos, this means no slots in list
-            }
-            else
-            {
-                for (int i = 0; i < inventorySlots.Count; i++)
-                {
-                    if (inventorySlots[i].IsOccupied == false)
-                    {
-                        Debug.Log("found next empty slot: " + i);
-                        return i;
-                    }
-                }
-                Debug.Log("not found next empty slot, inv is full ");
-                return -1; //there is no slot with this pos, this means inv is full
-
-            }
+            Debug.Log("not found slots ");
+            return -1; //there is no slot with this pos, this means no slots in list
         }
+        else
+        {
+            for (int i = 0; i < inventorySlots.Count; i++)
+            {
+                if (inventorySlots[i].IsOccupied == false)
+                {
+                    Debug.Log("found next empty slot: " + i);
+                    return i;
+                }
+            }
+            Debug.Log("not found next empty slot, inv is full ");
+            return -1; //there is no slot with this pos, this means inv is full
+
+        }
+
 
     }
     void OpenInventory()
