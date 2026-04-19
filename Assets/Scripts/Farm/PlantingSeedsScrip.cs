@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlantingSeedsScript : MonoBehaviour
@@ -7,7 +8,7 @@ public class PlantingSeedsScript : MonoBehaviour
     public SeedSO Seed;
     public SeedSO[] Seeds;
 
-    private PlantData plantPreview;
+    private GameObject plantPreview;
     private Grid grid;
 
 
@@ -27,7 +28,7 @@ public class PlantingSeedsScript : MonoBehaviour
 
     public void HandePlantPreview(SeedSO seed)
     {
-        PlantData plantPrefab = seed.plantPreview;
+        GameObject plantPrefab = seed.plantPreview;
 
         if (grid == null)
         {
@@ -68,7 +69,7 @@ public class PlantingSeedsScript : MonoBehaviour
 
             // Optional: update preview sprite/type using 'seed' if ItemSO contains sprite/reference
             var sr = plantPreview.GetComponent<SpriteRenderer>();
-            if (sr != null && seed != null) sr.sprite = seed.previewSprite;
+            if (sr != null && seed != null) sr.sprite = seed.plantPreview.GetComponent<SpriteRenderer>().sprite;
         }
         else
         {

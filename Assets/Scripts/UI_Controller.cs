@@ -8,6 +8,7 @@ public class UI_Controller : MonoBehaviour
     public bool isBuildingEnabled = false;
     public GameObject _uiController;
     public TextMeshProUGUI _FieldCount;
+    public TextMeshProUGUI _BuildingMode;
 
     void Start()
     {
@@ -18,12 +19,14 @@ public class UI_Controller : MonoBehaviour
         {
             Debug.Log("Field Count text not found.");
         }
+        _BuildingMode = GameObject.Find("BuildMode").GetComponent<TextMeshProUGUI>();
     }
 
 
     void Update()
     {
-        UpdateFieldCount(); 
+        UpdateFieldCount();
+        IndicateBuildingMode();
     }
 
     public void ToggleBuildMenu()
@@ -44,8 +47,8 @@ public class UI_Controller : MonoBehaviour
         isBuildingEnabled = true;
         _plantation.inBuildMenu = true;
         _uiController.SetActive(true);
-        _plantation.inBuildMenu = true;
         _plantation.HandleFieldPreview();
+        _plantation.BuildingMode = _plantation.BuildingModeList[0];
     }
 
     private void DisableBuildMenu()
@@ -54,7 +57,6 @@ public class UI_Controller : MonoBehaviour
         isBuildingEnabled = false;
         _plantation.inBuildMenu = false;
         _uiController.SetActive(false);
-        _plantation.inBuildMenu = false;
     }
 
     private void UpdateFieldCount()
@@ -76,5 +78,19 @@ public class UI_Controller : MonoBehaviour
     public void OnLoad()
     {
         _plantation.Load();
+    }
+
+    private void IndicateBuildingMode()
+    {
+        if (_plantation.BuildingMode == "Build")
+        {
+            _BuildingMode.text = "Build";
+
+
+        }
+        else if (_plantation.BuildingMode == "Destroy")
+        {
+            _BuildingMode.text = "Destroy";
+        }
     }
 }

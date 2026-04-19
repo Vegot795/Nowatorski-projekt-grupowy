@@ -68,6 +68,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ChangeBuildMode",
+                    "type": "Button",
+                    "id": "15734908-f6f2-4018-b4cd-a499968fa182",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -332,6 +341,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Load",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "417c5377-5bcd-4052-acea-1469f25e046a",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "ChangeBuildMode",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

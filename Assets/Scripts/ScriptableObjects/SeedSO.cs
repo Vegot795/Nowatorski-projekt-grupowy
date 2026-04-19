@@ -4,6 +4,6 @@ using UnityEngine;
 public class SeedSO : ItemSO
 {
     public PlantData plantData;
-    public PlantData plantPreview;
+    public GameObject plantPreview;
     public float growthTime;
 }

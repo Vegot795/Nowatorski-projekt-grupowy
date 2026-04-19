@@ -143,9 +143,36 @@ public class PlayerController : MonoBehaviour
         uiController.ToggleBuildMenu();
     }
 
+    public void OnChangeBuildMode()
+    {
+        if (uiController.isBuildingEnabled)
+        {
+            if (_plantation.BuildingMode == "Build")
+            {
+                _plantation.BuildingMode = _plantation.BuildingModeList[1];
+            }
+            else
+            {
+                _plantation.BuildingMode = _plantation.BuildingModeList[0];
+            }
+        }       
+    }
+
     public void OnMouseLeftButtonClick()
     {
-        _plantation.BuildNewField();
-        Debug.Log("ButtonPressed");
+        if (uiController.isBuildingEnabled)
+        {
+            if(_plantation.BuildingMode == "Build")
+            {
+                _plantation.BuildNewField();
+            }
+
+            if (_plantation.BuildingMode == "Destroy")
+            {
+                _plantation.RemoveField();
+
+            }
+        }
+        
     }
 }

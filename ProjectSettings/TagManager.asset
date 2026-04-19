@@ -16,7 +16,7 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Preview
   - Water
   - UI
   - 
@@ -54,6 +54,9 @@ TagManager:
     locked: 0
   - name: WalkInFront
     uniqueID: 4250941897
+    locked: 0
+  - name: Preview
+    uniqueID: 3218425513
     locked: 0
   - name: Collision
     uniqueID: 4189426099

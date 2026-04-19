@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -8,12 +10,17 @@ public class PlantationScript : MonoBehaviour
     public FarmScript[] _fields;
     public FarmScript fieldPrefab;
     public bool inBuildMenu = false;
+    public List<string> BuildingModeList = new List<string> { "Build", "Destroy" };
+    public string BuildingMode;
     public FarmScript FieldPrefabInstance { get; private set; }
+    public GameObject destroyIndicatorPrefab;
 
     private Grid grid;
     private bool canBuild = false;
+    private GameObject destroyPreviewInstance;
     private GameObject fieldPreviewInstance;
     private PlayerController _playerController;
+    private GameObject hitObject = null;
 
 
     void Start()
@@ -30,18 +37,28 @@ public class PlantationScript : MonoBehaviour
             canBuild = true;
         }
 
-        HandleFieldPreview();
+        if (BuildingMode == "Build")
+        {
+            HandleFieldPreview();
+        }
+        else if (BuildingMode == "Destroy")
+        {
+            ShowDestroyIndicator();
+            DestroyFieldPrefabPreview();
+        }
     }
 
+    #region // ------------- BUILDING FIELDS -------------------
     public void HandleFieldPreview()
     {
-        if (inBuildMenu && canBuild)
+        if (BuildingMode == "Build" && inBuildMenu && canBuild)
         {
             if (fieldPreviewInstance == null)
             {
                 fieldPreviewInstance = Instantiate(fieldPrefab.gameObject);
+                SetLayerRecursively(fieldPreviewInstance, LayerMask.NameToLayer("Preview"));
                 SetPreviewMaterial(fieldPreviewInstance, 0.5f);
-                fieldPreviewInstance.GetComponent<SpriteRenderer>().sortingLayerName = "Ground";
+                fieldPreviewInstance.GetComponent<SpriteRenderer>().sortingLayerName = "Preview";
                 fieldPreviewInstance.GetComponent<SpriteRenderer>().sortingOrder = 1;
             }
 
@@ -56,12 +73,150 @@ public class PlantationScript : MonoBehaviour
         }
         else
         {
-            if (fieldPreviewInstance != null)
+            DestroyFieldPrefabPreview();
+        }
+    }
+
+    public void BuildNewField()
+    {
+        if (BuildingMode == "Build" && canBuild && inBuildMenu)
+        {
+            Vector3 mousePosition = Input.mousePosition;
+            mousePosition.z = Mathf.Abs(Camera.main.transform.position.z);
+            Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+            Vector3Int cellPosition = grid.WorldToCell(worldPosition);
+            Vector3 spawnPosition = grid.GetCellCenterWorld(cellPosition);
+
+            if (ValidateConditions())
             {
-                Destroy(fieldPreviewInstance);
-                fieldPreviewInstance = null;
+                FieldPrefabInstance = Instantiate(fieldPrefab, spawnPosition, Quaternion.identity, transform);
+                FieldPrefabInstance.GetComponent<SpriteRenderer>().sortingLayerName = "Ground";
+                FieldPrefabInstance.GetComponent<SpriteRenderer>().sortingOrder = 1;
+                _fields = GetComponentsInChildren<FarmScript>();
             }
         }
+    }
+    private bool ValidateConditions()
+    {
+        if (_fields.Length >= maxFieldCount)
+        {
+            return false;
+        }
+
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition.z = Mathf.Abs(Camera.main.transform.position.z);
+        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        Vector3Int cellPosition = grid.WorldToCell(worldPosition);
+        Vector3 spawnPosition = grid.GetCellCenterWorld(cellPosition);
+        
+        if(IsFieldAtCell(cellPosition))
+        {
+            return false; 
+        }
+
+        int groundLayer = LayerMask.NameToLayer("Ground");
+        int previewLayer = LayerMask.NameToLayer("Preview");
+        Collider2D[] colliders = Physics2D.OverlapPointAll(spawnPosition);
+
+        foreach (var col in colliders)
+        {
+            if (col.gameObject.layer == previewLayer)
+                continue; // Ignore preview
+            if (col.gameObject.layer != groundLayer)
+            {
+                Debug.Log("Cannot build here, object in the way: " + col.gameObject.name);
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private bool IsFieldAtCell(Vector3Int cellPosition)
+    {
+        Vector3 cellWorldPos = grid.GetCellCenterWorld(cellPosition);
+        foreach (var field in _fields)
+        {
+            if (field == null) continue;
+            if (field.transform.position == cellWorldPos)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    #endregion
+
+    #region//---------------- DESTROY FIELDS -----------------
+
+    private (bool, GameObject) IsObjectUnderCursorAFarmField()
+    {
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition.z = -Camera.main.transform.position.z;
+        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+
+        Collider2D hit = Physics2D.OverlapPoint(worldPosition);
+        Debug.Log($"OverlapPoint hit: {hit?.name ?? "None"} at position {worldPosition}");
+
+        if (hit != null && hit.CompareTag("FarmField"))
+        {
+            return (true, hit.gameObject);
+        }
+        return (false, null);
+    }
+
+    private void ShowDestroyIndicator() 
+    {
+        if (BuildingMode == "Destroy" && hitObject != null && inBuildMenu)
+        {
+            if (destroyPreviewInstance == null)
+            {
+                destroyPreviewInstance = Instantiate(destroyIndicatorPrefab);
+                destroyPreviewInstance.GetComponent<SpriteRenderer>().sortingLayerName = "Ground";
+                destroyPreviewInstance.GetComponent<SpriteRenderer>().sortingOrder = 2;
+            }
+
+            GameObject hitObject = IsObjectUnderCursorAFarmField().Item2;
+            Vector3 SpawnPos = hitObject.transform.position;
+
+            destroyPreviewInstance.transform.position = SpawnPos;
+            destroyPreviewInstance.transform.rotation = Quaternion.identity;
+        }
+        else
+        {
+            if (destroyPreviewInstance != null)
+            {
+                Destroy(destroyPreviewInstance);
+            }
+        }
+    }
+
+    public void RemoveField()
+    {
+        (bool isFieldUnderCursor, GameObject field) = IsObjectUnderCursorAFarmField();
+       
+
+        if (isFieldUnderCursor && field != null)
+        {
+            Destroy(field.gameObject);
+            _fields = GetComponentsInChildren<FarmScript>();
+        }
+    }
+    #endregion
+
+    #region//-----------------ELSE------------------
+    public void DestroyFieldPrefabPreview()
+    {
+        if (fieldPreviewInstance != null)
+        {
+            Destroy(fieldPreviewInstance);
+            fieldPreviewInstance = null;
+        }
+    }
+
+    public void UpgradePlantation()
+    {
+        level++;
     }
 
     private void SetPreviewMaterial(GameObject previewObj, float alpha)
@@ -84,86 +239,9 @@ public class PlantationScript : MonoBehaviour
             }
         }
     }
+    #endregion
 
-    public void UpgradePlantation()
-    {
-        level++;
-    }
-
-    public void BuildNewField()
-    {
-        if (canBuild && inBuildMenu)
-        {
-            Vector3 mousePosition = Input.mousePosition;
-            mousePosition.z = Mathf.Abs(Camera.main.transform.position.z);
-            Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-            Vector3Int cellPosition = grid.WorldToCell(worldPosition);
-            Vector3 spawnPosition = grid.GetCellCenterWorld(cellPosition);
-
-            if (ValidateConditions())
-            {
-                FieldPrefabInstance = Instantiate(fieldPrefab, spawnPosition, Quaternion.identity, transform);
-                FieldPrefabInstance.GetComponent<SpriteRenderer>().sortingLayerName = "Ground";
-                FieldPrefabInstance.GetComponent<SpriteRenderer>().sortingOrder = 1;
-                _fields = GetComponentsInChildren<FarmScript>();
-            }
-        }
-    }
-
-    public void RemoveField(FarmScript field)
-    {
-        if (System.Array.Exists(_fields, f => f == field))
-        {
-            Destroy(field.gameObject);
-            _fields = GetComponentsInChildren<FarmScript>();
-        }
-    }
-
-    private bool ValidateConditions()
-    {
-        if (_fields.Length >= maxFieldCount)
-        {
-            return false;
-        }
-
-        Vector3 mousePosition = Input.mousePosition;
-        mousePosition.z = Mathf.Abs(Camera.main.transform.position.z);
-        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-        Vector3Int cellPosition = grid.WorldToCell(worldPosition);
-        Vector3 spawnPosition = grid.GetCellCenterWorld(cellPosition);
-        
-        if(IsFieldAtCell(cellPosition))
-        {
-            return false; 
-        }
-
-        int groundLayer = LayerMask.NameToLayer("Ground");
-        Collider2D[] colliders = Physics2D.OverlapPointAll(spawnPosition);
-
-        foreach (var col in colliders)
-        {
-            if (col.gameObject.layer != groundLayer)
-            {
-                Debug.Log("Cannot build here, object in the way: " + col.gameObject.name);
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private bool IsFieldAtCell(Vector3Int cellPosition)
-    {
-        Vector3 cellWorldPos = grid.GetCellCenterWorld(cellPosition);
-        foreach (var field in _fields)
-        {
-            if (field.transform.position == cellWorldPos)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
+    #region// ---------------- SAVE/LOAD --------------
 
     public void Save(string saveKey = "fields_save")
     {
@@ -210,5 +288,17 @@ public class PlantationScript : MonoBehaviour
             newField.GetComponent<SpriteRenderer>().sortingOrder = 1;
         }
         _fields = GetComponentsInChildren<FarmScript>();
+    }
+    #endregion
+
+    private void SetLayerRecursively(GameObject obj, int newLayer)
+    {
+        if (obj == null) return;
+        obj.layer = newLayer;
+        foreach (Transform child in obj.transform)
+        {
+            if (child == null) continue;
+            SetLayerRecursively(child.gameObject, newLayer);
+        }
     }
 }
