@@ -12,8 +12,10 @@ public class InventorySlot : MonoBehaviour
     [SerializeField] private TextMeshProUGUI slotAmountText;
     void Awake()
     {
-        slotImage = GetComponent<Image>();
+        slotImage = transform.GetChild(0).GetComponent<Image>();
         slotAmountText = GetComponentInChildren<TextMeshProUGUI>();
+        UpdateItemAmountText();
+        slotAmountText.enabled = false;
     }
 
     public void AddItemAmount(int amount)
@@ -29,6 +31,7 @@ public class InventorySlot : MonoBehaviour
     }
     public void AddItem(ItemSO item, int amount)
     {
+        slotAmountText.enabled = true;
         IsOccupied = true;
         ItemInSlot = item;
         slotImage.sprite = item.Icon;
@@ -37,6 +40,7 @@ public class InventorySlot : MonoBehaviour
     }
     public void RemoveItem()
     {
+        slotAmountText.enabled = false;
         IsOccupied = false;
         ItemInSlot = null;
         slotImage.sprite = null;

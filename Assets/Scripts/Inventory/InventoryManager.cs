@@ -7,18 +7,31 @@ public class InventoryManager : MonoBehaviour
 {
     [SerializeField] private List<InventorySlot> inventorySlots;
     public ItemSO testItem;
+    [SerializeField] private GameObject inventoryUI;
+    private bool isInvOpen;
 
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.O))
         {
-            addItemToInv(testItem, 3);
+            addItemToInv(testItem, 30);
+        }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            removeItemFromInv(3);
+        }
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            ToggleInventory();
         }
     }
 
-    void removeItemToInv(ItemSO item)
+    void removeItemFromInv(int slotIndex)
     {
+
+        Debug.Log("Slot to remove found");
+        //inventorySlots[slotIndex].removeItemSlot.RemoveItem();
 
     }
     void addItemToInv(ItemSO item, int amount)
@@ -26,7 +39,7 @@ public class InventoryManager : MonoBehaviour
         List<InventorySlot> thisItemSlots = inventorySlots.FindAll(x => x.ItemInSlot == item);
         if (thisItemSlots.Count > 0)
         {
-            //item w inv
+            Debug.Log("Pl have slots with this item in inv");
             int newAmount = amount;
             for (int i = 0; i < thisItemSlots.Count; i++)
             {
@@ -40,6 +53,7 @@ public class InventoryManager : MonoBehaviour
             }
             if (newAmount > 0 && NextEmptySlot() != -1)
             {
+                Debug.Log("Pl have slots with this item in inv, but all taken");
                 inventorySlots[NextEmptySlot()].AddItem(item, newAmount);
             }
 
@@ -49,6 +63,7 @@ public class InventoryManager : MonoBehaviour
         {
             if (NextEmptySlot() != -1)
             {
+                Debug.Log("Pl doesn't have slots with this item in inv");
                 inventorySlots[NextEmptySlot()].AddItem(item, amount);
             }
 
@@ -56,10 +71,7 @@ public class InventoryManager : MonoBehaviour
 
 
     }
-    int FindSameItemInInv(ItemSO item)
-    {
-        return 0;
-    }
+
     int NextEmptySlot()
     {
         if (inventorySlots == null || inventorySlots.Count == 0)
@@ -84,13 +96,11 @@ public class InventoryManager : MonoBehaviour
 
 
     }
-    void OpenInventory()
+    void ToggleInventory()
     {
-
-    }
-    void CloseInventory()
-    {
-
+        Debug.Log("inv visibility change");
+        isInvOpen = !isInvOpen;
+        inventoryUI.SetActive(isInvOpen);
     }
     void showInUI()
     {
