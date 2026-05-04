@@ -8,7 +8,7 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private List<InventorySlot> inventorySlots;
     public ItemSO testItem;
     [SerializeField] private GameObject inventoryUI;
-    private bool isInvOpen;
+    private bool isInvOpen = true;
 
 
     void Update()
