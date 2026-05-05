@@ -43,7 +43,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         slotImage.sprite = item.Icon;
         ItemAmount += amount;
         UpdateItemAmountText();
-        StartCoroutine(SetDrag(true));
+        imageDrag.enabled = true;
     }
     public void RemoveItem()
     {

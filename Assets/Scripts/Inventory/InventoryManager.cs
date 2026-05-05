@@ -102,8 +102,5 @@ public class InventoryManager : MonoBehaviour
         isInvOpen = !isInvOpen;
         inventoryUI.SetActive(isInvOpen);
     }
-    void showInUI()
-    {
 
-    }
 }
