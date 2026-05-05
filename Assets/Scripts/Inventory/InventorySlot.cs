@@ -76,16 +76,29 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     }
     public void OnDrop(PointerEventData eventData)
     {
-
-        Debug.Log("OnDrop");
+        InventorySlot draggedSlot = eventData.pointerDrag?.GetComponentInParent<InventorySlot>();
+        //Debug.Log("OnDrop");
         if (eventData.pointerDrag != null && IsOccupied == false)
         {
-            //eventData.pointerDrag.GetComponent<RectTransform>().anchoredPosition = GetComponent<RectTransform>().anchoredPosition;
-            InventorySlot draggedSlot = eventData.pointerDrag.GetComponentInParent<InventorySlot>();
             AddItem(draggedSlot.ItemInSlot, draggedSlot.ItemAmount);
             draggedSlot.RemoveItem();
 
         }
-    }
+        if (eventData.pointerDrag != null && IsOccupied == true && eventData.pointerDrag.GetComponentInParent<InventorySlot>().ItemInSlot == ItemInSlot)
+        {
+            int difference = ItemInSlot.MaxStackAmount - ItemAmount;
+            int toAdd = Mathf.Min(difference, draggedSlot.ItemAmount);
 
+            AddItemAmount(toAdd);
+            draggedSlot.RemoveItemAmount(toAdd);
+
+            if (draggedSlot.ItemAmount <= 0)
+            {
+                draggedSlot.RemoveItem();
+            }
+
+
+        }
+
+    }
 }
