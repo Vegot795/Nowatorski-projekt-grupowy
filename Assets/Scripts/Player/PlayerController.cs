@@ -25,10 +25,12 @@ public class PlayerController : MonoBehaviour
     SwordAttack sword;
     UI_Controller uiController;
     PlantationScript _plantation;
+    InventoryManager inventoryManager;
     void Start()
     {
         _plantation = Object.FindFirstObjectByType<PlantationScript>();
         uiController = Object.FindFirstObjectByType<UI_Controller>();
+        inventoryManager = Object.FindFirstObjectByType<InventoryManager>();
         CB = GetComponent<CharacterBasics>();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
@@ -158,6 +160,11 @@ public class PlayerController : MonoBehaviour
         }       
     }
 
+    public void OnOpenInventory()
+    {
+        inventoryManager.ToggleInventory();
+    }
+
     public void OnMouseLeftButtonClick()
     {
         if (uiController.isBuildingEnabled)
@@ -175,4 +182,28 @@ public class PlayerController : MonoBehaviour
         }
         
     }
+
+    public void OnToolbarMove(InputValue input)
+    {
+        int direction = (int)input.Get<float>();
+        if (direction > 0)
+        {
+            inventoryManager.MoveCurrentSlot(1);
+        }
+        else if (direction < 0)
+        {
+            inventoryManager.MoveCurrentSlot(-1);
+        }
+    }
+
+    public void OnCurrentSlotForward()
+    {
+        inventoryManager.MoveCurrentSlot(1);
+    }
+
+    public void OnCurrentSlotBack()
+    {
+        inventoryManager.MoveCurrentSlot(-1);
+    }
+
 }

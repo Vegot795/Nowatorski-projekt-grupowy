@@ -13,6 +13,8 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     [SerializeField] private Image slotImage;
     private DragDrop imageDrag;
     [SerializeField] private TextMeshProUGUI slotAmountText;
+
+    public bool isCurrentHeldSlot = false;
     void Awake()
     {
         slotImage = transform.GetChild(0).GetComponent<Image>();

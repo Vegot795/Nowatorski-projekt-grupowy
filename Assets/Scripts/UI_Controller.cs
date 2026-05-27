@@ -14,12 +14,23 @@ public class UI_Controller : MonoBehaviour
     {
         _plantation = Object.FindFirstObjectByType<PlantationScript>();
         _uiController = GameObject.Find("UI");
-        _FieldCount = GameObject.Find("FieldCount").GetComponent<TextMeshProUGUI>();
         if (_FieldCount == null)
         {
-            Debug.Log("Field Count text not found.");
+            var fieldCount = GameObject.Find("FieldCount");
+            if (fieldCount != null)
+            {
+                _FieldCount = fieldCount.GetComponent<TextMeshProUGUI>();
+            }
         }
-        _BuildingMode = GameObject.Find("BuildMode").GetComponent<TextMeshProUGUI>();
+
+        if (_BuildingMode == null)
+        {
+            var buildingMode = GameObject.Find("BuildMode");
+            if (buildingMode != null)
+            {
+                _BuildingMode = buildingMode.GetComponent<TextMeshProUGUI>();
+            }
+        }
     }
 
 

@@ -1,18 +1,37 @@
+using Newtonsoft.Json.Bson;
 using System.Collections.Generic;
-using Unity.Collections;
+using System.Xml;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviour
 {
-    [SerializeField] private List<InventorySlot> inventorySlots;
+    [SerializeField] public List<InventorySlot> inventorySlots;
+    [SerializeField] public List<InventorySlot> toolbarSlots;
     public ItemSO testItem;
     [SerializeField] private GameObject inventoryUI;
+    [SerializeField] private GameObject ToolbarUI;
+    [SerializeField] private InventorySlot currentHeldSlot;
     private bool isInvOpen = true;
+    public Color baseColor = new Color(255, 255, 255, 100);
 
+    public void Start()
+    {
+        inventoryUI = GameObject.Find("InventoryUI");
+        inventoryUI.SetActive(false);
+        isInvOpen = false;
+
+        foreach (var toolbarSlot in ToolbarUI.GetComponentsInChildren<InventorySlot>())
+        {
+            toolbarSlots.Add(toolbarSlot);
+        }
+
+        currentHeldSlot = toolbarSlots[0];
+    }
 
     void Update()
     {
+
         if (Input.GetKeyDown(KeyCode.O))
         {
             addItemToInv(testItem, 30);
@@ -21,11 +40,8 @@ public class InventoryManager : MonoBehaviour
         {
             removeItemFromInv(3);
         }
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            ToggleInventory();
-        }
     }
+
 
     void removeItemFromInv(int slotIndex)
     {
@@ -96,11 +112,38 @@ public class InventoryManager : MonoBehaviour
 
 
     }
-    void ToggleInventory()
+    public void ToggleInventory()
     {
         Debug.Log("inv visibility change");
         isInvOpen = !isInvOpen;
         inventoryUI.SetActive(isInvOpen);
     }
 
+    private void SlotSetToBeCurrentHeld(InventorySlot toolbarSlot)
+    {
+        Image thisImage = toolbarSlot.GetComponentInChildren<Image>();
+        int currentIndex = toolbarSlots.IndexOf(toolbarSlot);
+        
+        thisImage.color = Color.red;
+        currentHeldSlot = toolbarSlots[currentIndex];
+        currentHeldSlot.isCurrentHeldSlot = true;
+    }
+
+    private void SlotSetToBeFree(InventorySlot toolbarSlot)
+    {
+        Image thisImage = toolbarSlot.GetComponentInChildren<Image>();
+        thisImage.color = baseColor;
+        toolbarSlot.isCurrentHeldSlot = false;
+    }
+
+    public void MoveCurrentSlot(int direction)
+    {
+        int currentIndex = toolbarSlots.IndexOf(currentHeldSlot);
+        int newIndex = (currentIndex + direction) % toolbarSlots.Count;
+        if (newIndex < 0) newIndex += toolbarSlots.Count;
+        SlotSetToBeFree(currentHeldSlot);
+        currentHeldSlot = toolbarSlots[newIndex];
+        SlotSetToBeCurrentHeld(currentHeldSlot);
+    }
+     
 }

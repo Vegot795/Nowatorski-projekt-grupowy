@@ -8,6 +8,10 @@ TagManager:
   - Enemy
   - PlayerHitbox
   - InvSlot
+  - FarmGrid
+  - BuilderMenu
+  - FieldCount
+  - FarmField
   layers:
   - Default
   - TransparentFX
@@ -56,6 +60,9 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 3309424107
+    locked: 0
+  - name: UI
+    uniqueID: 1335802967
     locked: 0
   m_RenderingLayers:
   - Default

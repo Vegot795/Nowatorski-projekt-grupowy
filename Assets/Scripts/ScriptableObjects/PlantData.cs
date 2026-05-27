@@ -10,13 +10,13 @@ public class PlantData : ScriptableObject
     public float timeToWater;
     public Sprite[] babyStage;
     public Sprite[] adultStage;
+    public int currentGrowthStage = 0;
    
     [NonSerialized]
     public float currentTimeBetweenStages;
     [NonSerialized]
     public float currentTimeToWater;
-    [NonSerialized]
-    public int currentGrowthStage;
+
 
 
 
