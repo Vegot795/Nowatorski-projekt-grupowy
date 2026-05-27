@@ -2,18 +2,26 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
+using System.Collections;
 
-public class InventorySlot : MonoBehaviour
+public class InventorySlot : MonoBehaviour, IDropHandler
 {
     [field: SerializeField] public bool IsOccupied { get; private set; }
     [field: SerializeField] public ItemSO ItemInSlot { get; private set; }
     [field: SerializeField] public int ItemAmount { get; private set; }
     [SerializeField] private Image slotImage;
+    private DragDrop imageDrag;
     [SerializeField] private TextMeshProUGUI slotAmountText;
     void Awake()
     {
-        slotImage = GetComponent<Image>();
+        slotImage = transform.GetChild(0).GetComponent<Image>();
         slotAmountText = GetComponentInChildren<TextMeshProUGUI>();
+        IsOccupied = false;
+        UpdateItemAmountText();
+        slotAmountText.enabled = false;
+        imageDrag = slotImage.GetComponent<DragDrop>();
+        StartCoroutine(SetDrag(false));
     }
 
     public void AddItemAmount(int amount)
@@ -29,19 +37,24 @@ public class InventorySlot : MonoBehaviour
     }
     public void AddItem(ItemSO item, int amount)
     {
+        slotAmountText.enabled = true;
         IsOccupied = true;
         ItemInSlot = item;
         slotImage.sprite = item.Icon;
         ItemAmount += amount;
         UpdateItemAmountText();
+        imageDrag.enabled = true;
     }
     public void RemoveItem()
     {
+        slotAmountText.enabled = false;
         IsOccupied = false;
         ItemInSlot = null;
         slotImage.sprite = null;
         ItemAmount = 0;
         slotAmountText.text = null;
+        StartCoroutine(SetDrag(false));
+
     }
     void UpdateItemAmountText()
     {
@@ -55,5 +68,37 @@ public class InventorySlot : MonoBehaviour
         }
         return false;
     }
+    IEnumerator SetDrag(bool state)
+    {
 
+        yield return new WaitForSeconds(0.1f);
+        imageDrag.enabled = state;
+    }
+    public void OnDrop(PointerEventData eventData)
+    {
+        InventorySlot draggedSlot = eventData.pointerDrag?.GetComponentInParent<InventorySlot>();
+        //Debug.Log("OnDrop");
+        if (eventData.pointerDrag != null && IsOccupied == false)
+        {
+            AddItem(draggedSlot.ItemInSlot, draggedSlot.ItemAmount);
+            draggedSlot.RemoveItem();
+
+        }
+        if (eventData.pointerDrag != null && IsOccupied == true && eventData.pointerDrag.GetComponentInParent<InventorySlot>().ItemInSlot == ItemInSlot)
+        {
+            int difference = ItemInSlot.MaxStackAmount - ItemAmount;
+            int toAdd = Mathf.Min(difference, draggedSlot.ItemAmount);
+
+            AddItemAmount(toAdd);
+            draggedSlot.RemoveItemAmount(toAdd);
+
+            if (draggedSlot.ItemAmount <= 0)
+            {
+                draggedSlot.RemoveItem();
+            }
+
+
+        }
+
+    }
 }
