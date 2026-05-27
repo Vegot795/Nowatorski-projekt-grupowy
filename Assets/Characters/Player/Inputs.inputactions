@@ -912,7 +912,7 @@
                 {
                     "name": "",
                     "id": "f4874708-db6f-4eb6-82fe-3015f52e5168",
-                    "path": "<Mouse>/{Forward}",
+                    "path": "<Mouse>/scroll/down",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -923,7 +923,7 @@
                 {
                     "name": "",
                     "id": "d3887cab-dfd1-4f61-909b-d125fdc8a582",
-                    "path": "<Mouse>/{Back}",
+                    "path": "<Mouse>/scroll/up",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

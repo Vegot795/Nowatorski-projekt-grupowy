@@ -16,7 +16,7 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Preview
   - Water
   - UI
   - 
@@ -51,6 +51,9 @@ TagManager:
     locked: 0
   - name: Ground
     uniqueID: 2425651459
+    locked: 0
+  - name: Preview
+    uniqueID: 3853406395
     locked: 0
   - name: WalkInFront
     uniqueID: 4250941897

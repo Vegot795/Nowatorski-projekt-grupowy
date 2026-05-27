@@ -57,7 +57,6 @@ public class UI_Controller : MonoBehaviour
         FieldBuilder.SetActive(true);
         isBuildingEnabled = true;
         _plantation.inBuildMenu = true;
-        _uiController.SetActive(true);
         _plantation.HandleFieldPreview();
         _plantation.BuildingMode = _plantation.BuildingModeList[0];
     }
@@ -67,7 +66,6 @@ public class UI_Controller : MonoBehaviour
         FieldBuilder.SetActive(false);
         isBuildingEnabled = false;
         _plantation.inBuildMenu = false;
-        _uiController.SetActive(false);
     }
 
     private void UpdateFieldCount()

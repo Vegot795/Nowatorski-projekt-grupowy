@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Icon: {fileID: 21300000, guid: f61416ec6e3ebf4498489b6c5b95db12, type: 3}
   Description: 
-  MaxStackAmount: 0
+  MaxStackAmount: 64
   plantData: {fileID: 11400000, guid: 157c8c59f03e8a74b9eaac1747dda855, type: 2}
-  previewSprite: {fileID: 21300000, guid: 771e316ae93460c4697e9be9888001d8, type: 3}
+  plantPreview: {fileID: 4216782530296247468, guid: d0acef3a3492c4647a6edb3cfcb7e046,
+    type: 3}
   growthTime: 0

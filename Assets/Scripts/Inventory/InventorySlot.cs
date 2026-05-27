@@ -18,6 +18,11 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     void Awake()
     {
         slotImage = transform.GetChild(0).GetComponent<Image>();
+        if(ItemInSlot != null)
+        {
+            slotImage.sprite = ItemInSlot.Icon;
+            slotImage.color = new Color(255,255,255,100);
+        }
         slotAmountText = GetComponentInChildren<TextMeshProUGUI>();
         IsOccupied = false;
         UpdateItemAmountText();
@@ -43,6 +48,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         IsOccupied = true;
         ItemInSlot = item;
         slotImage.sprite = item.Icon;
+        slotImage.color = new Color(255, 255, 255, 100);
         ItemAmount += amount;
         UpdateItemAmountText();
         imageDrag.enabled = true;
@@ -53,6 +59,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         IsOccupied = false;
         ItemInSlot = null;
         slotImage.sprite = null;
+        slotImage.color = new Color(255, 255, 255, 0);
         ItemAmount = 0;
         slotAmountText.text = null;
         StartCoroutine(SetDrag(false));

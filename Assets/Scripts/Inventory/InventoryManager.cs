@@ -1,6 +1,8 @@
 using Newtonsoft.Json.Bson;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,26 +13,48 @@ public class InventoryManager : MonoBehaviour
     public ItemSO testItem;
     [SerializeField] private GameObject inventoryUI;
     [SerializeField] private GameObject ToolbarUI;
-    [SerializeField] private InventorySlot currentHeldSlot;
+    [SerializeField] public InventorySlot currentHeldSlot;
     private bool isInvOpen = true;
+    private Grid grid;
+    private GameObject seedPreviewInstance;
     public Color baseColor = new Color(255, 255, 255, 100);
+    public bool isSeed = false;
+    List<string> itemTypes = new List<string> { "Seed", "Item" };
+    private Vector3 spawnPos;
 
     public void Start()
     {
-        inventoryUI = GameObject.Find("InventoryUI");
+        grid = GameObject.FindWithTag("FarmGrid").GetComponent<Grid>();
+        if (inventorySlots != null)
+        {
+            inventoryUI = GameObject.Find("InventoryUI");
+        }
         inventoryUI.SetActive(false);
         isInvOpen = false;
+
+        if(toolbarSlots != null)
+        {
+            ToolbarUI = GameObject.Find("ToolbarUI");
+        }
 
         foreach (var toolbarSlot in ToolbarUI.GetComponentsInChildren<InventorySlot>())
         {
             toolbarSlots.Add(toolbarSlot);
+            toolbarSlots.OrderBy(x => x.name);
         }
+        currentHeldSlot = inventorySlots[0];
+        SlotSetToBeCurrentHeld(currentHeldSlot);
 
-        currentHeldSlot = toolbarSlots[0];
+        foreach (var inventorySlot in inventoryUI.GetComponentsInChildren<InventorySlot>())
+        {
+            inventorySlots.Add(inventorySlot);
+            inventorySlots.OrderBy(x => x.name);
+        }
     }
 
     void Update()
     {
+        Vector3 spawnPos = GetPotentialSpawnPos();
 
         if (Input.GetKeyDown(KeyCode.O))
         {
@@ -40,9 +64,20 @@ public class InventoryManager : MonoBehaviour
         {
             removeItemFromInv(3);
         }
+
+
+
+        if(currentHeldSlot.ItemInSlot is SeedSO && ValidateConditions())
+        {
+            HandleSeedPreview();
+        }
+        else
+        {
+            DestroySeedPrefabPreview();
+        }
     }
 
-
+    #region // -------------------------------- Item Management Code -------------------------------
     void removeItemFromInv(int slotIndex)
     {
 
@@ -57,6 +92,7 @@ public class InventoryManager : MonoBehaviour
         {
             Debug.Log("Pl have slots with this item in inv");
             int newAmount = amount;
+
             for (int i = 0; i < thisItemSlots.Count; i++)
             {
                 int difference = thisItemSlots[i].ItemInSlot.MaxStackAmount - thisItemSlots[i].ItemAmount;
@@ -67,13 +103,12 @@ public class InventoryManager : MonoBehaviour
                 newAmount -= toAdd;
                 if (newAmount == 0) break;
             }
+
             if (newAmount > 0 && NextEmptySlot() != -1)
             {
                 Debug.Log("Pl have slots with this item in inv, but all taken");
                 inventorySlots[NextEmptySlot()].AddItem(item, newAmount);
             }
-
-
         }
         else
         {
@@ -82,10 +117,7 @@ public class InventoryManager : MonoBehaviour
                 Debug.Log("Pl doesn't have slots with this item in inv");
                 inventorySlots[NextEmptySlot()].AddItem(item, amount);
             }
-
         }
-
-
     }
 
     int NextEmptySlot()
@@ -121,7 +153,7 @@ public class InventoryManager : MonoBehaviour
 
     private void SlotSetToBeCurrentHeld(InventorySlot toolbarSlot)
     {
-        Image thisImage = toolbarSlot.GetComponentInChildren<Image>();
+        Image thisImage = currentHeldSlot.GetComponentInChildren<Image>();
         int currentIndex = toolbarSlots.IndexOf(toolbarSlot);
         
         thisImage.color = Color.red;
@@ -131,7 +163,7 @@ public class InventoryManager : MonoBehaviour
 
     private void SlotSetToBeFree(InventorySlot toolbarSlot)
     {
-        Image thisImage = toolbarSlot.GetComponentInChildren<Image>();
+        Image thisImage = currentHeldSlot.GetComponent<Image>();
         thisImage.color = baseColor;
         toolbarSlot.isCurrentHeldSlot = false;
     }
@@ -145,5 +177,104 @@ public class InventoryManager : MonoBehaviour
         currentHeldSlot = toolbarSlots[newIndex];
         SlotSetToBeCurrentHeld(currentHeldSlot);
     }
-     
+    #endregion
+
+
+    public Vector3 GetPotentialSpawnPos()
+    {
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition.z = Mathf.Abs(Camera.main.transform.position.z);
+        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        Vector3Int cellPosition = grid.WorldToCell(worldPosition);
+        Vector3 spawnPosition = grid.GetCellCenterWorld(cellPosition);
+        return spawnPosition;
+    }
+
+    #region // -------------------------------- Seed Preview Code -------------------------------
+    public void PlantHeldSeeds()
+    {
+        if (currentHeldSlot.ItemInSlot is SeedSO seed)
+        {
+
+            if (ValidateConditions())
+            {
+                GameObject plantInstance = Instantiate(seed.plantPreview, spawnPos, Quaternion.identity, transform);
+                plantInstance.GetComponent<SpriteRenderer>().sortingLayerName = "Plants";
+                plantInstance.GetComponent<SpriteRenderer>().sortingOrder = 1;
+                currentHeldSlot.RemoveItemAmount(1);
+            }
+        }
+
+    }
+    public void HandleSeedPreview()
+    {
+        Vector3 mousePosition = Input.mousePosition;
+        if (currentHeldSlot?.ItemInSlot is SeedSO seed)
+        {
+            if(seedPreviewInstance == null)
+            {
+                seedPreviewInstance = Instantiate(seed.plantPreview);
+                seedPreviewInstance.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 50);
+                seedPreviewInstance.GetComponent<SpriteRenderer>().sortingLayerName = "Preview";
+                seedPreviewInstance.GetComponent<SpriteRenderer>().sortingOrder = 1;
+            }
+
+            mousePosition.z = Mathf.Abs(Camera.main.transform.position.z);
+            Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+            Vector3Int cellPosition = grid.WorldToCell(worldPosition);
+            Vector3 spawnPosition = grid.GetCellCenterWorld(cellPosition);
+
+            seedPreviewInstance.transform.position = spawnPosition;
+            seedPreviewInstance.transform.rotation = Quaternion.identity;
+        }
+        else
+        {
+            DestroySeedPrefabPreview();
+        }
+    }
+
+    private bool ValidateConditions()
+    {
+        if (currentHeldSlot == null || currentHeldSlot.ItemInSlot == null)
+        {
+            Debug.LogWarning("No item is currently held.");
+            return false;
+        }
+
+        if (!(currentHeldSlot.ItemInSlot is SeedSO seed))
+        {
+            Debug.LogWarning("Currently held item is not a seed.");
+            return false;
+        }
+
+        Collider2D[] colliders = Physics2D.OverlapPointAll(spawnPos);
+
+        foreach (var col in colliders)
+        {
+            if (col.CompareTag("FarmTile"))
+            {
+                FarmScript fs = col.GetComponent<FarmScript>();
+                if (fs != null & !fs.isOccupied)
+                {
+                    continue;
+                }
+            }
+            else
+            {
+                return false;
+            }                       
+        }
+        return true;
+    }
+    
+
+    public void DestroySeedPrefabPreview()
+    {
+        if (seedPreviewInstance != null)
+        {
+            Destroy(seedPreviewInstance);
+            seedPreviewInstance = null;
+        }
+    }
+    #endregion
 }

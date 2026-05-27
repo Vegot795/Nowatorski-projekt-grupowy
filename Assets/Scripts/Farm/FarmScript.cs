@@ -7,6 +7,7 @@ public class FarmScript : MonoBehaviour
     private float waterTimer;
     public bool isWatered = false;
     public float growSpeed = 1f;
+    public bool isOccupied = false;
 
     private void FixedUpdate()
     {
@@ -31,4 +32,6 @@ public class FarmScript : MonoBehaviour
         isWatered = true;
         waterTimer = baseWaterTimer;
     }
+
+
 }

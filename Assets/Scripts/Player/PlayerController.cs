@@ -16,6 +16,8 @@ public class PlayerController : MonoBehaviour
     bool canMove = true;
     Vector2 movementInput;
     List<string> directions = new List<string>() { "Top", "Bottom", "Left", "Right" };
+
+    // Components
     SpriteRenderer spriteRenderer;
     Rigidbody2D rb;
     Animator animator;
@@ -134,6 +136,8 @@ public class PlayerController : MonoBehaviour
         animator.ResetTrigger("onAttack");
         swordAttack.StopAttack();
     }
+
+    #region ------------------------ Bindings for UI and Inventory ------------------------
     public void OnFire()
     {
         print("Fire button pressed");
@@ -180,6 +184,10 @@ public class PlayerController : MonoBehaviour
 
             }
         }
+        else if (inventoryManager.currentHeldSlot?.ItemInSlot is SeedSO seed)
+        {
+            inventoryManager.PlantHeldSeeds();
+        }
         
     }
 
@@ -205,5 +213,5 @@ public class PlayerController : MonoBehaviour
     {
         inventoryManager.MoveCurrentSlot(-1);
     }
-
+    #endregion
 }

@@ -16,8 +16,6 @@ public class PlantingSeedsScript : MonoBehaviour
     void Start()
     {
         grid = GameObject.FindWithTag("FarmGrid").GetComponent<Grid>();
-        
-
     }
 
     // Update is called once per frame
