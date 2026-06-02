@@ -69,6 +69,7 @@ public class InventoryManager : MonoBehaviour
 
         if(currentHeldSlot.ItemInSlot is SeedSO && ValidateConditions())
         {
+            Debug.Log("is seed in hand and valid place to plant");
             HandleSeedPreview();
         }
         else
@@ -247,26 +248,43 @@ public class InventoryManager : MonoBehaviour
             return false;
         }
 
-        Collider2D[] colliders = Physics2D.OverlapPointAll(spawnPos);
+        var (isOverFarmField, farmField) = IsObjectUnderCursorAFarmField();
 
-        foreach (var col in colliders)
+        if (!isOverFarmField)
         {
-            if (col.CompareTag("FarmTile"))
-            {
-                FarmScript fs = col.GetComponent<FarmScript>();
-                if (fs != null & !fs.isOccupied)
-                {
-                    continue;
-                }
-            }
-            else
-            {
-                return false;
-            }                       
+            Debug.LogWarning("Not over a farm field.");
+            return false;
         }
+
+        if (farmField != null)
+        {
+            FarmScript fs = farmField.GetComponent<FarmScript>();
+            if (fs != null && fs.isOccupied)
+            {
+                Debug.LogWarning("Farm field is already occupied.");
+                return false;
+            }
+        }
+
         return true;
     }
-    
+
+    private (bool, GameObject) IsObjectUnderCursorAFarmField()
+    {
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition.z = -Camera.main.transform.position.z;
+        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+
+        Collider2D hit = Physics2D.OverlapPoint(worldPosition);
+        Debug.Log($"OverlapPoint hit: {hit?.name ?? "None"} at position {worldPosition}");
+
+        if (hit != null && hit.CompareTag("FarmField"))
+        {
+            return (true, hit.gameObject);
+        }
+        return (false, null);
+    }
+
 
     public void DestroySeedPrefabPreview()
     {

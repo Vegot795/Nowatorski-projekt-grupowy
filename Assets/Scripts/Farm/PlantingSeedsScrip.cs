@@ -10,6 +10,7 @@ public class PlantingSeedsScript : MonoBehaviour
 
     private GameObject plantPreview;
     private Grid grid;
+    private InventorySlot currentItem;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -21,10 +22,9 @@ public class PlantingSeedsScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
 
-    public void HandePlantPreview(SeedSO seed)
+    public void HandlePlantPreview(SeedSO seed)
     {
         GameObject plantPrefab = seed.plantPreview;
 
