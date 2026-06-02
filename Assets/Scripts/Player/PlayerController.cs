@@ -1,3 +1,4 @@
+using Mono.Cecil.Cil;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,12 +28,15 @@ public class PlayerController : MonoBehaviour
     SwordAttack sword;
     UI_Controller uiController;
     PlantationScript _plantation;
-    InventoryManager inventoryManager;
+    public InventoryManager inventoryManager;
     void Start()
     {
         _plantation = Object.FindFirstObjectByType<PlantationScript>();
         uiController = Object.FindFirstObjectByType<UI_Controller>();
-        inventoryManager = Object.FindFirstObjectByType<InventoryManager>();
+        if(inventoryManager == null)
+        {
+            inventoryManager = Object.FindFirstObjectByType<InventoryManager>();
+        }
         CB = GetComponent<CharacterBasics>();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
@@ -183,10 +187,13 @@ public class PlayerController : MonoBehaviour
                 _plantation.RemoveField();
 
             }
+            return;
         }
         else if (inventoryManager.currentHeldSlot?.ItemInSlot is SeedSO seed)
         {
             inventoryManager.PlantHeldSeeds();
+            Debug.Log($"Mouse left button plants seed");
+            return;
         }
         
     }

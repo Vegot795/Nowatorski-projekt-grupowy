@@ -10,20 +10,25 @@ public class InventoryManager : MonoBehaviour
 {
     [SerializeField] public List<InventorySlot> inventorySlots;
     [SerializeField] public List<InventorySlot> toolbarSlots;
-    public ItemSO testItem;
+    [SerializeField] public InventorySlot currentHeldSlot;
+    [SerializeField] public UI_Controller uicontroller;
     [SerializeField] private GameObject inventoryUI;
     [SerializeField] private GameObject ToolbarUI;
-    [SerializeField] public InventorySlot currentHeldSlot;
+
+    public ItemSO testItem;
+    public Color baseColor = new Color(255, 255, 255, 100);
+    public bool isSeed = false;
+    
+    List<string> itemTypes = new List<string> { "Seed", "Item" };
+
     private bool isInvOpen = true;
     private Grid grid;
     private GameObject seedPreviewInstance;
-    public Color baseColor = new Color(255, 255, 255, 100);
-    public bool isSeed = false;
-    List<string> itemTypes = new List<string> { "Seed", "Item" };
     private Vector3 spawnPos;
 
     public void Start()
     {
+        uicontroller = GetComponent<UI_Controller>();
         grid = GameObject.FindWithTag("FarmGrid").GetComponent<Grid>();
         if (inventorySlots != null)
         {
@@ -54,7 +59,7 @@ public class InventoryManager : MonoBehaviour
 
     void Update()
     {
-        Vector3 spawnPos = GetPotentialSpawnPos();
+        spawnPos = GetPotentialSpawnPos();
 
         if (Input.GetKeyDown(KeyCode.O))
         {
@@ -64,13 +69,10 @@ public class InventoryManager : MonoBehaviour
         {
             removeItemFromInv(3);
         }
-
-
-
-        if(currentHeldSlot.ItemInSlot is SeedSO && ValidateConditions())
+        if (!uicontroller.isBuildingEnabled)
         {
-            Debug.Log("is seed in hand and valid place to plant");
             HandleSeedPreview();
+
         }
         else
         {
@@ -188,6 +190,7 @@ public class InventoryManager : MonoBehaviour
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
         Vector3Int cellPosition = grid.WorldToCell(worldPosition);
         Vector3 spawnPosition = grid.GetCellCenterWorld(cellPosition);
+        spawnPosition.y += 0.2f;
         return spawnPosition;
     }
 
@@ -196,13 +199,23 @@ public class InventoryManager : MonoBehaviour
     {
         if (currentHeldSlot.ItemInSlot is SeedSO seed)
         {
+            spawnPos = GetPotentialSpawnPos();
 
             if (ValidateConditions())
             {
+                Debug.Log($"Planting seed at {spawnPos}");
                 GameObject plantInstance = Instantiate(seed.plantPreview, spawnPos, Quaternion.identity, transform);
-                plantInstance.GetComponent<SpriteRenderer>().sortingLayerName = "Plants";
-                plantInstance.GetComponent<SpriteRenderer>().sortingOrder = 1;
+                SpriteRenderer sr = plantInstance.GetComponent<SpriteRenderer>();
+                plantInstance.transform.parent = GameObject.Find("PlantsDump").transform;
+                plantInstance.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+                sr.sortingLayerName = "Plants";
+                sr.sortingOrder = 1;
+
                 currentHeldSlot.RemoveItemAmount(1);
+            }
+            else
+            {
+                Debug.Log("ValidateConditions() failed in PlantHeldSeeds()");
             }
         }
 
@@ -210,23 +223,25 @@ public class InventoryManager : MonoBehaviour
     public void HandleSeedPreview()
     {
         Vector3 mousePosition = Input.mousePosition;
-        if (currentHeldSlot?.ItemInSlot is SeedSO seed)
+
+        if (ValidateConditions())
         {
-            if(seedPreviewInstance == null)
+            if (currentHeldSlot.ItemInSlot is SeedSO seed && currentHeldSlot != null)
             {
-                seedPreviewInstance = Instantiate(seed.plantPreview);
-                seedPreviewInstance.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 50);
-                seedPreviewInstance.GetComponent<SpriteRenderer>().sortingLayerName = "Preview";
-                seedPreviewInstance.GetComponent<SpriteRenderer>().sortingOrder = 1;
+                if(seedPreviewInstance == null)
+                {
+                    seedPreviewInstance = Instantiate(seed.plantPreview);
+                    seedPreviewInstance.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 50);
+                    seedPreviewInstance.GetComponent<SpriteRenderer>().sortingLayerName = "Preview";
+                    seedPreviewInstance.GetComponent<SpriteRenderer>().sortingOrder = 1;
+                    seedPreviewInstance.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+                }
+
+                spawnPos = GetPotentialSpawnPos();
+
+                seedPreviewInstance.transform.position = spawnPos;
+                seedPreviewInstance.transform.rotation = Quaternion.identity;
             }
-
-            mousePosition.z = Mathf.Abs(Camera.main.transform.position.z);
-            Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-            Vector3Int cellPosition = grid.WorldToCell(worldPosition);
-            Vector3 spawnPosition = grid.GetCellCenterWorld(cellPosition);
-
-            seedPreviewInstance.transform.position = spawnPosition;
-            seedPreviewInstance.transform.rotation = Quaternion.identity;
         }
         else
         {
@@ -236,6 +251,12 @@ public class InventoryManager : MonoBehaviour
 
     private bool ValidateConditions()
     {
+        if (uicontroller == null)
+        {
+            Debug.LogWarning("UI Controller reference is null.");
+            return false;
+        }
+
         if (currentHeldSlot == null || currentHeldSlot.ItemInSlot == null)
         {
             Debug.LogWarning("No item is currently held.");
@@ -249,6 +270,7 @@ public class InventoryManager : MonoBehaviour
         }
 
         var (isOverFarmField, farmField) = IsObjectUnderCursorAFarmField();
+        Debug.Log($"Is over farm field: {isOverFarmField}, Farm field object: {farmField?.name ?? "None"}");
 
         if (!isOverFarmField)
         {
@@ -265,7 +287,6 @@ public class InventoryManager : MonoBehaviour
                 return false;
             }
         }
-
         return true;
     }
 
@@ -276,7 +297,7 @@ public class InventoryManager : MonoBehaviour
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
 
         Collider2D hit = Physics2D.OverlapPoint(worldPosition);
-        Debug.Log($"OverlapPoint hit: {hit?.name ?? "None"} at position {worldPosition}");
+        //Debug.Log($"OverlapPoint hit: {hit?.name ?? "None"} at position {worldPosition}");
 
         if (hit != null && hit.CompareTag("FarmField"))
         {
