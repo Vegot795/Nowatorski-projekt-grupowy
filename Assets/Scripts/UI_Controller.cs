@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class UI_Controller : MonoBehaviour
 {
+    public InventoryManager inventoryManager;
     public GameObject FieldBuilder;
     public PlantationScript _plantation;
     public bool isBuildingEnabled = false;
@@ -12,6 +13,7 @@ public class UI_Controller : MonoBehaviour
 
     void Start()
     {
+        inventoryManager = GetComponent<InventoryManager>();
         _plantation = Object.FindFirstObjectByType<PlantationScript>();
         _uiController = GameObject.Find("UI");
         if (_FieldCount == null)
@@ -101,5 +103,10 @@ public class UI_Controller : MonoBehaviour
         {
             _BuildingMode.text = "Destroy";
         }
+    }
+
+    public void OnThrowOutOfEquipment()
+    {
+        inventoryManager.ThrowOutOfEquipment(inventoryManager.currentHeldSlot.ItemInSlot, inventoryManager.currentHeldSlot.ItemAmount);
     }
 }

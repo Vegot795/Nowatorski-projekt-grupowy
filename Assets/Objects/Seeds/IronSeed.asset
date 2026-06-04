@@ -15,6 +15,13 @@ MonoBehaviour:
   Icon: {fileID: 21300000, guid: 76b0135c3326fc24fa3ee7a7a061d140, type: 3}
   Description: 
   MaxStackAmount: 0
-  plantData: {fileID: 11400000, guid: 2b9f1805b2e4e334fbe5fff1f4a23a0c, type: 2}
-  previewSprite: {fileID: 21300000, guid: 128249bf5a5fbe34c891b6310a166609, type: 3}
-  growthTime: 0
+  plantPreview: {fileID: 0}
+  babyStage:
+  - {fileID: 21300000, guid: 19910c4abc6f0b941829bacf6c857aa6, type: 3}
+  - {fileID: 21300000, guid: 02b1f9990e2c9464bba9cdd8c7936f13, type: 3}
+  - {fileID: 21300000, guid: 2fb0eb2ae40da354cbe7b9c9e2ba5770, type: 3}
+  adultStage:
+  - {fileID: 0}
+  - {fileID: 0}
+  timeBetweenStages: 0
+  timeToWater: 0

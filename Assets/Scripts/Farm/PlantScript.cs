@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlantScript : MonoBehaviour
 {
-    public PlantData plantData;
+    public SeedSO seedData;  // <- Changed from PlantData plantData
 
     private float currentGrowth;
     private float currentWater;
@@ -11,11 +11,13 @@ public class PlantScript : MonoBehaviour
     private bool isHarvestable = false;
     [SerializeField] private int currentStage = 0;
     private bool isWatered;
+    private bool posToAdultMoved = false;
 
     public Sprite[] growthStages;
     public Sprite currentSprite;
     public FarmScript farmScript;
     public SpriteRenderer sr;
+    
 
 
     public float dryTime = 50f;
@@ -23,22 +25,28 @@ public class PlantScript : MonoBehaviour
     void Awake() 
     {
 
-        currentGrowth = plantData.currentTimeBetweenStages;
-        currentWater = plantData.currentTimeToWater;
-        baseGrowthTime = plantData.timeBetweenStages;
-        baseTimeToWater = plantData.timeToWater;
+        currentGrowth = seedData.currentTimeBetweenStages;
+        currentWater = seedData.currentTimeToWater;
+        baseGrowthTime = seedData.timeBetweenStages;
+        baseTimeToWater = seedData.timeToWater;
         sr = gameObject.GetComponent<SpriteRenderer>();
 
-        growthStages = new Sprite[plantData.babyStage.Length + plantData.adultStage.Length];
-        plantData.babyStage.CopyTo(growthStages, 0);
-        plantData.adultStage.CopyTo(growthStages, plantData.babyStage.Length);
-        currentStage = plantData.currentGrowthStage;
+        growthStages = new Sprite[seedData.babyStage.Length + seedData.adultStage.Length];
+        seedData.babyStage.CopyTo(growthStages, 0);
+        seedData.adultStage.CopyTo(growthStages, seedData.babyStage.Length);
+        currentStage = seedData.currentGrowthStage;
         currentSprite = growthStages[currentStage];
         sr.sprite = currentSprite;
-        //gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y - 0.2f , 0);
-        gameObject.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
 
         isHarvestable = false;
+        posToAdultMoved = false;
+        
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.gravityScale = 0f;
+            rb.linearVelocity = Vector2.zero;
+        }
     }
 
     void Update()
@@ -61,7 +69,6 @@ public class PlantScript : MonoBehaviour
         float timeToDry =  dryTime;
         int stagesCount = growthStages.Length;
         float timePerStage = baseGrowthTime / stagesCount;
-        bool posToAdultMoved = false;
 
         // If the plant has water, it continues to grow
         if (currentWater >= 0)
@@ -74,9 +81,10 @@ public class PlantScript : MonoBehaviour
                 {
                     currentStage++;
 
-                    if (currentStage >= plantData.babyStage.Length && !posToAdultMoved)
+                    if (currentStage >= seedData.babyStage.Length && !posToAdultMoved)
                     {
                         gameObject.transform.position += new Vector3(0, 0.2f, 0);
+                        gameObject.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
                         posToAdultMoved = true;
                     }
 
@@ -101,12 +109,8 @@ public class PlantScript : MonoBehaviour
         }
         else
         {
-            while (timeToDry > 0)
-            {
-                timeToDry -= Time.deltaTime;
-            }
-
-            if(timeToDry <= 0)
+            dryTime -= Time.deltaTime;
+            if(dryTime <= 0)
             {
                 Destroy(gameObject);
             }

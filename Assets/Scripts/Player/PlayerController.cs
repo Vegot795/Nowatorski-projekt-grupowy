@@ -9,6 +9,13 @@ using UnityEngine.Rendering.Universal;
 
 public class PlayerController : MonoBehaviour
 {
+    public enum Direction
+    {
+        Top,
+        Bottom,
+        Left,
+        Right
+    }
     public float moveSpeed = 2f;
     public float collisionOffset = 0.05f;
     public ContactFilter2D movementFilter;
@@ -16,7 +23,7 @@ public class PlayerController : MonoBehaviour
     public int Damage = 10;
     bool canMove = true;
     Vector2 movementInput;
-    List<string> directions = new List<string>() { "Top", "Bottom", "Left", "Right" };
+    public Direction facingDirection;
 
     // Components
     SpriteRenderer spriteRenderer;
@@ -66,23 +73,27 @@ public class PlayerController : MonoBehaviour
         {
             spriteRenderer.flipX = true;
             swordAttack.attackDirection = SwordAttack.AttackDirection.Left;
+            facingDirection = Direction.Left;
         }
         else if (movementInput.x > 0)
         {
             spriteRenderer.flipX = false;
             swordAttack.attackDirection = SwordAttack.AttackDirection.Right;
+            facingDirection = Direction.Right;
         }
         if(movementInput.y > 0)
         {
             animator.SetBool("isMovingTop", true);
             animator.SetBool("isMovingBottom", false);
             swordAttack.attackDirection = SwordAttack.AttackDirection.Top;
+            facingDirection = Direction.Top;
         }
         else if (movementInput.y < 0)
         {
             animator.SetBool("isMovingTop", false);
             animator.SetBool("isMovingBottom", true);
             swordAttack.attackDirection = SwordAttack.AttackDirection.Bottom;
+            facingDirection = Direction.Bottom;
         }
         else
         {
@@ -189,13 +200,19 @@ public class PlayerController : MonoBehaviour
             }
             return;
         }
-        else if (inventoryManager.currentHeldSlot?.ItemInSlot is SeedSO seed)
+        else 
         {
-            inventoryManager.PlantHeldSeeds();
-            Debug.Log($"Mouse left button plants seed");
-            return;
-        }
-        
+            switch (inventoryManager.currentHeldSlot?.ItemInSlot)
+            {
+                case SeedSO seed:
+                    inventoryManager.PlantHeldSeeds();
+                    Debug.Log($"Mouse left button plants seed");
+                    break;
+                case ToolSO tool:
+                    tool.UseTool();
+                    break;
+            }
+        }      
     }
 
     public void OnToolbarMove(InputValue input)

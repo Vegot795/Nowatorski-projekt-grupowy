@@ -8,10 +8,12 @@ using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviour
 {
-    [SerializeField] public List<InventorySlot> inventorySlots;
-    [SerializeField] public List<InventorySlot> toolbarSlots;
-    [SerializeField] public InventorySlot currentHeldSlot;
-    [SerializeField] public UI_Controller uicontroller;
+    public List<InventorySlot> inventorySlots;
+    public List<InventorySlot> toolbarSlots;
+    public InventorySlot currentHeldSlot;
+    public UI_Controller uicontroller;
+    public GameObject itemPickupPrefab;
+
     [SerializeField] private GameObject inventoryUI;
     [SerializeField] private GameObject ToolbarUI;
 
@@ -61,18 +63,18 @@ public class InventoryManager : MonoBehaviour
     {
         spawnPos = GetPotentialSpawnPos();
 
-        if (Input.GetKeyDown(KeyCode.O))
+        /*if (Input.GetKeyDown(KeyCode.O))
         {
             addItemToInv(testItem, 30);
         }
         if (Input.GetKeyDown(KeyCode.P))
         {
             removeItemFromInv(3);
-        }
+        }*/
+
         if (!uicontroller.isBuildingEnabled)
         {
             HandleSeedPreview();
-
         }
         else
         {
@@ -81,14 +83,14 @@ public class InventoryManager : MonoBehaviour
     }
 
     #region // -------------------------------- Item Management Code -------------------------------
-    void removeItemFromInv(int slotIndex)
+    void removeItemFromInv(int slotIndex, int amount)
     {
 
         Debug.Log("Slot to remove found");
-        //inventorySlots[slotIndex].removeItemSlot.RemoveItem();
+        inventorySlots[slotIndex].RemoveItemAmount(amount);
 
     }
-    void addItemToInv(ItemSO item, int amount)
+    public void addItemToInv(ItemSO item, int amount)
     {
         List<InventorySlot> thisItemSlots = inventorySlots.FindAll(x => x.ItemInSlot == item);
         if (thisItemSlots.Count > 0)
@@ -180,6 +182,34 @@ public class InventoryManager : MonoBehaviour
         currentHeldSlot = toolbarSlots[newIndex];
         SlotSetToBeCurrentHeld(currentHeldSlot);
     }
+
+    public void ThrowOutOfEquipment(ItemSO item,int amount)
+    {
+        GameObject PickupItem = Instantiate(itemPickupPrefab, transform.position, Quaternion.identity);
+        ItemPickup itemPickup = PickupItem.GetComponent<ItemPickup>();
+        PickupItem.GetComponentInChildren<SpriteRenderer>().sprite = item.Icon;
+        itemPickup.item = item;
+        itemPickup.count = amount;
+
+        Rigidbody2D rb = PickupItem.GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            Vector2 throwDirection = gameObject.GetComponent<PlayerController>().facingDirection switch
+            {
+                PlayerController.Direction.Top => Vector2.up,
+                PlayerController.Direction.Bottom => Vector2.down,
+                PlayerController.Direction.Left => Vector2.left,
+                PlayerController.Direction.Right => Vector2.right,
+                _ => Vector2.zero
+            };
+            float throwForce = 5f; // Adjust for throw strength
+            rb.linearVelocity = throwDirection * throwForce;
+        }
+
+        removeItemFromInv(inventorySlots.IndexOf(currentHeldSlot), amount);
+    }
+
+    
     #endregion
 
 
@@ -190,7 +220,7 @@ public class InventoryManager : MonoBehaviour
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
         Vector3Int cellPosition = grid.WorldToCell(worldPosition);
         Vector3 spawnPosition = grid.GetCellCenterWorld(cellPosition);
-        spawnPosition.y += 0.2f;
+        //spawnPosition.y += 0.2f;
         return spawnPosition;
     }
 
@@ -207,7 +237,7 @@ public class InventoryManager : MonoBehaviour
                 GameObject plantInstance = Instantiate(seed.plantPreview, spawnPos, Quaternion.identity, transform);
                 SpriteRenderer sr = plantInstance.GetComponent<SpriteRenderer>();
                 plantInstance.transform.parent = GameObject.Find("PlantsDump").transform;
-                plantInstance.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+                plantInstance.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                 sr.sortingLayerName = "Plants";
                 sr.sortingOrder = 1;
 
@@ -234,7 +264,7 @@ public class InventoryManager : MonoBehaviour
                     seedPreviewInstance.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 50);
                     seedPreviewInstance.GetComponent<SpriteRenderer>().sortingLayerName = "Preview";
                     seedPreviewInstance.GetComponent<SpriteRenderer>().sortingOrder = 1;
-                    seedPreviewInstance.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+                    seedPreviewInstance.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                 }
 
                 spawnPos = GetPotentialSpawnPos();
@@ -315,5 +345,7 @@ public class InventoryManager : MonoBehaviour
             seedPreviewInstance = null;
         }
     }
+
     #endregion
+
 }

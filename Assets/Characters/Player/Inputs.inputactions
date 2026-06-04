@@ -77,6 +77,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ThrowOutOfEquipment",
+                    "type": "Button",
+                    "id": "3f7bed17-91fd-458c-9651-4e3ff66c6087",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -352,6 +361,17 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "ChangeBuildMode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "391057b1-b9a9-47ab-9846-7d5e46b2444a",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "ThrowOutOfEquipment",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

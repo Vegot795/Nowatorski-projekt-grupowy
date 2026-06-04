@@ -12,6 +12,7 @@ TagManager:
   - BuilderMenu
   - FieldCount
   - FarmField
+  - ItemCollector
   layers:
   - Default
   - TransparentFX
@@ -57,6 +58,9 @@ TagManager:
     locked: 0
   - name: Preview
     uniqueID: 3853406395
+    locked: 0
+  - name: PickupItems
+    uniqueID: 4235733577
     locked: 0
   - name: WalkInFront
     uniqueID: 4250941897
