@@ -194,7 +194,7 @@ public class InventoryManager : MonoBehaviour
         return spawnPosition;
     }
 
-    #region // -------------------------------- Seed Preview Code -------------------------------
+    #region // -------------------------------- Seed Plant/Preview Code -------------------------------
     public void PlantHeldSeeds()
     {
         if (currentHeldSlot.ItemInSlot is SeedSO seed)

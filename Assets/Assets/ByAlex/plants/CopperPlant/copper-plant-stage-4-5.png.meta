@@ -1,13 +1,16 @@
 fileFormatVersion: 2
-guid: 771e316ae93460c4697e9be9888001d8
+guid: 6a2856a0aedbb554682541b3883f1e6e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3337038689812066966
-    second: pixil-frame-0_0
+      213: 3401861305517874244
+    second: copper-plant-stage-4-5_0
   - first:
-      213: -2836335398978793527
-    second: pixil-frame-0_1
+      213: -2018770809171478501
+    second: copper-plant-stage-4-5_1
+  - first:
+      213: -1728176966012510004
+    second: copper-plant-stage-4-5_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -49,13 +52,13 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 32
-  spriteBorder: {x: 6, y: 0, z: 6, w: 2}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -78,7 +81,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -103,7 +106,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: pixil-frame-0_0
+      name: copper-plant-stage-4-5_0
       rect:
         serializedVersion: 2
         x: 0
@@ -111,15 +114,37 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a6d4404fdf470b1d0800000000000000
-      internalID: -3337038689812066966
+      spriteID: 44c1a8265d6d53f20800000000000000
+      internalID: 3401861305517874244
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: copper-plant-stage-4-5_1
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b18f76c15a2ebf3e0800000000000000
+      internalID: -2018770809171478501
       vertices: []
       indices: 
       edges: []
@@ -128,18 +153,20 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: d68c29e54d30a654386e01aed14d0a75
-    internalID: 1292555247
+    spriteID: 4e149196759c7dc42ab79110f3a7b4ec
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":32.0,"y":32.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      pixil-frame-0_0: -3337038689812066966
-      pixil-frame-0_1: -2836335398978793527
+      copper-plant-stage-4-5_0: 3401861305517874244
+      copper-plant-stage-4-5_1: -2018770809171478501
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

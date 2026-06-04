@@ -9,7 +9,7 @@ public class PlantScript : MonoBehaviour
     private float baseTimeToWater;
     private float baseGrowthTime;
     private bool isHarvestable = false;
-    private int currentStage = 0;
+    [SerializeField] private int currentStage = 0;
     private bool isWatered;
 
     public Sprite[] growthStages;
@@ -20,22 +20,25 @@ public class PlantScript : MonoBehaviour
 
     public float dryTime = 50f;
 
-    void Start() 
+    void Awake() 
     {
-        // Initialize plant timers and growth stages
+
         currentGrowth = plantData.currentTimeBetweenStages;
         currentWater = plantData.currentTimeToWater;
         baseGrowthTime = plantData.timeBetweenStages;
         baseTimeToWater = plantData.timeToWater;
+        sr = gameObject.GetComponent<SpriteRenderer>();
 
-        // Combine baby and adult stages into a single array for easier management
         growthStages = new Sprite[plantData.babyStage.Length + plantData.adultStage.Length];
         plantData.babyStage.CopyTo(growthStages, 0);
         plantData.adultStage.CopyTo(growthStages, plantData.babyStage.Length);
         currentStage = plantData.currentGrowthStage;
+        currentSprite = growthStages[currentStage];
+        sr.sprite = currentSprite;
+        //gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y - 0.2f , 0);
+        gameObject.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
 
         isHarvestable = false;
-        currentSprite = gameObject.GetComponent<Sprite>();
     }
 
     void Update()
@@ -58,6 +61,7 @@ public class PlantScript : MonoBehaviour
         float timeToDry =  dryTime;
         int stagesCount = growthStages.Length;
         float timePerStage = baseGrowthTime / stagesCount;
+        bool posToAdultMoved = false;
 
         // If the plant has water, it continues to grow
         if (currentWater >= 0)
@@ -69,13 +73,19 @@ public class PlantScript : MonoBehaviour
                 if (currentGrowth <= 0f)
                 {
                     currentStage++;
-                    plantData.currentGrowthStage = currentStage;
+
+                    if (currentStage >= plantData.babyStage.Length && !posToAdultMoved)
+                    {
+                        gameObject.transform.position += new Vector3(0, 0.2f, 0);
+                        posToAdultMoved = true;
+                    }
 
                     if(currentStage < stagesCount)
                     {
                         currentSprite = growthStages[currentStage];
+                        sr.sprite = currentSprite;
 
-                        if(sr != null)
+                        if (sr != null)
                         {
                             sr.sprite = currentSprite;
                         }
