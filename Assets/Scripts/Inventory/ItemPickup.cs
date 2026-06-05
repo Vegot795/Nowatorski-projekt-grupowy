@@ -9,9 +9,17 @@ public class ItemPickup : MonoBehaviour
     public GameObject ItemIcon;
     public GameObject ItemHighLight;
     public SpriteRenderer SpriteRenderer;
+    public float pullForceMod = 10f;
+
+    private float startTime;
+    private Vector3 itemIconStartLocalPosition;
+
+
 
     void Awake()
     {
+        startTime = Time.time;
+        itemIconStartLocalPosition = ItemIcon.transform.localPosition;
         GetComponent<ItemPickup>().enabled = true;
         if (ItemIcon != null && item != null)
         {
@@ -29,8 +37,13 @@ public class ItemPickup : MonoBehaviour
 
     private void ItemFloat()
     {
-        float newY = Mathf.Sin(Time.time * floatSpeed) * floatMaxHeight;
-        gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, newY, gameObject.transform.localPosition.z);
+        float timeSinceSpawn = Time.time - startTime;
+        float floatY = Mathf.Sin(startTime * floatSpeed) * floatMaxHeight;
+        ItemIcon.transform.localPosition = new Vector3(
+            itemIconStartLocalPosition.x,
+            itemIconStartLocalPosition.y + floatY,
+            itemIconStartLocalPosition.z
+        );
     }
 
     public void Collect()
@@ -43,7 +56,7 @@ public class ItemPickup : MonoBehaviour
             float pullRadius = player.GetComponent<CircleCollider2D>().radius;
             Vector3 direction = (player.transform.position - transform.position).normalized;
             float pullStrength = Mathf.Clamp01(1 - (distance / pullRadius));
-            float pullForce = pullStrength * 10f;
+            float pullForce = pullStrength * pullForceMod;
 
             rb.linearVelocity = direction * pullForce;
         }
@@ -51,9 +64,11 @@ public class ItemPickup : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //Debug.Log("Collided with: " + collision.gameObject.name);
         if (collision.CompareTag("ItemCollector"))
         {
             Collect();
+            //Debug.Log("Collecting item: " + item.name);
         }
         else if (collision.CompareTag("PlayerHitbox"))
         {

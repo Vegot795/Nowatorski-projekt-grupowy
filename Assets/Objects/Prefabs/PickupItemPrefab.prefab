@@ -139,8 +139,10 @@ MonoBehaviour:
   count: 0
   floatSpeed: 1
   floatMaxHeight: 0.5
-  ItemIcon: {fileID: 0}
+  ItemIcon: {fileID: 350566282056640381}
   ItemHighLight: {fileID: 3900364110819403519}
+  SpriteRenderer: {fileID: 1589636282199778117}
+  pullForceMod: 10
 --- !u!58 &-6298350187272067186
 CircleCollider2D:
   m_ObjectHideFlags: 0

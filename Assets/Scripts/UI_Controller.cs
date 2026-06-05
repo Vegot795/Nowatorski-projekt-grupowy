@@ -107,6 +107,6 @@ public class UI_Controller : MonoBehaviour
 
     public void OnThrowOutOfEquipment()
     {
-        inventoryManager.ThrowOutOfEquipment(inventoryManager.currentHeldSlot.ItemInSlot, inventoryManager.currentHeldSlot.ItemAmount);
+        inventoryManager.ThrowOutOfEquipment(inventoryManager.currentHeldSlot.ItemInSlot, 1);
     }
 }

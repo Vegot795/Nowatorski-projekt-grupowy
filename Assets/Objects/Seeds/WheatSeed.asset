@@ -14,14 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Icon: {fileID: 21300000, guid: bc31943776f9f3b4eb03c2e6294ce0a1, type: 3}
   Description: 
-  MaxStackAmount: 0
-  plantPreview: {fileID: 0}
+  MaxStackAmount: 64
+  plantPrefab: {fileID: 1862631628430601967, guid: 5ef26ff7b38cd9f4f8093d28ced2f6fb,
+    type: 3}
   babyStage:
   - {fileID: 21300000, guid: 19910c4abc6f0b941829bacf6c857aa6, type: 3}
   - {fileID: 21300000, guid: 02b1f9990e2c9464bba9cdd8c7936f13, type: 3}
   - {fileID: 21300000, guid: 2fb0eb2ae40da354cbe7b9c9e2ba5770, type: 3}
   adultStage:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 21300000, guid: b2e74a1ffd62ab3458273b3290ff9aae, type: 3}
+  - {fileID: 21300000, guid: 1d750f5092f05fb41a57b6b475a23cc6, type: 3}
   timeBetweenStages: 0
   timeToWater: 0

@@ -26,7 +26,7 @@ public class PlantingSeedsScript : MonoBehaviour
 
     public void HandlePlantPreview(SeedSO seed)
     {
-        GameObject plantPrefab = seed.plantPreview;
+        GameObject plantPrefab = seed.plantPrefab;
 
         if (grid == null)
         {
@@ -67,7 +67,7 @@ public class PlantingSeedsScript : MonoBehaviour
 
             // Optional: update preview sprite/type using 'seed' if ItemSO contains sprite/reference
             var sr = plantPreview.GetComponent<SpriteRenderer>();
-            if (sr != null && seed != null) sr.sprite = seed.plantPreview.GetComponent<SpriteRenderer>().sprite;
+            if (sr != null && seed != null) sr.sprite = seed.plantPrefab.GetComponent<SpriteRenderer>().sprite;
         }
         else
         {

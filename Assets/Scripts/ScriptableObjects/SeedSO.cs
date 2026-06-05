@@ -5,7 +5,7 @@ using UnityEngine;
 public class SeedSO : ItemSO
 {
     [Header("Seed/Plant Visual")]
-    public GameObject plantPreview;
+    public GameObject plantPrefab;
     public Sprite[] babyStage;
     public Sprite[] adultStage;
 
