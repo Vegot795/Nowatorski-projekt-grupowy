@@ -54,6 +54,9 @@ TagManager:
   - name: Collision
     uniqueID: 4189426099
     locked: 0
+  - name: Interactable
+    uniqueID: 572580255
+    locked: 0
   - name: Player
     uniqueID: 3309424107
     locked: 0
