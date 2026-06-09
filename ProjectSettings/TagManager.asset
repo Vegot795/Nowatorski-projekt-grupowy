@@ -12,6 +12,7 @@ TagManager:
   - BuilderMenu
   - FieldCount
   - FarmField
+  - ItemCollector
   layers:
   - Default
   - TransparentFX
@@ -52,14 +53,23 @@ TagManager:
   - name: Ground
     uniqueID: 2425651459
     locked: 0
+  - name: Plants
+    uniqueID: 108511397
+    locked: 0
   - name: Preview
     uniqueID: 3853406395
+    locked: 0
+  - name: PickupItems
+    uniqueID: 4235733577
     locked: 0
   - name: WalkInFront
     uniqueID: 4250941897
     locked: 0
   - name: Collision
     uniqueID: 4189426099
+    locked: 0
+  - name: Interactable
+    uniqueID: 572580255
     locked: 0
   - name: Player
     uniqueID: 3309424107

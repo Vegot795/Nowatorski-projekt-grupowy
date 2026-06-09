@@ -2,40 +2,51 @@ using UnityEngine;
 
 public class PlantScript : MonoBehaviour
 {
-    public PlantData plantData;
+    public SeedSO seedData;  // <- Changed from PlantData plantData
 
     private float currentGrowth;
     private float currentWater;
     private float baseTimeToWater;
     private float baseGrowthTime;
     private bool isHarvestable = false;
-    private int currentStage = 0;
+    [SerializeField] private int currentStage = 0;
     private bool isWatered;
+    private bool posToAdultMoved = false;
 
     public Sprite[] growthStages;
     public Sprite currentSprite;
     public FarmScript farmScript;
     public SpriteRenderer sr;
+    
 
 
     public float dryTime = 50f;
 
-    void Start() 
+    void Awake() 
     {
-        // Initialize plant timers and growth stages
-        currentGrowth = plantData.currentTimeBetweenStages;
-        currentWater = plantData.currentTimeToWater;
-        baseGrowthTime = plantData.timeBetweenStages;
-        baseTimeToWater = plantData.timeToWater;
 
-        // Combine baby and adult stages into a single array for easier management
-        growthStages = new Sprite[plantData.babyStage.Length + plantData.adultStage.Length];
-        plantData.babyStage.CopyTo(growthStages, 0);
-        plantData.adultStage.CopyTo(growthStages, plantData.babyStage.Length);
-        currentStage = plantData.currentGrowthStage;
+        currentGrowth = seedData.currentTimeBetweenStages;
+        currentWater = seedData.currentTimeToWater;
+        baseGrowthTime = seedData.timeBetweenStages;
+        baseTimeToWater = seedData.timeToWater;
+        sr = gameObject.GetComponent<SpriteRenderer>();
+
+        growthStages = new Sprite[seedData.babyStage.Length + seedData.adultStage.Length];
+        seedData.babyStage.CopyTo(growthStages, 0);
+        seedData.adultStage.CopyTo(growthStages, seedData.babyStage.Length);
+        currentStage = seedData.currentGrowthStage;
+        currentSprite = growthStages[currentStage];
+        sr.sprite = currentSprite;
 
         isHarvestable = false;
-        currentSprite = gameObject.GetComponent<Sprite>();
+        posToAdultMoved = false;
+        
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.gravityScale = 0f;
+            rb.linearVelocity = Vector2.zero;
+        }
     }
 
     void Update()
@@ -69,13 +80,20 @@ public class PlantScript : MonoBehaviour
                 if (currentGrowth <= 0f)
                 {
                     currentStage++;
-                    plantData.currentGrowthStage = currentStage;
+
+                    if (currentStage >= seedData.babyStage.Length && !posToAdultMoved)
+                    {
+                        gameObject.transform.position += new Vector3(0, 0.2f, 0);
+                        gameObject.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+                        posToAdultMoved = true;
+                    }
 
                     if(currentStage < stagesCount)
                     {
                         currentSprite = growthStages[currentStage];
+                        sr.sprite = currentSprite;
 
-                        if(sr != null)
+                        if (sr != null)
                         {
                             sr.sprite = currentSprite;
                         }
@@ -91,12 +109,8 @@ public class PlantScript : MonoBehaviour
         }
         else
         {
-            while (timeToDry > 0)
-            {
-                timeToDry -= Time.deltaTime;
-            }
-
-            if(timeToDry <= 0)
+            dryTime -= Time.deltaTime;
+            if(dryTime <= 0)
             {
                 Destroy(gameObject);
             }

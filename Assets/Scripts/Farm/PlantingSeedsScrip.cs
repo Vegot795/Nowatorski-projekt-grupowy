@@ -10,6 +10,7 @@ public class PlantingSeedsScript : MonoBehaviour
 
     private GameObject plantPreview;
     private Grid grid;
+    private InventorySlot currentItem;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -21,12 +22,11 @@ public class PlantingSeedsScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
 
-    public void HandePlantPreview(SeedSO seed)
+    public void HandlePlantPreview(SeedSO seed)
     {
-        GameObject plantPrefab = seed.plantPreview;
+        GameObject plantPrefab = seed.plantPrefab;
 
         if (grid == null)
         {
@@ -67,7 +67,7 @@ public class PlantingSeedsScript : MonoBehaviour
 
             // Optional: update preview sprite/type using 'seed' if ItemSO contains sprite/reference
             var sr = plantPreview.GetComponent<SpriteRenderer>();
-            if (sr != null && seed != null) sr.sprite = seed.plantPreview.GetComponent<SpriteRenderer>().sprite;
+            if (sr != null && seed != null) sr.sprite = seed.plantPrefab.GetComponent<SpriteRenderer>().sprite;
         }
         else
         {
