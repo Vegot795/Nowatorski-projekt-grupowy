@@ -4795,7 +4795,8 @@ Transform:
   m_LocalPosition: {x: -5.83174, y: 0.74676, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1206698728}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &639578061
@@ -7850,6 +7851,56 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a2bb706c0217614593134594e6e29a7, type: 3}
+--- !u!1 &1206698727
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1206698728}
+  - component: {fileID: 1206698729}
+  m_Layer: 0
+  m_Name: ShopController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1206698728
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1206698727}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 639578060}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1206698729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1206698727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 252d7594186d48f4da3ec2de5ad56692, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shopPanel: {fileID: 1658201463}
+  shopInventoryGrid: {fileID: 1234497310}
+  playerInventoryGrid: {fileID: 1008571323}
+  shopSlotPrefab: {fileID: 8835448022264778723, guid: 3a2bb706c0217614593134594e6e29a7,
+    type: 3}
+  playerMoneyText: {fileID: 1971017194}
 --- !u!1 &1207427912
 GameObject:
   m_ObjectHideFlags: 0
@@ -14491,13 +14542,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1527153177}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1891e3a20d6095459ed268764d02311, type: 3}
+  m_Script: {fileID: 11500000, guid: fc6d48f1d1d4c074281a64d5e1b55b46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentItem: {fileID: 0}
-  itemPrice: 0
-  priceText: {fileID: 0}
-  isShopSlot: 1
+  shopID: shop_merchant_01
+  shopkeeperName: Cat
+  defaultShopStock: []
+  currentShopStock: []
 --- !u!1 &1527891373
 GameObject:
   m_ObjectHideFlags: 0
