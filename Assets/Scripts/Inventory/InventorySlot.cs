@@ -40,6 +40,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     {
         ItemAmount -= amount;
         UpdateItemAmountText();
+        if (ItemAmount <= 0) RemoveItem();
         if (!CheckOccupencyOfSlot()) RemoveItem();
     }
     public void AddItem(ItemSO item, int amount)
