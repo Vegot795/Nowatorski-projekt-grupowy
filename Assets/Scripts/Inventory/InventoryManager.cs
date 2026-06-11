@@ -10,6 +10,7 @@ public class InventoryManager : MonoBehaviour
 {
     [SerializeField] public List<InventorySlot> inventorySlots;
     [SerializeField] public List<InventorySlot> toolbarSlots;
+    [SerializeField] private List<ItemSO> allItems;
     public ItemSO testItem;
     [SerializeField] private GameObject inventoryUI;
     [SerializeField] private GameObject ToolbarUI;
@@ -32,7 +33,7 @@ public class InventoryManager : MonoBehaviour
         inventoryUI.SetActive(false);
         isInvOpen = false;
 
-        if(toolbarSlots != null)
+        if (toolbarSlots != null)
         {
             ToolbarUI = GameObject.Find("ToolbarUI");
         }
@@ -56,24 +57,17 @@ public class InventoryManager : MonoBehaviour
     {
         Vector3 spawnPos = GetPotentialSpawnPos();
 
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            addItemToInv(testItem, 30);
-        }
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            removeItemFromInv(3);
-        }
-
-
-
-        if(currentHeldSlot.ItemInSlot is SeedSO && ValidateConditions())
+        if (currentHeldSlot.ItemInSlot is SeedSO && ValidateConditions())
         {
             HandleSeedPreview();
         }
         else
         {
             DestroySeedPrefabPreview();
+        }
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            addItemToInv(testItem, 30);
         }
     }
 
@@ -155,7 +149,7 @@ public class InventoryManager : MonoBehaviour
     {
         Image thisImage = currentHeldSlot.GetComponentInChildren<Image>();
         int currentIndex = toolbarSlots.IndexOf(toolbarSlot);
-        
+
         thisImage.color = Color.red;
         currentHeldSlot = toolbarSlots[currentIndex];
         currentHeldSlot.isCurrentHeldSlot = true;
@@ -211,7 +205,7 @@ public class InventoryManager : MonoBehaviour
         Vector3 mousePosition = Input.mousePosition;
         if (currentHeldSlot?.ItemInSlot is SeedSO seed)
         {
-            if(seedPreviewInstance == null)
+            if (seedPreviewInstance == null)
             {
                 seedPreviewInstance = Instantiate(seed.plantPreview);
                 seedPreviewInstance.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 50);
@@ -262,11 +256,11 @@ public class InventoryManager : MonoBehaviour
             else
             {
                 return false;
-            }                       
+            }
         }
         return true;
     }
-    
+
 
     public void DestroySeedPrefabPreview()
     {
@@ -277,4 +271,45 @@ public class InventoryManager : MonoBehaviour
         }
     }
     #endregion
+    //save
+    public void SaveInventory()
+    {
+        SaveSystem.SaveInventory(inventorySlots);
+    }
+    public void LoadInventory()
+    {
+        InventorySaveData data = SaveSystem.LoadInventory();
+
+        if (data == null)
+            return;
+
+        for (int i = 0; i < inventorySlots.Count; i++)
+        {
+            InventorySlot slot = inventorySlots[i];
+
+            slot.RemoveItem();
+
+            if (data.slots[i].DataIsOccupied)
+            {
+                ItemSO item = FindItemByName(data.slots[i].DataItemName);
+
+                slot.AddItem(
+                    item,
+                    data.slots[i].DataItemAmount
+                );
+            }
+        }
+    }
+    private ItemSO FindItemByName(string itemName)
+    {
+        foreach (ItemSO item in allItems)
+        {
+            if (item.name == itemName)
+            {
+                return item;
+            }
+        }
+
+        return null;
+    }
 }

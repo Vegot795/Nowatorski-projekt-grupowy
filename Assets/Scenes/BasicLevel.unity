@@ -9342,6 +9342,7 @@ MonoBehaviour:
   ToolbarUI: {fileID: 130725783}
   currentHeldSlot: {fileID: 515092682}
   baseColor: {r: 255, g: 255, b: 255, a: 100}
+  isSeed: 0
 --- !u!114 &1959612339 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2029766316768882967, guid: 334dc47bc4c5eaf4aa1e69d4d10195a8,
