@@ -11,12 +11,9 @@ public class InteractionDetector : MonoBehaviour
         interactionText.SetActive(false);
     }
 
-    public void OnInteraction(InputValue value)
+    public void TryInteract()
     {
-        if (value.isPressed)
-        {
-            interactableInRange?.Interact();
-        } 
+        interactableInRange?.Interact();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

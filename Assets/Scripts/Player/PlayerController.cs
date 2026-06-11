@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
     SwordAttack sword;
     UI_Controller uiController;
     PlantationScript _plantation;
+    InteractionDetector interactionDetector;
     public InventoryManager inventoryManager;
     void Start()
     {
@@ -48,6 +49,8 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        interactionDetector = GetComponentInChildren<InteractionDetector>();
+
         UnlockMovement();
     }
     private void FixedUpdate()
@@ -152,7 +155,7 @@ public class PlayerController : MonoBehaviour
         swordAttack.StopAttack();
     }
 
-    #region ------------------------ Bindings for UI and Inventory ------------------------
+    #region ------------------------ Bindings for UI / Inventory / Shop ------------------------
     public void OnFire()
     {
         print("Fire button pressed");
@@ -241,6 +244,14 @@ public class PlayerController : MonoBehaviour
     public void OnCurrentSlotBack()
     {
         inventoryManager.MoveCurrentSlot(-1);
+    }
+
+    public void OnInteraction(InputValue value)
+    {
+        if (value.isPressed)
+        {
+            interactionDetector.TryInteract();
+        }
     }
     #endregion
 }
