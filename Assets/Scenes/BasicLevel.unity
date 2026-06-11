@@ -6434,6 +6434,86 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pause
       objectReference: {fileID: 0}
+    - target: {fileID: 349855495749648018, guid: ced5b1704e4293541b213ce40a8ac2b9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 349855495749648018, guid: ced5b1704e4293541b213ce40a8ac2b9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1916478267}
+    - target: {fileID: 349855495749648018, guid: ced5b1704e4293541b213ce40a8ac2b9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1916478263}
+    - target: {fileID: 349855495749648018, guid: ced5b1704e4293541b213ce40a8ac2b9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LoadPlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 349855495749648018, guid: ced5b1704e4293541b213ce40a8ac2b9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: LoadInventory
+      objectReference: {fileID: 0}
+    - target: {fileID: 349855495749648018, guid: ced5b1704e4293541b213ce40a8ac2b9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: CharacterBasics, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 349855495749648018, guid: ced5b1704e4293541b213ce40a8ac2b9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: InventoryManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 349855495749648018, guid: ced5b1704e4293541b213ce40a8ac2b9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313964534556458234, guid: ced5b1704e4293541b213ce40a8ac2b9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313964534556458234, guid: ced5b1704e4293541b213ce40a8ac2b9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1916478267}
+    - target: {fileID: 1313964534556458234, guid: ced5b1704e4293541b213ce40a8ac2b9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1916478263}
+    - target: {fileID: 1313964534556458234, guid: ced5b1704e4293541b213ce40a8ac2b9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SavePlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313964534556458234, guid: ced5b1704e4293541b213ce40a8ac2b9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: SaveInventory
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313964534556458234, guid: ced5b1704e4293541b213ce40a8ac2b9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: CharacterBasics, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313964534556458234, guid: ced5b1704e4293541b213ce40a8ac2b9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: InventoryManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313964534556458234, guid: ced5b1704e4293541b213ce40a8ac2b9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 8782598885430828803, guid: ced5b1704e4293541b213ce40a8ac2b9,
         type: 3}
       propertyPath: m_Pivot.x
@@ -16874,7 +16954,13 @@ MonoBehaviour:
   inventorySlots: []
   toolbarSlots: []
   allSlots: []
-  allItems: []
+  allItems:
+  - {fileID: 11400000, guid: ff252481044f1254ca2cd09c315dcdaa, type: 2}
+  - {fileID: 11400000, guid: a5eba53ac63fd5e428930f8d4e39f7eb, type: 2}
+  - {fileID: 11400000, guid: 20556b9dbe2257143840b84ab1316152, type: 2}
+  - {fileID: 11400000, guid: ee495d58a485628408fb8d5784614060, type: 2}
+  - {fileID: 11400000, guid: 1e91914ac99eb374aa3c27f3bd7cd660, type: 2}
+  - {fileID: 11400000, guid: b977f30568fa88a459e82aff7ac0e6f3, type: 2}
   currentHeldSlot: {fileID: 515092682}
   uicontroller: {fileID: 0}
   itemPickupPrefab: {fileID: 1619094540894141360, guid: 967530759c6576c46858e014aff777b4,
@@ -16886,6 +16972,18 @@ MonoBehaviour:
   testItem: {fileID: 11400000, guid: a5eba53ac63fd5e428930f8d4e39f7eb, type: 2}
   baseColor: {r: 255, g: 255, b: 255, a: 100}
   isSeed: 0
+--- !u!114 &1916478267 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5299355200210592203, guid: df39f441c40bda94ca331f2affe28adc,
+    type: 3}
+  m_PrefabInstance: {fileID: 198066284}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1916478247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 469794a7e91af9a479f3cb9f65b957e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1959612339 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2029766316768882967, guid: 334dc47bc4c5eaf4aa1e69d4d10195a8,

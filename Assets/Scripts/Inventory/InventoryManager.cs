@@ -64,6 +64,7 @@ public class InventoryManager : MonoBehaviour
 
         inventoryUI.SetActive(false);
         isInvOpen = false;
+
     }
 
     void Update()
@@ -389,7 +390,7 @@ public class InventoryManager : MonoBehaviour
     //save
     public void SaveInventory()
     {
-        SaveSystem.SaveInventory(inventorySlots);
+        SaveSystem.SaveInventory(allSlots);
     }
     public void LoadInventory()
     {
@@ -400,7 +401,7 @@ public class InventoryManager : MonoBehaviour
 
         for (int i = 0; i < inventorySlots.Count; i++)
         {
-            InventorySlot slot = inventorySlots[i];
+            InventorySlot slot = allSlots[i];
 
             slot.RemoveItem();
 
