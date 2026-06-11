@@ -13,6 +13,7 @@ public class ShopController : MonoBehaviour
     public TMP_Text playerMoneyText;
 
     private ShopNPCScript currentShop;
+    [SerializeField] private InventoryManager inventoryManager;
 
     private void Awake()
     {
@@ -40,9 +41,8 @@ public class ShopController : MonoBehaviour
     {
         currentShop = shop;
         shopPanel.SetActive(true);
-        //TODO:
-        //RefreshShopDisplay
-        //RefreshPlayerInventoryDisplay
+        RefreshShopDisplay();
+        RefreshPlayerInventoryDisplay();
     }
 
     public void CloseShop()
@@ -51,4 +51,58 @@ public class ShopController : MonoBehaviour
         currentShop = null;
     }
 
+    public void RefreshShopDisplay()
+    {
+        if (currentShop == null)
+        {
+            return;
+        }
+
+        foreach (Transform child in shopInventoryGrid)
+        {
+            Destroy(child.gameObject);
+        }
+
+        foreach (var stockItem in currentShop.GetCurrentStock())
+        {
+            if (stockItem.quantity <= 0) continue;
+            GameObject slot = Instantiate(shopSlotPrefab, shopInventoryGrid);
+
+            TMP_Text text = slot.GetComponentInChildren<TMP_Text>();
+
+            text.text = stockItem.itemID + " x" + stockItem.quantity;
+        }
+
+    }
+
+    public void RefreshPlayerInventoryDisplay()
+    {
+        if (inventoryManager == null)
+        {
+            return;
+        }
+
+        foreach (Transform child in playerInventoryGrid)
+        {
+            Destroy(child.gameObject);
+        }
+
+        foreach (InventorySlot inventorySlot in inventoryManager.allSlots)
+        {
+            if (!inventorySlot.IsOccupied || inventorySlot.ItemInSlot == null)
+            {
+                GameObject slot = Instantiate(shopSlotPrefab, playerInventoryGrid);
+
+                TMP_Text text = slot.GetComponentInChildren<TMP_Text>();
+
+                ItemSO item = inventorySlot.ItemInSlot;
+                int amount = inventorySlot.ItemAmount;
+
+                text.text = item.name + " x" + amount;
+            }
+        }
+    }
+
 }
+
+
