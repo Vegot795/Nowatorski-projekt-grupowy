@@ -154,7 +154,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -318,6 +318,7 @@ MonoBehaviour:
     maxNormalAngle: 0
   swordAttack: {fileID: 3649331474744836192}
   Damage: 10
+  facingDirection: 0
   inventoryManager: {fileID: 0}
 --- !u!114 &5299355200210592203
 MonoBehaviour:

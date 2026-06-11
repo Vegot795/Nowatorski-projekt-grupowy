@@ -2,14 +2,15 @@ using UnityEngine;
 
 public class PlantScript : MonoBehaviour
 {
-    public SeedSO seedData;  // <- Changed from PlantData plantData
+    public SeedSO seedData;
 
+    [SerializeField] private int currentStage = 0;
+    [SerializeField] private float dropRadius = 0.5f;
     private float currentGrowth;
     private float currentWater;
     private float baseTimeToWater;
     private float baseGrowthTime;
     private bool isHarvestable = false;
-    [SerializeField] private int currentStage = 0;
     private bool isWatered;
     private bool posToAdultMoved = false;
 
@@ -17,6 +18,7 @@ public class PlantScript : MonoBehaviour
     public Sprite currentSprite;
     public FarmScript farmScript;
     public SpriteRenderer sr;
+    public int dropCount = 2;
     
 
 
@@ -124,4 +126,17 @@ public class PlantScript : MonoBehaviour
             currentWater = baseTimeToWater;
         }
     }
-}
+
+    public void HarvestPlant()
+    {
+        if (isHarvestable)
+        {
+            gameObject.GetComponent<SpriteRenderer>().enabled = false;
+            Vector2 dropLocation = (Vector2)transform.position + Random.insideUnitCircle * dropRadius;
+            GameObject SeedDrop = Instantiate(seedData.itemPickupPrefab, dropLocation, Quaternion.identity);
+            var SeedDropIP = SeedDrop.GetComponent<ItemPickup>();
+            SeedDropIP.item = seedData;
+            SeedDropIP.count = dropCount;
+            Destroy(gameObject);
+        }
+}}
