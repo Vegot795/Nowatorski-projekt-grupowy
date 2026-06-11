@@ -8,6 +8,7 @@ public class SeedSO : ItemSO
     public GameObject plantPrefab;
     public Sprite[] babyStage;
     public Sprite[] adultStage;
+    public GameObject itemPickupPrefab;
 
     [Header("Growth Timers")]
     public float timeBetweenStages;
