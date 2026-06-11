@@ -143,6 +143,11 @@ public class PlayerController : MonoBehaviour
         uiController.ToggleBuildMenu();
     }
 
+    public void OnOpenPlantMenu()
+    {
+        //uiController.TogglePlantMenu();
+    }
+
     public void OnChangeBuildMode()
     {
         if (uiController.isBuildingEnabled)

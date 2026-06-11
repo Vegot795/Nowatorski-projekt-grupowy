@@ -42,7 +42,6 @@ public class PlantingSeedsScript : MonoBehaviour
             return;
         }
 
-        // Ensure preview exists
         if (plantPreview == null)
         {
             plantPreview = Instantiate(plantPrefab);
@@ -55,7 +54,7 @@ public class PlantingSeedsScript : MonoBehaviour
             }
         }
 
-        // Convert mouse to world point and test the point for a FarmField collider
+
         Vector3 worldPoint3 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 worldPoint2 = new Vector2(worldPoint3.x, worldPoint3.y);
 
@@ -67,13 +66,11 @@ public class PlantingSeedsScript : MonoBehaviour
             plantPreview.transform.position = spawnPosition;
             plantPreview.transform.rotation = Quaternion.identity;
 
-            // Optional: update preview sprite/type using 'seed' if ItemSO contains sprite/reference
             var sr = plantPreview.GetComponent<SpriteRenderer>();
             if (sr != null && seed != null) sr.sprite = seed.plantPreview.GetComponent<SpriteRenderer>().sprite;
         }
         else
         {
-            // Mouse not over a farm field -> hide/destroy preview
             if (plantPreview != null)
             {
                 Destroy(plantPreview);

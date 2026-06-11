@@ -29,6 +29,7 @@ public class UI_Controller : MonoBehaviour
         IndicateBuildingMode();
     }
 
+    #region ---- BUILD MENU ----
     public void ToggleBuildMenu()
     {
         if (!isBuildingEnabled)
@@ -58,7 +59,9 @@ public class UI_Controller : MonoBehaviour
         _plantation.inBuildMenu = false;
         _uiController.SetActive(false);
     }
+    #endregion
 
+    #region --- UI UPDATES ---
     private void UpdateFieldCount()
     {
         if (_plantation == null || _FieldCount == null)
@@ -93,4 +96,20 @@ public class UI_Controller : MonoBehaviour
             _BuildingMode.text = "Destroy";
         }
     }
+    #endregion
+
+    #region --- PLANT MENU ---
+    public void TogglePlantMenu()
+    {
+
+    }
+
+    private void EnablePlantMenu()
+    {
+
+    }
+    
+    private void DisablePlantMenu()
+
+    #endregion
 }
