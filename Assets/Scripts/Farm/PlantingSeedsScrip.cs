@@ -10,25 +10,23 @@ public class PlantingSeedsScript : MonoBehaviour
 
     private GameObject plantPreview;
     private Grid grid;
+    private InventorySlot currentItem;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         grid = GameObject.FindWithTag("FarmGrid").GetComponent<Grid>();
-        
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        
     }
 
-    public void HandePlantPreview(SeedSO seed)
+    public void HandlePlantPreview(SeedSO seed)
     {
-        GameObject plantPrefab = seed.plantPreview;
+        GameObject plantPrefab = seed.plantPrefab;
 
         if (grid == null)
         {
@@ -67,7 +65,7 @@ public class PlantingSeedsScript : MonoBehaviour
             plantPreview.transform.rotation = Quaternion.identity;
 
             var sr = plantPreview.GetComponent<SpriteRenderer>();
-            if (sr != null && seed != null) sr.sprite = seed.plantPreview.GetComponent<SpriteRenderer>().sprite;
+            if (sr != null && seed != null) sr.sprite = seed.plantPrefab.GetComponent<SpriteRenderer>().sprite;
         }
         else
         {

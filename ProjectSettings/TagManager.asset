@@ -7,11 +7,12 @@ TagManager:
   - Targets
   - Enemy
   - PlayerHitbox
-  - FarmField
-  - BuilderMenu
+  - InvSlot
   - FarmGrid
+  - BuilderMenu
   - FieldCount
-  - MaxFieldCount
+  - FarmField
+  - ItemCollector
   layers:
   - Default
   - TransparentFX
@@ -52,11 +53,17 @@ TagManager:
   - name: Ground
     uniqueID: 2425651459
     locked: 0
-  - name: WalkInFront
-    uniqueID: 4250941897
+  - name: Plants
+    uniqueID: 108511397
     locked: 0
   - name: Preview
-    uniqueID: 3218425513
+    uniqueID: 3853406395
+    locked: 0
+  - name: PickupItems
+    uniqueID: 4235733577
+    locked: 0
+  - name: WalkInFront
+    uniqueID: 4250941897
     locked: 0
   - name: Collision
     uniqueID: 4189426099
@@ -65,7 +72,7 @@ TagManager:
     uniqueID: 3309424107
     locked: 0
   - name: UI
-    uniqueID: 536446657
+    uniqueID: 1335802967
     locked: 0
   m_RenderingLayers:
   - Default

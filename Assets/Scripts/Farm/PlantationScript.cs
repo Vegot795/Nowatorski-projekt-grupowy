@@ -121,7 +121,7 @@ public class PlantationScript : MonoBehaviour
         foreach (var col in colliders)
         {
             if (col.gameObject.layer == previewLayer)
-                continue; // Ignore preview
+                continue;
             if (col.gameObject.layer != groundLayer)
             {
                 Debug.Log("Cannot build here, object in the way: " + col.gameObject.name);

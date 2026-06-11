@@ -100,8 +100,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18b6628baf390404690abab5f7db4eb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  plantData: {fileID: 0}
+  seedData: {fileID: 11400000, guid: ff252481044f1254ca2cd09c315dcdaa, type: 2}
+  currentStage: 0
   growthStages: []
   currentSprite: {fileID: 0}
   farmScript: {fileID: 0}
+  sr: {fileID: 0}
   dryTime: 50

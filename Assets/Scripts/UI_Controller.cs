@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class UI_Controller : MonoBehaviour
 {
+    public InventoryManager inventoryManager;
     public GameObject FieldBuilder;
     public PlantationScript _plantation;
     public bool isBuildingEnabled = false;
@@ -12,14 +13,26 @@ public class UI_Controller : MonoBehaviour
 
     void Start()
     {
+        inventoryManager = GetComponent<InventoryManager>();
         _plantation = Object.FindFirstObjectByType<PlantationScript>();
         _uiController = GameObject.Find("UI");
-        _FieldCount = GameObject.Find("FieldCount").GetComponent<TextMeshProUGUI>();
         if (_FieldCount == null)
         {
-            Debug.Log("Field Count text not found.");
+            var fieldCount = GameObject.Find("FieldCount");
+            if (fieldCount != null)
+            {
+                _FieldCount = fieldCount.GetComponent<TextMeshProUGUI>();
+            }
         }
-        _BuildingMode = GameObject.Find("BuildMode").GetComponent<TextMeshProUGUI>();
+
+        if (_BuildingMode == null)
+        {
+            var buildingMode = GameObject.Find("BuildMode");
+            if (buildingMode != null)
+            {
+                _BuildingMode = buildingMode.GetComponent<TextMeshProUGUI>();
+            }
+        }
     }
 
 
@@ -29,7 +42,6 @@ public class UI_Controller : MonoBehaviour
         IndicateBuildingMode();
     }
 
-    #region ---- BUILD MENU ----
     public void ToggleBuildMenu()
     {
         if (!isBuildingEnabled)
@@ -47,7 +59,6 @@ public class UI_Controller : MonoBehaviour
         FieldBuilder.SetActive(true);
         isBuildingEnabled = true;
         _plantation.inBuildMenu = true;
-        _uiController.SetActive(true);
         _plantation.HandleFieldPreview();
         _plantation.BuildingMode = _plantation.BuildingModeList[0];
     }
@@ -57,11 +68,8 @@ public class UI_Controller : MonoBehaviour
         FieldBuilder.SetActive(false);
         isBuildingEnabled = false;
         _plantation.inBuildMenu = false;
-        _uiController.SetActive(false);
     }
-    #endregion
 
-    #region --- UI UPDATES ---
     private void UpdateFieldCount()
     {
         if (_plantation == null || _FieldCount == null)
@@ -96,20 +104,9 @@ public class UI_Controller : MonoBehaviour
             _BuildingMode.text = "Destroy";
         }
     }
-    #endregion
 
-    #region --- PLANT MENU ---
-    public void TogglePlantMenu()
+    public void OnThrowOutOfEquipment()
     {
-
+        inventoryManager.ThrowOutOfEquipment(inventoryManager.currentHeldSlot.ItemInSlot, 1);
     }
-
-    private void EnablePlantMenu()
-    {
-
-    }
-    
-    private void DisablePlantMenu()
-
-    #endregion
 }
