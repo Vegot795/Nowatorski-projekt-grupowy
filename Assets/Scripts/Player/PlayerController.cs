@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetBool("isMoving", false);
         }
-        if(movementInput.x < 0)
+        if (movementInput.x < 0)
         {
             spriteRenderer.flipX = true;
             swordAttack.attackDirection = SwordAttack.AttackDirection.Left;
@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
             spriteRenderer.flipX = false;
             swordAttack.attackDirection = SwordAttack.AttackDirection.Right;
         }
-        if(movementInput.y > 0)
+        if (movementInput.y > 0)
         {
             animator.SetBool("isMovingTop", true);
             animator.SetBool("isMovingBottom", false);
@@ -86,9 +86,10 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("isMovingBottom", false);
         }
     }
-    private bool TryMove(Vector2 direction) {
+    private bool TryMove(Vector2 direction)
+    {
         if (canMove)
-        {    
+        {
             if (direction != Vector2.zero)
             {
                 int count = rb.Cast(
@@ -161,7 +162,7 @@ public class PlayerController : MonoBehaviour
             {
                 _plantation.BuildingMode = _plantation.BuildingModeList[0];
             }
-        }       
+        }
     }
 
     public void OnOpenInventory()
@@ -173,7 +174,7 @@ public class PlayerController : MonoBehaviour
     {
         if (uiController.isBuildingEnabled)
         {
-            if(_plantation.BuildingMode == "Build")
+            if (_plantation.BuildingMode == "Build")
             {
                 _plantation.BuildNewField();
             }
@@ -188,7 +189,7 @@ public class PlayerController : MonoBehaviour
         {
             inventoryManager.PlantHeldSeeds();
         }
-        
+
     }
 
     public void OnToolbarMove(InputValue input)
@@ -214,4 +215,5 @@ public class PlayerController : MonoBehaviour
         inventoryManager.MoveCurrentSlot(-1);
     }
     #endregion
+
 }

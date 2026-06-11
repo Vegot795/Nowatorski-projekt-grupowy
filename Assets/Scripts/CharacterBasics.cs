@@ -61,4 +61,21 @@ public class CharacterBasics : MonoBehaviour
     }
 
     public bool IsKnockedBack() => isKnockedBack;
+
+    //save
+    public void SavePlayer()
+    {
+        SaveSystem.SavePlayer(this);
+    }
+
+    public void LoadPlayer()
+    {
+        PlayerData data = SaveSystem.LoadPlayer();
+        CurrentHP = data.DataPlayerHP;
+        Vector3 position;
+        position.x = data.DataPlayerPosition[0];
+        position.y = data.DataPlayerPosition[1];
+        position.z = data.DataPlayerPosition[2];
+        transform.position = position;
+    }
 }

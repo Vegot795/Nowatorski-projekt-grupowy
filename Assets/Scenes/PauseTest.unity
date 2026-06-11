@@ -9116,7 +9116,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: save&menu
+  m_text: load
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -9277,7 +9277,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1282200140}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1916478267}
+        m_TargetAssemblyTypeName: CharacterBasics, Assembly-CSharp
+        m_MethodName: LoadPlayer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1282200140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9922,7 +9934,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1876131373}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1916478267}
+        m_TargetAssemblyTypeName: CharacterBasics, Assembly-CSharp
+        m_MethodName: SavePlayer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1876131373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10005,6 +10029,18 @@ MonoBehaviour:
   currentHeldSlot: {fileID: 515092682}
   baseColor: {r: 255, g: 255, b: 255, a: 100}
   isSeed: 0
+--- !u!114 &1916478267 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5299355200210592203, guid: df39f441c40bda94ca331f2affe28adc,
+    type: 3}
+  m_PrefabInstance: {fileID: 198066284}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1916478247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 469794a7e91af9a479f3cb9f65b957e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1959612339 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2029766316768882967, guid: 334dc47bc4c5eaf4aa1e69d4d10195a8,
@@ -10164,7 +10200,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: save&quit
+  m_text: save
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
