@@ -14,4 +14,17 @@ public class MenuButtons : MonoBehaviour
         Debug.Log("Quit");
         Application.Quit();
     }
+    public void GoMainMenu()
+    {
+        //save
+        SceneManager.LoadScene("MainMenu");
+
+    }
+    public void QuitAndSave()
+    {
+        //save
+        Debug.Log("Quit");
+        Application.Quit();
+
+    }
 }

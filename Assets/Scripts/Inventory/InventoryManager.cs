@@ -12,6 +12,7 @@ public class InventoryManager : MonoBehaviour
     public List<InventorySlot> inventorySlots;
     public List<InventorySlot> toolbarSlots;
     public List<InventorySlot> allSlots;
+    [SerializeField] private List<ItemSO> allItems;
     public InventorySlot currentHeldSlot;
     public UI_Controller uicontroller;
     public GameObject itemPickupPrefab;
