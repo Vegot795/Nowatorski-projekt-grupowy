@@ -10,7 +10,7 @@ public class FarmScript : MonoBehaviour
     public bool isWatered = false;
     public float growSpeed = 1f;
     public bool isOccupied = false;
-    [SerializeField] private List<Slider> statsSliders;
+    public List<Slider> statsSliders;
     private void Awake()
     {
         statsSliders = new List<Slider>(GetComponentsInChildren<Slider>(true));
@@ -19,7 +19,7 @@ public class FarmScript : MonoBehaviour
 
     private void Update()
     {
-        WateredToDry();
+        //WateredToDry();
     }
 
     public void WateredToDry()
