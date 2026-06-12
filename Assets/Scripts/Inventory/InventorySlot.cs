@@ -18,10 +18,10 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     void Awake()
     {
         slotImage = transform.GetChild(0).GetComponent<Image>();
-        if(ItemInSlot != null)
+        if (ItemInSlot != null)
         {
             slotImage.sprite = ItemInSlot.Icon;
-            slotImage.color = new Color(255,255,255,100);
+            slotImage.color = new Color(255, 255, 255, 100);
         }
         slotAmountText = GetComponentInChildren<TextMeshProUGUI>();
         IsOccupied = false;
@@ -63,7 +63,10 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         slotImage.color = new Color(255, 255, 255, 0);
         ItemAmount = 0;
         slotAmountText.text = null;
-        StartCoroutine(SetDrag(false));
+        if (gameObject.activeInHierarchy)
+        {
+            StartCoroutine(SetDrag(false));
+        }
 
     }
     void UpdateItemAmountText()

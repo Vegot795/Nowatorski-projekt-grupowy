@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
     {
         _plantation = Object.FindFirstObjectByType<PlantationScript>();
         uiController = Object.FindFirstObjectByType<UI_Controller>();
-        if(inventoryManager == null)
+        if (inventoryManager == null)
         {
             inventoryManager = Object.FindFirstObjectByType<InventoryManager>();
         }
@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetBool("isMoving", false);
         }
-        if(movementInput.x < 0)
+        if (movementInput.x < 0)
         {
             spriteRenderer.flipX = true;
             swordAttack.attackDirection = SwordAttack.AttackDirection.Left;
@@ -84,7 +84,7 @@ public class PlayerController : MonoBehaviour
             swordAttack.attackDirection = SwordAttack.AttackDirection.Right;
             facingDirection = Direction.Right;
         }
-        if(movementInput.y > 0)
+        if (movementInput.y > 0)
         {
             animator.SetBool("isMovingTop", true);
             animator.SetBool("isMovingBottom", false);
@@ -104,9 +104,10 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("isMovingBottom", false);
         }
     }
-    private bool TryMove(Vector2 direction) {
+    private bool TryMove(Vector2 direction)
+    {
         if (canMove)
-        {    
+        {
             if (direction != Vector2.zero)
             {
                 int count = rb.Cast(
@@ -184,7 +185,7 @@ public class PlayerController : MonoBehaviour
             {
                 _plantation.BuildingMode = _plantation.BuildingModeList[0];
             }
-        }       
+        }
     }
 
     public void OnOpenInventory()
@@ -196,7 +197,7 @@ public class PlayerController : MonoBehaviour
     {
         if (uiController.isBuildingEnabled)
         {
-            if(_plantation.BuildingMode == "Build")
+            if (_plantation.BuildingMode == "Build")
             {
                 _plantation.BuildNewField();
             }
@@ -208,7 +209,7 @@ public class PlayerController : MonoBehaviour
             }
             return;
         }
-        else 
+        else
         {
             switch (inventoryManager.currentHeldSlot?.ItemInSlot)
             {
@@ -220,7 +221,7 @@ public class PlayerController : MonoBehaviour
                     tool.UseTool();
                     break;
             }
-        }      
+        }
     }
 
     public void OnToolbarMove(InputValue input)
@@ -254,4 +255,5 @@ public class PlayerController : MonoBehaviour
         }
     }
     #endregion
+
 }
