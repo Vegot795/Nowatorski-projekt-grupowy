@@ -1623,6 +1623,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5938065652223395557, guid: d1b486ae962a501428ec99654405653e,
         type: 3}
+    - target: {fileID: 4047163151934784758, guid: 2f0bc798239f89846ae2453bf6696229,
+        type: 3}
+      propertyPath: spawnAreaTilemap
+      value: 
+      objectReference: {fileID: 517969297}
     - target: {fileID: 6961193509376676624, guid: 2f0bc798239f89846ae2453bf6696229,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2387,6 +2392,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 873d07956ed4ce24db51f3f20fa408e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1839735485 &517969297 stripped
+Tilemap:
+  m_CorrespondingSourceObject: {fileID: 1928881685496112392, guid: 299c51d669ad86a4287bdd08c0501c87,
+    type: 3}
+  m_PrefabInstance: {fileID: 1185701058}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &535456564
 PrefabInstance:
   m_ObjectHideFlags: 0
