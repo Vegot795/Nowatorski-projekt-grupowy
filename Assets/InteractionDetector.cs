@@ -21,19 +21,11 @@ public class InteractionDetector : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.TryGetComponent(out IInteraction interactable) && interactable.CanInteract())
-        { 
-            interactableInRange = interactable;
-            interactionText.SetActive(true);
-        }
+        interactionText.SetActive(true);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out IInteraction interactable) && interactable == interactableInRange)
-        {
-            interactableInRange = null;
-            interactionText.SetActive(false);
-        }
+        interactionText.SetActive(false);
     }
 }
