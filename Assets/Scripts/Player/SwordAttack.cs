@@ -28,7 +28,7 @@ public class SwordAttack : MonoBehaviour
         swordCollider.enabled = false;
         animator = GetComponentInParent<Animator>();
 
-        Damage = GetComponentInParent<CharacterBasics>().Damage;
+        Damage = GetComponentInParent<PlayerController>().Damage;
     }
 
 

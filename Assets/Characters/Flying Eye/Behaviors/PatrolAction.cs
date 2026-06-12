@@ -3,15 +3,17 @@ using Unity.Behavior;
 using UnityEngine;
 using Action = Unity.Behavior.Action;
 using Unity.Properties;
+using UnityEngine.Tilemaps;
 
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "Patrol", story: "Patrol Nearby area", category: "Action", id: "af63d86a38dd118a6ecbc39eb8449d7c")]
 public partial class PatrolAction : Action
 {
     [SerializeReference] public BlackboardVariable<float> Speed;
-    [SerializeReference] public BlackboardVariable<GameObject> Agent;
     [SerializeReference] public BlackboardVariable<float> PatrolRange;
     [SerializeReference] public BlackboardVariable<float> ARRIVAL_THRESHOLD;
+    [SerializeReference] public BlackboardVariable<GameObject> Agent;
+    [SerializeReference] public BlackboardVariable<Tilemap> Ground;
 
 
     private Vector2 m_CurrentPosition;
@@ -48,7 +50,6 @@ public partial class PatrolAction : Action
         {
             return Status.Success; 
         }
-        // Move toward target point
 
         Vector2 direction = (m_TargetPoint - m_CurrentPosition).normalized;
         Vector2 movement = direction * Speed.Value * Time.fixedDeltaTime;
@@ -73,8 +74,15 @@ public partial class PatrolAction : Action
 
     private Status Initialize ()
     {
-        float randomX = UnityEngine.Random.Range(m_CurrentPosition.x - PatrolRange.Value, m_CurrentPosition.x + PatrolRange.Value);
-        float randomY = UnityEngine.Random.Range(m_CurrentPosition.y - PatrolRange.Value, m_CurrentPosition.y + PatrolRange.Value);
+        BoundsInt bounds = Ground.Value.cellBounds;
+
+        if (bounds.size.x == 0 || bounds.size.y == 0)
+        {
+            return Status.Failure;
+        }
+
+        float randomX = UnityEngine.Random.Range(bounds.xMin, bounds.xMax);
+        float randomY = UnityEngine.Random.Range(bounds.yMin, bounds.yMax);
         m_TargetPoint = new Vector2(randomX, randomY);
 
         m_Rigidbody2D = Agent.Value.GetComponent<Rigidbody2D>();
@@ -85,4 +93,3 @@ public partial class PatrolAction : Action
         return Status.Running;
     }
 }
-
