@@ -14,6 +14,7 @@ public class InteractionDetector : MonoBehaviour
     [SerializeField] private bool inPlant = false;
     [SerializeField] private bool inFarmField = false;
 
+
     void Start()
     {
         //interactionText.gameObject.SetActive(false);
@@ -25,6 +26,7 @@ public class InteractionDetector : MonoBehaviour
     {
         HandleShopInput();
         HandlePlantInput();
+        HandleFieldInput();
     }
 
     private void HandleShopInput()
@@ -62,13 +64,15 @@ public class InteractionDetector : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.L))
         {
-            if (currentPlant == null) return;
+            if (currentField == null) return;
+            if (money == null || money.currentWater < 10) return;
 
             FarmScript field = currentField.GetComponent<FarmScript>();
 
             if (field != null)
             {
                 field.WaterTheField();
+                money.currentWater -= 10;
             }
         }
     }
@@ -95,9 +99,9 @@ public class InteractionDetector : MonoBehaviour
         }
         if (collision.CompareTag("FarmField"))
         {
+            Debug.Log("Entered field");
             currentField = collision.gameObject;
-            inShop = true;
-            //ShowText("Press T to open shop");
+            inFarmField = true;
         }
     }
 
@@ -116,7 +120,7 @@ public class InteractionDetector : MonoBehaviour
         if (collision.CompareTag("FarmField"))
         {
 
-            inShop = false;
+            inFarmField = false;
             currentField = null;
             //ShowText("Press T to open shop");
         }
