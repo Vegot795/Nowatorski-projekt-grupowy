@@ -19,12 +19,12 @@ public class PlantScript : MonoBehaviour
     public FarmScript farmScript;
     public SpriteRenderer sr;
     public int dropCount = 2;
-    
+
 
 
     public float dryTime = 50f;
 
-    void Awake() 
+    void Awake()
     {
 
         currentGrowth = seedData.currentTimeBetweenStages;
@@ -42,7 +42,7 @@ public class PlantScript : MonoBehaviour
 
         isHarvestable = false;
         posToAdultMoved = false;
-        
+
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
         if (rb != null)
         {
@@ -60,7 +60,7 @@ public class PlantScript : MonoBehaviour
 
         if (currentWater > 0)
         {
-            currentWater -= Time.deltaTime;            
+            currentWater -= Time.deltaTime;
         }
 
         PlantGrowth();
@@ -68,7 +68,7 @@ public class PlantScript : MonoBehaviour
 
     private void PlantGrowth()
     {
-        float timeToDry =  dryTime;
+        float timeToDry = dryTime;
         int stagesCount = growthStages.Length;
         float timePerStage = baseGrowthTime / stagesCount;
 
@@ -76,7 +76,7 @@ public class PlantScript : MonoBehaviour
         if (currentWater >= 0)
         {
 
-            if(currentStage < stagesCount - 1)
+            if (currentStage < stagesCount - 1)
             {
                 currentGrowth -= Time.deltaTime;
                 if (currentGrowth <= 0f)
@@ -86,11 +86,11 @@ public class PlantScript : MonoBehaviour
                     if (currentStage >= seedData.babyStage.Length && !posToAdultMoved)
                     {
                         gameObject.transform.position += new Vector3(0, 0.2f, 0);
-                        gameObject.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+                        gameObject.transform.localScale = new Vector3(2f, 2f, 2f);
                         posToAdultMoved = true;
                     }
 
-                    if(currentStage < stagesCount)
+                    if (currentStage < stagesCount)
                     {
                         currentSprite = growthStages[currentStage];
                         sr.sprite = currentSprite;
@@ -112,7 +112,7 @@ public class PlantScript : MonoBehaviour
         else
         {
             dryTime -= Time.deltaTime;
-            if(dryTime <= 0)
+            if (dryTime <= 0)
             {
                 Destroy(gameObject);
             }
@@ -139,4 +139,5 @@ public class PlantScript : MonoBehaviour
             SeedDropIP.count = dropCount;
             Destroy(gameObject);
         }
-}}
+    }
+}

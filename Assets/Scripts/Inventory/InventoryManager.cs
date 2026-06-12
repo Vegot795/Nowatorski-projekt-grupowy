@@ -23,7 +23,7 @@ public class InventoryManager : MonoBehaviour
     public ItemSO testItem;
     public Color baseColor = new Color(255, 255, 255, 100);
     public bool isSeed = false;
-    
+
     List<string> itemTypes = new List<string> { "Seed", "Item" };
 
     private bool isInvOpen = true;
@@ -40,7 +40,7 @@ public class InventoryManager : MonoBehaviour
             inventoryUI = GameObject.Find("InventoryUI");
         }
 
-        if(toolbarSlots != null)
+        if (toolbarSlots != null)
         {
             ToolbarUI = GameObject.Find("ToolbarUI");
         }
@@ -166,7 +166,7 @@ public class InventoryManager : MonoBehaviour
     {
         Image thisImage = currentHeldSlot.GetComponentInChildren<Image>();
         int currentIndex = toolbarSlots.IndexOf(toolbarSlot);
-        
+
         thisImage.color = Color.red;
         currentHeldSlot = toolbarSlots[currentIndex];
         currentHeldSlot.isCurrentHeldSlot = true;
@@ -189,7 +189,7 @@ public class InventoryManager : MonoBehaviour
         SlotSetToBeCurrentHeld(currentHeldSlot);
     }
 
-    public void ThrowOutOfEquipment(ItemSO item,int amount)
+    public void ThrowOutOfEquipment(ItemSO item, int amount)
     {
         GameObject PickupItem = Instantiate(itemPickupPrefab, gameObject.transform.position, Quaternion.identity);
         PickupItem.GetComponent<Collider2D>().enabled = false;
@@ -214,7 +214,7 @@ public class InventoryManager : MonoBehaviour
             StartCoroutine(StopThrownItem(PickupItem, 1f));
         }
         int slotIndex = allSlots.IndexOf(currentHeldSlot);
-        if(slotIndex >= 0)
+        if (slotIndex >= 0)
         {
             removeItemFromInv(slotIndex, amount);
             Debug.Log($"Threw out {amount} of {item.name} from slot {slotIndex}");
@@ -255,8 +255,11 @@ public class InventoryManager : MonoBehaviour
                 Debug.Log($"Planting seed at {spawnPos}");
                 GameObject plantInstance = Instantiate(seed.plantPrefab, spawnPos, Quaternion.identity, transform);
                 SpriteRenderer sr = plantInstance.GetComponent<SpriteRenderer>();
-                plantInstance.transform.parent = GameObject.Find("PlantsDump").transform;
-                plantInstance.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                if (FindSeedParent() != null)
+                {
+                    plantInstance.transform.SetParent(FindSeedParent().transform);
+                }
+                plantInstance.transform.localScale = new Vector3(1f, 1f, 1f);
                 sr.sortingLayerName = "Plants";
                 sr.sortingOrder = 1;
 
@@ -277,7 +280,7 @@ public class InventoryManager : MonoBehaviour
         {
             if (currentHeldSlot.ItemInSlot is SeedSO seed && currentHeldSlot != null)
             {
-                if(seedPreviewInstance == null)
+                if (seedPreviewInstance == null)
                 {
                     seedPreviewInstance = Instantiate(plantPreview);
                     seedPreviewInstance.GetComponent<SpriteRenderer>().sprite = seed.adultStage[1];
@@ -378,6 +381,19 @@ public class InventoryManager : MonoBehaviour
         Vector3 spawnPosition = grid.GetCellCenterWorld(cellPosition);
         //spawnPosition.y += 0.2f;
         return spawnPosition;
+    }
+    private GameObject FindSeedParent()
+    {
+        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        Collider2D hit = Physics2D.OverlapPoint(worldPosition);
+
+        if (hit != null && hit.CompareTag("FarmField"))
+        {
+            return hit.gameObject;
+        }
+
+        return null;
     }
 
     #endregion
