@@ -39,7 +39,7 @@ public class shopSeedButtons : MonoBehaviour
         if (CanPay)
         {
             money.currentMoney -= price;
-            bas.CurrentHP += 10;
+            bas.CurrentHP = Mathf.Min(bas.CurrentHP + 10, bas.MaxHP);
         }
     }
     public void BuyMoreHP()
