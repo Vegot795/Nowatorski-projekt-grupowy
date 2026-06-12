@@ -10,7 +10,7 @@ public class PlantScript : MonoBehaviour
 
     private float currentGrowth;
     private float baseGrowthTime;
-    private bool isHarvestable = false;
+    public bool isHarvestable = false;
     private bool posToAdultMoved = false;
 
     public Sprite[] growthStages;
@@ -117,13 +117,17 @@ public class PlantScript : MonoBehaviour
         {
             farmScript.isOccupied = false;
             sr.enabled = false;
+            Money money = FindAnyObjectByType<Money>();
+            money.currentMoney += 10;
+            growSlider.gameObject.SetActive(false);
 
+            /*
             Vector2 dropLocation = (Vector2)transform.position + Random.insideUnitCircle * dropRadius;
             GameObject SeedDrop = Instantiate(seedData.itemPickupPrefab, dropLocation, Quaternion.identity);
 
             var SeedDropIP = SeedDrop.GetComponent<ItemPickup>();
             SeedDropIP.item = seedData;
-            SeedDropIP.count = dropCount;
+            SeedDropIP.count = dropCount;*/
 
             Destroy(gameObject);
         }

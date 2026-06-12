@@ -12,6 +12,7 @@ public class InventoryManager : MonoBehaviour
     public List<InventorySlot> inventorySlots;
     public List<InventorySlot> toolbarSlots;
     public List<InventorySlot> allSlots;
+    [SerializeField] private List<ItemSO> allItems;
     public InventorySlot currentHeldSlot;
     public UI_Controller uicontroller;
     public GameObject itemPickupPrefab;
@@ -63,6 +64,7 @@ public class InventoryManager : MonoBehaviour
 
         inventoryUI.SetActive(false);
         isInvOpen = false;
+
     }
 
     void Update()
@@ -85,6 +87,10 @@ public class InventoryManager : MonoBehaviour
         else
         {
             DestroySeedPrefabPreview();
+        }
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            addItemToInv(testItem, 30);
         }
     }
 
@@ -402,4 +408,45 @@ public class InventoryManager : MonoBehaviour
     }
 
     #endregion
+    //save
+    public void SaveInventory()
+    {
+        SaveSystem.SaveInventory(allSlots);
+    }
+    public void LoadInventory()
+    {
+        InventorySaveData data = SaveSystem.LoadInventory();
+
+        if (data == null)
+            return;
+
+        for (int i = 0; i < inventorySlots.Count; i++)
+        {
+            InventorySlot slot = allSlots[i];
+
+            slot.RemoveItem();
+
+            if (data.slots[i].DataIsOccupied)
+            {
+                ItemSO item = FindItemByName(data.slots[i].DataItemName);
+
+                slot.AddItem(
+                    item,
+                    data.slots[i].DataItemAmount
+                );
+            }
+        }
+    }
+    private ItemSO FindItemByName(string itemName)
+    {
+        foreach (ItemSO item in allItems)
+        {
+            if (item.name == itemName)
+            {
+                return item;
+            }
+        }
+
+        return null;
+    }
 }

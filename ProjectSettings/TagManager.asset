@@ -13,8 +13,8 @@ TagManager:
   - FieldCount
   - FarmField
   - ItemCollector
-  - HealthSlider
-  - EnemyHealthSlider
+  - Shop
+  - Plant
   layers:
   - Default
   - TransparentFX
