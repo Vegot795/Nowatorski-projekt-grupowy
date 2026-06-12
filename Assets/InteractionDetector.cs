@@ -3,21 +3,22 @@ using UnityEngine;
 
 public class InteractionDetector : MonoBehaviour
 {
-    [Header("UI")]
-    //public TextMeshProUGUI interactionText;
 
-    [Header("References")]
     [SerializeField] private ShopController shopController;
+    [SerializeField] private Money money;
 
     [SerializeField] private GameObject currentPlant;
+    [SerializeField] private GameObject currentField;
 
     [SerializeField] private bool inShop = false;
     [SerializeField] private bool inPlant = false;
+    [SerializeField] private bool inFarmField = false;
 
     void Start()
     {
         //interactionText.gameObject.SetActive(false);
         shopController = FindAnyObjectByType<ShopController>();
+        money = FindAnyObjectByType<Money>();
     }
 
     void Update()
@@ -26,7 +27,6 @@ public class InteractionDetector : MonoBehaviour
         HandlePlantInput();
     }
 
-    // ---------------- SHOP ----------------
     private void HandleShopInput()
     {
         if (!inShop) return;
@@ -40,7 +40,6 @@ public class InteractionDetector : MonoBehaviour
         }
     }
 
-    // ---------------- PLANT ----------------
     private void HandlePlantInput()
     {
         if (!inPlant) return;
@@ -57,8 +56,23 @@ public class InteractionDetector : MonoBehaviour
             }
         }
     }
+    private void HandleFieldInput()
+    {
+        if (!inFarmField) return;
 
-    // ---------------- TRIGGERS ----------------
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            if (currentPlant == null) return;
+
+            FarmScript field = currentField.GetComponent<FarmScript>();
+
+            if (field != null)
+            {
+                field.WaterTheField();
+            }
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Shop"))
@@ -79,6 +93,12 @@ public class InteractionDetector : MonoBehaviour
                 //ShowText("Press P to harvest");
             }
         }
+        if (collision.CompareTag("FarmField"))
+        {
+            currentField = collision.gameObject;
+            inShop = true;
+            //ShowText("Press T to open shop");
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -93,22 +113,16 @@ public class InteractionDetector : MonoBehaviour
             inPlant = false;
             currentPlant = null;
         }
-
-        if (!inShop && !inPlant)
+        if (collision.CompareTag("FarmField"))
         {
-            //HideText();
+
+            inShop = false;
+            currentField = null;
+            //ShowText("Press T to open shop");
         }
+
+
     }
 
-    // ---------------- UI HELPERS ----------------
-    /*private void ShowText(string message)
-    {
-        interactionText.gameObject.SetActive(true);
-        interactionText.text = message;
-    }
 
-    private void HideText()
-    {
-        interactionText.gameObject.SetActive(false);
-    }*/
 }

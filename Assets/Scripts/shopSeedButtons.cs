@@ -58,6 +58,14 @@ public class shopSeedButtons : MonoBehaviour
             plantS.maxFieldCount += 1;
         }
     }
+    public void BuyWater()
+    {
+        if (CanPay)
+        {
+            money.currentMoney -= price;
+            money.currentWater += 10;
+        }
+    }
 
 
 }
