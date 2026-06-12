@@ -27,5 +27,5 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 0cad6c6ebb4275947b84baade2ebe51b, type: 3}
   - {fileID: 21300000, guid: ba561f76ca777014c8ce0b4e01b93180, type: 3}
   itemPickupPrefab: {fileID: 0}
-  timeBetweenStages: 0
-  timeToWater: 0
+  timeBetweenStages: 50
+  timeToWater: 100

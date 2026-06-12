@@ -15,6 +15,8 @@ MonoBehaviour:
   Icon: {fileID: 21300000, guid: bc31943776f9f3b4eb03c2e6294ce0a1, type: 3}
   Description: 
   MaxStackAmount: 64
+  buyPrice: 10
+  sellPriceMultiplier: 0.5
   plantPrefab: {fileID: 1862631628430601967, guid: 5ef26ff7b38cd9f4f8093d28ced2f6fb,
     type: 3}
   babyStage:
@@ -24,5 +26,6 @@ MonoBehaviour:
   adultStage:
   - {fileID: 21300000, guid: b2e74a1ffd62ab3458273b3290ff9aae, type: 3}
   - {fileID: 21300000, guid: 1d750f5092f05fb41a57b6b475a23cc6, type: 3}
-  timeBetweenStages: 0
-  timeToWater: 0
+  itemPickupPrefab: {fileID: 0}
+  timeBetweenStages: 50
+  timeToWater: 100
