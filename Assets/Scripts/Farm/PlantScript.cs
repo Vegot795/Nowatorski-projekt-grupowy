@@ -43,13 +43,21 @@ public class PlantScript : MonoBehaviour
         isHarvestable = false;
         posToAdultMoved = false;
 
-        farmScript = transform.parent.GetComponent<FarmScript>();
+
 
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
         if (rb != null)
         {
             rb.gravityScale = 0f;
             rb.linearVelocity = Vector2.zero;
+        }
+    }
+    void Start()
+    {
+        farmScript = transform.parent.GetComponent<FarmScript>();
+        if (farmScript != null)
+        {
+            Debug.Log("Found parent");
         }
     }
 
