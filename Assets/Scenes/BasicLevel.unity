@@ -854,7 +854,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beadeee165837584aa5db2e46d37b3e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopItem: {fileID: 11400000, guid: a5eba53ac63fd5e428930f8d4e39f7eb, type: 2}
+  shopItem: {fileID: 11400000, guid: ff252481044f1254ca2cd09c315dcdaa, type: 2}
   price: 100
 --- !u!1 &178760805
 GameObject:
@@ -3224,6 +3224,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1676815704005471544, guid: 3a2bb706c0217614593134594e6e29a7,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 211637065}
+    - target: {fileID: 1676815704005471544, guid: 3a2bb706c0217614593134594e6e29a7,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: BuySeeds
+      objectReference: {fileID: 0}
     - target: {fileID: 3382193569451831896, guid: 3a2bb706c0217614593134594e6e29a7,
         type: 3}
       propertyPath: m_Sprite
@@ -3244,8 +3254,32 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8174301001901620910, guid: 3a2bb706c0217614593134594e6e29a7,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 211637065}
   m_SourcePrefab: {fileID: 100100000, guid: 3a2bb706c0217614593134594e6e29a7, type: 3}
+--- !u!1 &211637064 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8174301001901620910, guid: 3a2bb706c0217614593134594e6e29a7,
+    type: 3}
+  m_PrefabInstance: {fileID: 211637063}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &211637065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 211637064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beadeee165837584aa5db2e46d37b3e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shopItem: {fileID: 11400000, guid: a5eba53ac63fd5e428930f8d4e39f7eb, type: 2}
+  price: 100
 --- !u!1001 &229641753
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4076,6 +4110,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1676815704005471544, guid: 3a2bb706c0217614593134594e6e29a7,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 415462915}
+    - target: {fileID: 1676815704005471544, guid: 3a2bb706c0217614593134594e6e29a7,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: BuySeeds
+      objectReference: {fileID: 0}
     - target: {fileID: 3382193569451831896, guid: 3a2bb706c0217614593134594e6e29a7,
         type: 3}
       propertyPath: m_Sprite
@@ -4096,8 +4140,32 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8174301001901620910, guid: 3a2bb706c0217614593134594e6e29a7,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 415462915}
   m_SourcePrefab: {fileID: 100100000, guid: 3a2bb706c0217614593134594e6e29a7, type: 3}
+--- !u!1 &415462914 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8174301001901620910, guid: 3a2bb706c0217614593134594e6e29a7,
+    type: 3}
+  m_PrefabInstance: {fileID: 415462913}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &415462915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 415462914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beadeee165837584aa5db2e46d37b3e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shopItem: {fileID: 11400000, guid: 1e91914ac99eb374aa3c27f3bd7cd660, type: 2}
+  price: 100
 --- !u!1001 &427566724
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4288,7 +4356,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shopItem: {fileID: 0}
-  price: 0
+  price: 100
 --- !u!1 &470441585
 GameObject:
   m_ObjectHideFlags: 0
@@ -5434,6 +5502,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1676815704005471544, guid: 3a2bb706c0217614593134594e6e29a7,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 625690260}
+    - target: {fileID: 1676815704005471544, guid: 3a2bb706c0217614593134594e6e29a7,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: BuyRegHP
+      objectReference: {fileID: 0}
     - target: {fileID: 3382193569451831896, guid: 3a2bb706c0217614593134594e6e29a7,
         type: 3}
       propertyPath: m_Sprite
@@ -5453,7 +5531,11 @@ PrefabInstance:
         type: 3}
       insertIndex: 0
       addedObject: {fileID: 1683302438}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8174301001901620910, guid: 3a2bb706c0217614593134594e6e29a7,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 625690260}
   m_SourcePrefab: {fileID: 100100000, guid: 3a2bb706c0217614593134594e6e29a7, type: 3}
 --- !u!224 &625690258 stripped
 RectTransform:
@@ -5461,6 +5543,26 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 625690257}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &625690259 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8174301001901620910, guid: 3a2bb706c0217614593134594e6e29a7,
+    type: 3}
+  m_PrefabInstance: {fileID: 625690257}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &625690260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 625690259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beadeee165837584aa5db2e46d37b3e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shopItem: {fileID: 0}
+  price: 100
 --- !u!1001 &636761595
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6884,6 +6986,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1676815704005471544, guid: 3a2bb706c0217614593134594e6e29a7,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 731261447}
+    - target: {fileID: 1676815704005471544, guid: 3a2bb706c0217614593134594e6e29a7,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: BuyMoreHP
+      objectReference: {fileID: 0}
     - target: {fileID: 3382193569451831896, guid: 3a2bb706c0217614593134594e6e29a7,
         type: 3}
       propertyPath: m_Sprite
@@ -6903,7 +7015,11 @@ PrefabInstance:
         type: 3}
       insertIndex: 0
       addedObject: {fileID: 1700290325}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8174301001901620910, guid: 3a2bb706c0217614593134594e6e29a7,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 731261447}
   m_SourcePrefab: {fileID: 100100000, guid: 3a2bb706c0217614593134594e6e29a7, type: 3}
 --- !u!224 &731261445 stripped
 RectTransform:
@@ -6911,6 +7027,26 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 731261444}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &731261446 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8174301001901620910, guid: 3a2bb706c0217614593134594e6e29a7,
+    type: 3}
+  m_PrefabInstance: {fileID: 731261444}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &731261447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 731261446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beadeee165837584aa5db2e46d37b3e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shopItem: {fileID: 0}
+  price: 100
 --- !u!1001 &731986549
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7790,6 +7926,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1676815704005471544, guid: 3a2bb706c0217614593134594e6e29a7,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 932632965}
+    - target: {fileID: 1676815704005471544, guid: 3a2bb706c0217614593134594e6e29a7,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: BuySeeds
+      objectReference: {fileID: 0}
     - target: {fileID: 3382193569451831896, guid: 3a2bb706c0217614593134594e6e29a7,
         type: 3}
       propertyPath: m_Sprite
@@ -7815,8 +7961,32 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8174301001901620910, guid: 3a2bb706c0217614593134594e6e29a7,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 932632965}
   m_SourcePrefab: {fileID: 100100000, guid: 3a2bb706c0217614593134594e6e29a7, type: 3}
+--- !u!1 &932632964 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8174301001901620910, guid: 3a2bb706c0217614593134594e6e29a7,
+    type: 3}
+  m_PrefabInstance: {fileID: 932632963}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &932632965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 932632964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beadeee165837584aa5db2e46d37b3e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shopItem: {fileID: 11400000, guid: 20556b9dbe2257143840b84ab1316152, type: 2}
+  price: 100
 --- !u!1001 &934079406
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8286,6 +8456,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676815704005471544, guid: 3a2bb706c0217614593134594e6e29a7,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: BuyMoreField
       objectReference: {fileID: 0}
     - target: {fileID: 3382193569451831896, guid: 3a2bb706c0217614593134594e6e29a7,
         type: 3}
@@ -9637,7 +9812,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8174301001901620910, guid: 3a2bb706c0217614593134594e6e29a7,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 131922424}
   m_SourcePrefab: {fileID: 100100000, guid: 3a2bb706c0217614593134594e6e29a7, type: 3}
 --- !u!1001 &1231603945
 PrefabInstance:
@@ -16014,6 +16193,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1676815704005471544, guid: 3a2bb706c0217614593134594e6e29a7,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1323819777}
+    - target: {fileID: 1676815704005471544, guid: 3a2bb706c0217614593134594e6e29a7,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: BuySeeds
+      objectReference: {fileID: 0}
     - target: {fileID: 3382193569451831896, guid: 3a2bb706c0217614593134594e6e29a7,
         type: 3}
       propertyPath: m_Sprite
@@ -16034,8 +16223,32 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8174301001901620910, guid: 3a2bb706c0217614593134594e6e29a7,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1323819777}
   m_SourcePrefab: {fileID: 100100000, guid: 3a2bb706c0217614593134594e6e29a7, type: 3}
+--- !u!1 &1323819776 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8174301001901620910, guid: 3a2bb706c0217614593134594e6e29a7,
+    type: 3}
+  m_PrefabInstance: {fileID: 1323819775}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1323819777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1323819776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beadeee165837584aa5db2e46d37b3e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shopItem: {fileID: 11400000, guid: ee495d58a485628408fb8d5784614060, type: 2}
+  price: 100
 --- !u!1001 &1327279311
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18147,6 +18360,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1676815704005471544, guid: 3a2bb706c0217614593134594e6e29a7,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1709951870}
+    - target: {fileID: 1676815704005471544, guid: 3a2bb706c0217614593134594e6e29a7,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: BuySeeds
+      objectReference: {fileID: 0}
     - target: {fileID: 3382193569451831896, guid: 3a2bb706c0217614593134594e6e29a7,
         type: 3}
       propertyPath: m_Sprite
@@ -18167,8 +18390,32 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8174301001901620910, guid: 3a2bb706c0217614593134594e6e29a7,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1709951870}
   m_SourcePrefab: {fileID: 100100000, guid: 3a2bb706c0217614593134594e6e29a7, type: 3}
+--- !u!1 &1709951869 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8174301001901620910, guid: 3a2bb706c0217614593134594e6e29a7,
+    type: 3}
+  m_PrefabInstance: {fileID: 1709951868}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1709951870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1709951869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beadeee165837584aa5db2e46d37b3e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shopItem: {fileID: 11400000, guid: b977f30568fa88a459e82aff7ac0e6f3, type: 2}
+  price: 100
 --- !u!1001 &1777947344
 PrefabInstance:
   m_ObjectHideFlags: 0
