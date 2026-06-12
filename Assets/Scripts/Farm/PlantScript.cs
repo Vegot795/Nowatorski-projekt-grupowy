@@ -43,6 +43,8 @@ public class PlantScript : MonoBehaviour
         isHarvestable = false;
         posToAdultMoved = false;
 
+        farmScript = transform.parent.GetComponent<FarmScript>();
+
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
         if (rb != null)
         {
@@ -131,6 +133,7 @@ public class PlantScript : MonoBehaviour
     {
         if (isHarvestable)
         {
+            farmScript.isOccupied = false;
             gameObject.GetComponent<SpriteRenderer>().enabled = false;
             Vector2 dropLocation = (Vector2)transform.position + Random.insideUnitCircle * dropRadius;
             GameObject SeedDrop = Instantiate(seedData.itemPickupPrefab, dropLocation, Quaternion.identity);

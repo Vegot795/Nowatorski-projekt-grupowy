@@ -252,18 +252,23 @@ public class InventoryManager : MonoBehaviour
 
             if (ValidateConditions())
             {
-                Debug.Log($"Planting seed at {spawnPos}");
-                GameObject plantInstance = Instantiate(seed.plantPrefab, spawnPos, Quaternion.identity, transform);
-                SpriteRenderer sr = plantInstance.GetComponent<SpriteRenderer>();
-                if (FindSeedParent() != null)
+                if (FindSeedParent().GetComponent<FarmScript>().isOccupied == false)
                 {
-                    plantInstance.transform.SetParent(FindSeedParent().transform);
-                }
-                plantInstance.transform.localScale = new Vector3(1f, 1f, 1f);
-                sr.sortingLayerName = "Plants";
-                sr.sortingOrder = 1;
+                    Debug.Log($"Planting seed at {spawnPos}");
+                    GameObject plantInstance = Instantiate(seed.plantPrefab, spawnPos, Quaternion.identity, transform);
+                    SpriteRenderer sr = plantInstance.GetComponent<SpriteRenderer>();
+                    if (FindSeedParent() != null)
+                    {
+                        plantInstance.transform.SetParent(FindSeedParent().transform);
+                        FindSeedParent().GetComponent<FarmScript>().isOccupied = true;
+                    }
+                    plantInstance.transform.localScale = new Vector3(1f, 1f, 1f);
+                    sr.sortingLayerName = "Plants";
+                    sr.sortingOrder = 1;
 
-                currentHeldSlot.RemoveItemAmount(1);
+                    currentHeldSlot.RemoveItemAmount(1);
+                }
+
             }
             else
             {
