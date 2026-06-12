@@ -13,12 +13,17 @@ public class CharacterBasics : MonoBehaviour
     private bool isKnockedBack = false;
     private float knockbackTimer = 0f;
     private float knockbackDuration = 0.2f;
+    private MobSpawner spawner;
 
     void Start()
     {
         CurrentHP = MaxHP;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        if(spawner == null)
+        {
+            spawner = FindAnyObjectByType<MobSpawner>();
+        }
     }
 
     void Update()
@@ -48,6 +53,10 @@ public class CharacterBasics : MonoBehaviour
 
     private void Die()
     {
+        if (gameObject == Resources.Load<GameObject>("FlyingEye"))
+        {
+            spawner.RemoveEnemyFromList(gameObject.GetComponent<FlyingEyeController>());
+        }
         Destroy(gameObject);
     }
 

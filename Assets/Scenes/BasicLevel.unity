@@ -4704,6 +4704,84 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 620025493}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &627676962
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2284142854591415470, guid: d1b486ae962a501428ec99654405653e,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2284142854591415470, guid: d1b486ae962a501428ec99654405653e,
+        type: 3}
+      propertyPath: m_SortingLayerID
+      value: -985543189
+      objectReference: {fileID: 0}
+    - target: {fileID: 5938065652223395557, guid: d1b486ae962a501428ec99654405653e,
+        type: 3}
+      propertyPath: m_Name
+      value: Flight_0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6468495013863006397, guid: d1b486ae962a501428ec99654405653e,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3.3848207
+      objectReference: {fileID: 0}
+    - target: {fileID: 6468495013863006397, guid: d1b486ae962a501428ec99654405653e,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.7599177
+      objectReference: {fileID: 0}
+    - target: {fileID: 6468495013863006397, guid: d1b486ae962a501428ec99654405653e,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6468495013863006397, guid: d1b486ae962a501428ec99654405653e,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6468495013863006397, guid: d1b486ae962a501428ec99654405653e,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6468495013863006397, guid: d1b486ae962a501428ec99654405653e,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6468495013863006397, guid: d1b486ae962a501428ec99654405653e,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6468495013863006397, guid: d1b486ae962a501428ec99654405653e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6468495013863006397, guid: d1b486ae962a501428ec99654405653e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6468495013863006397, guid: d1b486ae962a501428ec99654405653e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d1b486ae962a501428ec99654405653e, type: 3}
 --- !u!1001 &636761595
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16875,6 +16953,32 @@ MonoBehaviour:
   testItem: {fileID: 11400000, guid: a5eba53ac63fd5e428930f8d4e39f7eb, type: 2}
   baseColor: {r: 255, g: 255, b: 255, a: 100}
   isSeed: 0
+--- !u!1 &1918922327 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8920606033981406087, guid: c8ef18d6614325a448057aaa50de6101,
+    type: 3}
+  m_PrefabInstance: {fileID: 1937153648}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1918922330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1918922327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36b58de3f891ae741bd929e89e70f90a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FlyingEyePrefab: {fileID: 5938065652223395557, guid: d1b486ae962a501428ec99654405653e,
+    type: 3}
+  currentSpawnedEnemies: []
+  maxSpawnedEnemies: 5
+  spawnAreaTilemap: {fileID: 178760808}
+  spawnChance: 1
+  timeGap: 1
+  currentTime: 0
 --- !u!1001 &1937153648
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16941,7 +17045,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8920606033981406087, guid: c8ef18d6614325a448057aaa50de6101,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1918922330}
   m_SourcePrefab: {fileID: 100100000, guid: c8ef18d6614325a448057aaa50de6101, type: 3}
 --- !u!114 &1959612339 stripped
 MonoBehaviour:
@@ -17575,3 +17683,4 @@ SceneRoots:
   - {fileID: 1916271619}
   - {fileID: 251371472}
   - {fileID: 711949667}
+  - {fileID: 627676962}
