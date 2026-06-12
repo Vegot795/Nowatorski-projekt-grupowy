@@ -39,29 +39,38 @@ public partial class PatrolAction : Action
 
         if(!m_isInitialized)
         {
-            return Status.Failure;
+            return Initialize();
         }
-        
+
+        // Check if the agent is knocked back - if so, don't move
+        CharacterBasics characterBasics = Agent.Value.GetComponent<CharacterBasics>();
+        if (characterBasics != null && characterBasics.IsKnockedBack())
+        {
+            // Stop moving during knockback, let CharacterBasics handle it
+            if (m_Rigidbody2D != null)
+            {
+                m_Rigidbody2D.linearVelocity = Vector2.zero;
+            }
+            return Status.Running;  // Keep patrol active but paused
+        }
 
         m_CurrentPosition = Agent.Value.transform.position;
         float distance = Vector2.Distance(m_CurrentPosition, m_TargetPoint);
 
-        if (distance <= ARRIVAL_THRESHOLD)
+        if (distance <= ARRIVAL_THRESHOLD.Value)
         {
             return Status.Success; 
         }
 
         Vector2 direction = (m_TargetPoint - m_CurrentPosition).normalized;
-        Vector2 movement = direction * Speed.Value * Time.fixedDeltaTime;
-
-        Rigidbody2D rb = Agent.Value.GetComponent<Rigidbody2D>();
+        
         if (m_Rigidbody2D != null)
         {
-            m_Rigidbody2D.MovePosition(m_CurrentPosition + movement);
+            m_Rigidbody2D.linearVelocity = direction * Speed.Value;
         }
         else
         {
-            Agent.Value.transform.position = m_CurrentPosition + movement;
+            Agent.Value.transform.position = m_CurrentPosition + direction * Speed.Value * Time.fixedDeltaTime;
         }
 
         return Status.Running;
