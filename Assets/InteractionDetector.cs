@@ -36,7 +36,7 @@ public class InteractionDetector : MonoBehaviour
     {
         if (collision.CompareTag("Shop"))
         {
-            Debug.Log("kolizja");
+            //Debug.Log("kolizja");
             canInteract = true;
 
         }
@@ -46,7 +46,7 @@ public class InteractionDetector : MonoBehaviour
     {
         if (collision.CompareTag("Shop"))
         {
-            Debug.Log("end kolizja");
+            //Debug.Log("end kolizja");
             canInteract = false;
         }
     }

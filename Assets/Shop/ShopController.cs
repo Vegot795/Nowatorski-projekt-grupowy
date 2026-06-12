@@ -11,12 +11,18 @@ public class ShopController : MonoBehaviour
     public TMP_Text playerMoneyText;
     public bool isShopOpen = false;
 
-    private ShopNPCScript currentShop;
+
 
     private void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
+
+        if (shopPanel == null)
+        {
+            shopPanel = GameObject.Find("ShopUI");
+        }
+
     }
 
     void Start()

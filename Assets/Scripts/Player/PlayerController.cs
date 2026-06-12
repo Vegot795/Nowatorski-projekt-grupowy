@@ -251,7 +251,7 @@ public class PlayerController : MonoBehaviour
     {
         if (value.isPressed)
         {
-            interactionDetector.TryInteract();
+            //interactionDetector.TryInteract();
         }
     }
     #endregion
