@@ -9,6 +9,7 @@ public class ShopController : MonoBehaviour
     [Header("UI")]
     public GameObject shopPanel;
     public TMP_Text playerMoneyText;
+    public bool isShopOpen = false;
 
     private ShopNPCScript currentShop;
 
@@ -23,16 +24,16 @@ public class ShopController : MonoBehaviour
         shopPanel.SetActive(false);
     }
 
-    public void OpenShop(ShopNPCScript shop)
+    public void OpenShop()
     {
-        currentShop = shop;
         shopPanel.SetActive(true);
+        isShopOpen = true;
     }
 
     public void CloseShop()
     {
         shopPanel.SetActive(false);
-        currentShop = null;
+        isShopOpen = false;
     }
 
 }

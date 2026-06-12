@@ -2899,7 +2899,7 @@ PrefabInstance:
     - target: {fileID: 8381533088411594960, guid: df39f441c40bda94ca331f2affe28adc,
         type: 3}
       propertyPath: m_SortingLayer
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8381533088411594960, guid: df39f441c40bda94ca331f2affe28adc,
         type: 3}
@@ -2923,6 +2923,10 @@ PrefabInstance:
         type: 3}
       insertIndex: 6
       addedObject: {fileID: 1916478263}
+    - targetCorrespondingSourceObject: {fileID: 4829207529452668834, guid: df39f441c40bda94ca331f2affe28adc,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1916478264}
   m_SourcePrefab: {fileID: 100100000, guid: df39f441c40bda94ca331f2affe28adc, type: 3}
 --- !u!1001 &211637063
 PrefabInstance:
@@ -17851,6 +17855,19 @@ MonoBehaviour:
   testItem: {fileID: 11400000, guid: a5eba53ac63fd5e428930f8d4e39f7eb, type: 2}
   baseColor: {r: 255, g: 255, b: 255, a: 100}
   isSeed: 0
+--- !u!114 &1916478264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1916478247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a668d419cd5eb7489554f56a689cd9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentMoney: 0
 --- !u!114 &1959612339 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2029766316768882967, guid: 334dc47bc4c5eaf4aa1e69d4d10195a8,
@@ -18301,6 +18318,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ShopNPC
+      objectReference: {fileID: 0}
+    - target: {fileID: 8300145681913511779, guid: 50ba58ffa986cce4aaa1f541a0ae9ca1,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8586702642929582144, guid: 50ba58ffa986cce4aaa1f541a0ae9ca1,
         type: 3}

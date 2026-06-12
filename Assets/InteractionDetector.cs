@@ -5,27 +5,49 @@ using UnityEngine.InputSystem;
 public class InteractionDetector : MonoBehaviour
 {
     private IInteraction interactableInRange = null;
-    public GameObject interactionText; 
+    public GameObject interactionText;
+    private bool canInteract = false;
+    private ShopController shopController;
     void Start()
     {
         interactionText.SetActive(false);
+        shopController = FindAnyObjectByType<ShopController>();
     }
 
-    public void OnInteraction(InputValue value)
+    void Update()
     {
-        if (value.isPressed)
+        if (Input.GetKeyDown(KeyCode.T) & canInteract)
         {
-            interactableInRange?.Interact();
-        } 
+            Debug.Log("t + int");
+            if (shopController.isShopOpen)
+            {
+                shopController.CloseShop();
+            }
+            else
+            {
+                shopController.OpenShop();
+            }
+
+        }
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        interactionText.SetActive(true);
+        if (collision.CompareTag("Shop"))
+        {
+            Debug.Log("kolizja");
+            canInteract = true;
+
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        interactionText.SetActive(false);
+        if (collision.CompareTag("Shop"))
+        {
+            Debug.Log("end kolizja");
+            canInteract = false;
+        }
     }
 }

@@ -20,7 +20,7 @@ public class ShopNPCScript : MonoBehaviour, IInteraction
         }
         else
         {
-            ShopController.Instance.OpenShop(this);
+            ShopController.Instance.OpenShop();
         }
     }
 }
