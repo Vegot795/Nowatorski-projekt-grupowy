@@ -40,8 +40,17 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     {
         ItemAmount -= amount;
         UpdateItemAmountText();
-        if (ItemAmount <= 0) RemoveItem();
-        if (!CheckOccupencyOfSlot()) RemoveItem();
+
+        if (ItemAmount <= 0)
+        {
+            RemoveItem();
+            return;
+        }
+
+        if (!CheckOccupencyOfSlot())
+        {
+            RemoveItem();
+        }
     }
     public void AddItem(ItemSO item, int amount)
     {
@@ -75,11 +84,10 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     }
     bool CheckOccupencyOfSlot()
     {
-        if (ItemAmount <= ItemInSlot.MaxStackAmount)
-        {
-            return true;
-        }
-        return false;
+        if (ItemInSlot == null)
+            return false;
+
+        return ItemAmount <= ItemInSlot.MaxStackAmount;
     }
     IEnumerator SetDrag(bool state)
     {
