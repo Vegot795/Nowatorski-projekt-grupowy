@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6961193509376676624}
   - component: {fileID: 8205922083837726549}
+  - component: {fileID: 4047163151934784758}
   m_Layer: 0
   m_Name: GameController (1)
   m_TagString: Untagged
@@ -47,3 +48,22 @@ MonoBehaviour:
   shopPanel: {fileID: 0}
   playerMoneyText: {fileID: 0}
   isShopOpen: 0
+--- !u!114 &4047163151934784758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2292790279317516409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36b58de3f891ae741bd929e89e70f90a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FlyingEyePrefab: {fileID: 0}
+  currentSpawnedEnemies: []
+  maxSpawnedEnemies: 5
+  spawnAreaTilemap: {fileID: 0}
+  spawnChance: 1
+  timeGap: 10
+  currentTime: 0
