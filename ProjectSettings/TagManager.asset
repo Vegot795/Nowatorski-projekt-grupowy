@@ -13,6 +13,7 @@ TagManager:
   - FieldCount
   - FarmField
   - ItemCollector
+  - Shop
   layers:
   - Default
   - TransparentFX

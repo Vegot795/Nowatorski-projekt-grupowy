@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8b8e87b3c5c38a479d6f0f58bbfb954, type: 3}
   m_Name: PoksSeed
   m_EditorClassIdentifier: 
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 3054a11c6bde7ef4b8a21bbbf9609652, type: 3}
   Description: 
   MaxStackAmount: 64
+  buyPrice: 10
+  sellPriceMultiplier: 0.5
   plantPrefab: {fileID: 1219839936633480685, guid: d022f087bcee2d946872476659ab44c4,
     type: 3}
   babyStage:
@@ -24,5 +26,6 @@ MonoBehaviour:
   adultStage:
   - {fileID: 21300000, guid: 0cad6c6ebb4275947b84baade2ebe51b, type: 3}
   - {fileID: 21300000, guid: ba561f76ca777014c8ce0b4e01b93180, type: 3}
+  itemPickupPrefab: {fileID: 0}
   timeBetweenStages: 0
   timeToWater: 0
