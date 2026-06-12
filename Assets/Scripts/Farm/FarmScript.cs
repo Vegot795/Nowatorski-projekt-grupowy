@@ -19,7 +19,7 @@ public class FarmScript : MonoBehaviour
 
     private void Update()
     {
-        //WateredToDry();
+        WateredToDry();
     }
 
     public void WateredToDry()

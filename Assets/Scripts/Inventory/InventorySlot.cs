@@ -18,10 +18,10 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     void Awake()
     {
         slotImage = transform.GetChild(0).GetComponent<Image>();
-        if(ItemInSlot != null)
+        if (ItemInSlot != null)
         {
             slotImage.sprite = ItemInSlot.Icon;
-            slotImage.color = new Color(255,255,255,100);
+            slotImage.color = new Color(255, 255, 255, 100);
         }
         slotAmountText = GetComponentInChildren<TextMeshProUGUI>();
         IsOccupied = false;
@@ -40,8 +40,17 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     {
         ItemAmount -= amount;
         UpdateItemAmountText();
-        if (ItemAmount <= 0) RemoveItem();
-        if (!CheckOccupencyOfSlot()) RemoveItem();
+
+        if (ItemAmount <= 0)
+        {
+            RemoveItem();
+            return;
+        }
+
+        if (!CheckOccupencyOfSlot())
+        {
+            RemoveItem();
+        }
     }
     public void AddItem(ItemSO item, int amount)
     {
@@ -63,7 +72,10 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         slotImage.color = new Color(255, 255, 255, 0);
         ItemAmount = 0;
         slotAmountText.text = null;
-        StartCoroutine(SetDrag(false));
+        if (gameObject.activeInHierarchy)
+        {
+            StartCoroutine(SetDrag(false));
+        }
 
     }
     void UpdateItemAmountText()
@@ -72,11 +84,10 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     }
     bool CheckOccupencyOfSlot()
     {
-        if (ItemAmount <= ItemInSlot.MaxStackAmount)
-        {
-            return true;
-        }
-        return false;
+        if (ItemInSlot == null)
+            return false;
+
+        return ItemAmount <= ItemInSlot.MaxStackAmount;
     }
     IEnumerator SetDrag(bool state)
     {

@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8b8e87b3c5c38a479d6f0f58bbfb954, type: 3}
   m_Name: StoneSeed
   m_EditorClassIdentifier: 
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: c01a4556310f79a4c80e85a114b3f47b, type: 3}
   Description: 
   MaxStackAmount: 64
+  buyPrice: 10
+  sellPriceMultiplier: 0.5
   plantPrefab: {fileID: 9203477273878101338, guid: c0f825453be91464490b58037feede5a,
     type: 3}
   babyStage:
@@ -24,5 +26,6 @@ MonoBehaviour:
   adultStage:
   - {fileID: 21300000, guid: 645a9e4065ec29349a6ae29d1e83aeb1, type: 3}
   - {fileID: 21300000, guid: 497b84811c59bb846a60d4cec37efe96, type: 3}
+  itemPickupPrefab: {fileID: 0}
   timeBetweenStages: 0
   timeToWater: 0
