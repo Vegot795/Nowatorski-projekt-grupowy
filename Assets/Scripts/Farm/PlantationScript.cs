@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -108,10 +109,10 @@ public class PlantationScript : MonoBehaviour
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
         Vector3Int cellPosition = grid.WorldToCell(worldPosition);
         Vector3 spawnPosition = grid.GetCellCenterWorld(cellPosition);
-        
-        if(IsFieldAtCell(cellPosition))
+
+        if (IsFieldAtCell(cellPosition))
         {
-            return false; 
+            return false;
         }
 
         int groundLayer = LayerMask.NameToLayer("Ground");
@@ -165,7 +166,7 @@ public class PlantationScript : MonoBehaviour
         return (false, null);
     }
 
-    private void ShowDestroyIndicator() 
+    private void ShowDestroyIndicator()
     {
         if (BuildingMode == "Destroy" && hitObject != null && inBuildMenu)
         {
@@ -194,12 +195,19 @@ public class PlantationScript : MonoBehaviour
     public void RemoveField()
     {
         (bool isFieldUnderCursor, GameObject field) = IsObjectUnderCursorAFarmField();
-       
 
         if (isFieldUnderCursor && field != null)
         {
-            Destroy(field.gameObject);
-            _fields = GetComponentsInChildren<FarmScript>();
+            FarmScript fieldToRemove = _fields.FirstOrDefault(f => f.gameObject == field);
+
+            if (fieldToRemove != null)
+            {
+                _fields = _fields
+                    .Where(f => f != fieldToRemove)
+                    .ToArray();
+
+                Destroy(fieldToRemove.gameObject);
+            }
         }
     }
     #endregion
