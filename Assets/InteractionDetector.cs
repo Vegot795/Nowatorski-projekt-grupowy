@@ -1,44 +1,83 @@
-using Unity.VisualScripting;
+using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class InteractionDetector : MonoBehaviour
 {
-    private IInteraction interactableInRange = null;
-    public GameObject interactionText;
-    private bool canInteract = false;
-    private ShopController shopController;
+    [Header("UI")]
+    //public TextMeshProUGUI interactionText;
+
+    [Header("References")]
+    [SerializeField] private ShopController shopController;
+
+    [SerializeField] private GameObject currentPlant;
+
+    [SerializeField] private bool inShop = false;
+    [SerializeField] private bool inPlant = false;
+
     void Start()
     {
-        interactionText.SetActive(false);
+        //interactionText.gameObject.SetActive(false);
         shopController = FindAnyObjectByType<ShopController>();
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T) & canInteract)
-        {
-            Debug.Log("t + int");
-            if (shopController.isShopOpen)
-            {
-                shopController.CloseShop();
-            }
-            else
-            {
-                shopController.OpenShop();
-            }
-
-        }
-
+        HandleShopInput();
+        HandlePlantInput();
     }
 
+    // ---------------- SHOP ----------------
+    private void HandleShopInput()
+    {
+        if (!inShop) return;
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            if (shopController.isShopOpen)
+                shopController.CloseShop();
+            else
+                shopController.OpenShop();
+        }
+    }
+
+    // ---------------- PLANT ----------------
+    private void HandlePlantInput()
+    {
+        if (!inPlant) return;
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            if (currentPlant == null) return;
+
+            PlantScript plant = currentPlant.GetComponent<PlantScript>();
+
+            if (plant != null && plant.isHarvestable)
+            {
+                plant.HarvestPlant();
+            }
+        }
+    }
+
+    // ---------------- TRIGGERS ----------------
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Shop"))
         {
-            //Debug.Log("kolizja");
-            canInteract = true;
+            inShop = true;
+            //ShowText("Press T to open shop");
+        }
 
+        if (collision.CompareTag("Plant"))
+        {
+            PlantScript plant = collision.GetComponent<PlantScript>();
+
+            if (plant != null && plant.isHarvestable)
+            {
+                currentPlant = collision.gameObject;
+                inPlant = true;
+
+                //ShowText("Press P to harvest");
+            }
         }
     }
 
@@ -46,8 +85,30 @@ public class InteractionDetector : MonoBehaviour
     {
         if (collision.CompareTag("Shop"))
         {
-            //Debug.Log("end kolizja");
-            canInteract = false;
+            inShop = false;
+        }
+
+        if (collision.CompareTag("Plant"))
+        {
+            inPlant = false;
+            currentPlant = null;
+        }
+
+        if (!inShop && !inPlant)
+        {
+            //HideText();
         }
     }
+
+    // ---------------- UI HELPERS ----------------
+    /*private void ShowText(string message)
+    {
+        interactionText.gameObject.SetActive(true);
+        interactionText.text = message;
+    }
+
+    private void HideText()
+    {
+        interactionText.gameObject.SetActive(false);
+    }*/
 }

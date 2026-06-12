@@ -9,6 +9,8 @@ public class PlantationScript : MonoBehaviour
     public int level = 1;
     public int maxFieldCount;
     public FarmScript[] _fields;
+    public GameObject fieldPrefabGO;
+
     public FarmScript fieldPrefab;
     public bool inBuildMenu = false;
     public List<string> BuildingModeList = new List<string> { "Build", "Destroy" };
@@ -27,8 +29,10 @@ public class PlantationScript : MonoBehaviour
     void Start()
     {
         _fields = GetComponentsInChildren<FarmScript>();
+        fieldPrefab = fieldPrefabGO.GetComponent<FarmScript>();
         maxFieldCount = 2 + (level * 2);
         grid = GameObject.FindWithTag("FarmGrid").GetComponent<Grid>();
+
     }
 
     private void Update()
