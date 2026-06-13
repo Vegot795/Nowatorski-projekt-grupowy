@@ -423,6 +423,11 @@ PrefabInstance:
       propertyPath: interactionText
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4704248535941391882, guid: df39f441c40bda94ca331f2affe28adc,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4829207529452668834, guid: df39f441c40bda94ca331f2affe28adc,
         type: 3}
       propertyPath: m_Name
