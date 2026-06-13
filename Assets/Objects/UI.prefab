@@ -1324,8 +1324,8 @@ GameObject:
   - component: {fileID: 4094587279635017597}
   - component: {fileID: 6764185779407637171}
   m_Layer: 5
-  m_Name: MoneyText (1)
-  m_TagString: Untagged
+  m_Name: WaterText
+  m_TagString: watertext
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2068,7 +2068,7 @@ GameObject:
   - component: {fileID: 1114551379482252556}
   m_Layer: 5
   m_Name: MoneyText
-  m_TagString: Untagged
+  m_TagString: moneytext
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

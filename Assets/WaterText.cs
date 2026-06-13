@@ -6,6 +6,10 @@ public class WaterText : MonoBehaviour
 
     public Money Money;
     public TMP_Text m_Text;
+    void Awake()
+    {
+        Money = FindAnyObjectByType<Money>();
+    }
 
     void Start()
     {

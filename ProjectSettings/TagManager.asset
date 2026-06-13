@@ -15,6 +15,10 @@ TagManager:
   - ItemCollector
   - Shop
   - Plant
+  - EnemyHealthSlider
+  - HealthSlider
+  - moneytext
+  - watertext
   layers:
   - Default
   - TransparentFX

@@ -5138,6 +5138,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: WaterText
       objectReference: {fileID: 0}
+    - target: {fileID: 4209938232259741555, guid: a7b3fd5084c435643a64d52179e2b4c2,
+        type: 3}
+      propertyPath: m_TagString
+      value: watertext
+      objectReference: {fileID: 0}
     - target: {fileID: 4282702031138190300, guid: a7b3fd5084c435643a64d52179e2b4c2,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -10166,8 +10171,12 @@ MonoBehaviour:
   _FieldCount: {fileID: 44753447}
   _BuildingMode: {fileID: 27014960}
   Tooltip: {fileID: 507132583}
+  Deadscreen: {fileID: 0}
+  MoneyText: {fileID: 0}
+  WaterText: {fileID: 0}
   isBuildingEnabled: 0
   isTooltipOpen: 0
+  isDeadscreenEnabled: 0
 --- !u!114 &1916478263
 MonoBehaviour:
   m_ObjectHideFlags: 0
