@@ -13,8 +13,9 @@ public partial class PatrolAction : Action
     [SerializeReference] public BlackboardVariable<float> PatrolRange;
     [SerializeReference] public BlackboardVariable<float> ARRIVAL_THRESHOLD;
     [SerializeReference] public BlackboardVariable<GameObject> Agent;
+    [SerializeReference] public BlackboardVariable<GameObject> Target;
+    [SerializeReference] public BlackboardVariable<float> VisionRange;
     [SerializeReference] public BlackboardVariable<Tilemap> Ground;
-
 
     private Vector2 m_CurrentPosition;
     private Vector2 m_TargetPoint;
@@ -23,21 +24,22 @@ public partial class PatrolAction : Action
 
     protected override Status OnStart()
     {
-        if (Agent == null || PatrolRange == null || Speed == null)
+        if (Agent?.Value == null || PatrolRange == null || Speed == null || ARRIVAL_THRESHOLD == null || Ground?.Value == null)
         {
             return Status.Failure;
         }
+
         return Initialize();
     }
 
     protected override Status OnUpdate()
     {
-        if (Agent == null || PatrolRange == null || Speed == null)
+        if (Agent?.Value == null || PatrolRange == null || Speed == null || ARRIVAL_THRESHOLD == null || Ground?.Value == null)
         {
             return Status.Failure;
         }
 
-        if(!m_isInitialized)
+        if (!m_isInitialized)
         {
             return Initialize();
         }
@@ -45,11 +47,14 @@ public partial class PatrolAction : Action
         CharacterBasics characterBasics = Agent.Value.GetComponent<CharacterBasics>();
         if (characterBasics != null && characterBasics.IsKnockedBack())
         {
-            if (m_Rigidbody2D != null)
-            {
-                m_Rigidbody2D.linearVelocity = Vector2.zero;
-            }
+            StopMovement();
             return Status.Running;
+        }
+
+        if (IsTargetInVisionRange())
+        {
+            StopMovement();
+            return Status.Failure;
         }
 
         m_CurrentPosition = Agent.Value.transform.position;
@@ -57,11 +62,12 @@ public partial class PatrolAction : Action
 
         if (distance <= ARRIVAL_THRESHOLD.Value)
         {
-            return Status.Success; 
+            StopMovement();
+            return Status.Success;
         }
 
         Vector2 direction = (m_TargetPoint - m_CurrentPosition).normalized;
-        
+
         if (m_Rigidbody2D != null)
         {
             m_Rigidbody2D.linearVelocity = direction * Speed.Value;
@@ -76,10 +82,11 @@ public partial class PatrolAction : Action
 
     protected override void OnEnd()
     {
-
+        StopMovement();
+        m_isInitialized = false;
     }
 
-    private Status Initialize ()
+    private Status Initialize()
     {
         BoundsInt bounds = Ground.Value.cellBounds;
 
@@ -91,11 +98,13 @@ public partial class PatrolAction : Action
         const int maxAttempts = 30;
         Vector3Int targetCell = Vector3Int.zero;
         bool foundTile = false;
+
         for (int i = 0; i < maxAttempts; i++)
         {
             int randomX = UnityEngine.Random.Range(bounds.xMin, bounds.xMax);
             int randomY = UnityEngine.Random.Range(bounds.yMin, bounds.yMax);
             targetCell = new Vector3Int(randomX, randomY, 0);
+
             if (Ground.Value.HasTile(targetCell))
             {
                 foundTile = true;
@@ -112,10 +121,30 @@ public partial class PatrolAction : Action
         m_TargetPoint = new Vector2(worldPoint.x, worldPoint.y);
 
         m_Rigidbody2D = Agent.Value.GetComponent<Rigidbody2D>();
-
         m_isInitialized = true;
 
-
         return Status.Running;
+    }
+
+    private bool IsTargetInVisionRange()
+    {
+        if (Target?.Value == null || VisionRange == null)
+        {
+            return false;
+        }
+
+        float distanceToTarget = Vector2.Distance(
+            Agent.Value.transform.position,
+            Target.Value.transform.position);
+
+        return distanceToTarget <= VisionRange.Value;
+    }
+
+    private void StopMovement()
+    {
+        if (m_Rigidbody2D != null)
+        {
+            m_Rigidbody2D.linearVelocity = Vector2.zero;
+        }
     }
 }
