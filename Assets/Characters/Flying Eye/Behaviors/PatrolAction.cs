@@ -14,6 +14,8 @@ public partial class PatrolAction : Action
     [SerializeReference] public BlackboardVariable<float> ARRIVAL_THRESHOLD;
     [SerializeReference] public BlackboardVariable<GameObject> Agent;
     [SerializeReference] public BlackboardVariable<Tilemap> Ground;
+    [SerializeReference] public BlackboardVariable<float> VisionRange;
+    [SerializeReference] public BlackboardVariable<GameObject> Player;
 
 
     private Vector2 m_CurrentPosition;
@@ -40,6 +42,16 @@ public partial class PatrolAction : Action
         if(!m_isInitialized)
         {
             return Initialize();
+        }
+
+        if (Player != null && Player.Value != null && VisionRange != null)
+        {
+            Vector2 agentPosition = Agent.Value.transform.position;
+            Vector2 playerPosition = Player.Value.transform.position;
+            if (Vector2.Distance(agentPosition, playerPosition) <= VisionRange.Value)
+            {
+                return Status.Failure;
+            }
         }
 
         CharacterBasics characterBasics = Agent.Value.GetComponent<CharacterBasics>();
