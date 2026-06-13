@@ -148,7 +148,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Graphs:
   - rid: 8322082019708502243
-  m_DebugInfo: {fileID: 6914072243699612602}
+  m_DebugInfo: {fileID: 370520878781208228}
   m_WasCompileWithPlaceholderNode: 0
   references:
     version: 2
@@ -161,7 +161,7 @@ MonoBehaviour:
         AuthoringAssetID:
           m_Value0: 10703545236734353553
           m_Value1: 3245111082049218681
-        m_DebugInfo: {fileID: 6914072243699612602}
+        m_DebugInfo: {fileID: 370520878781208228}
         BlackboardReference:
           rid: 8322082019708502244
         BlackboardGroupReferences: []
@@ -578,7 +578,7 @@ MonoBehaviour:
   - rid: 8807572212814447231
   m_VersionTimestamp: 639169050575325990
   m_SerializedVersion: 2
-  m_DebugInfo: {fileID: 6914072243699612602}
+  m_DebugInfo: {fileID: 370520878781208228}
   m_RuntimeGraph: {fileID: -4498357456619237313}
   AssetID:
     m_Value0: 10703545236734353553
@@ -1884,6 +1884,19 @@ MonoBehaviour:
         m_NodeModel:
           rid: 8807572212814447231
         m_Connections: []
+--- !u!114 &370520878781208228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b27bb6d9a2c8d540a10dff10acc543e, type: 3}
+  m_Name: BG_FlyingEye Debug Info
+  m_EditorClassIdentifier: 
+  m_CodeBreakPointsList: []
 --- !u!114 &5864731434755557666
 MonoBehaviour:
   m_ObjectHideFlags: 0
