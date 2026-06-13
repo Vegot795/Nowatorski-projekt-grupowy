@@ -174,7 +174,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b69ab0b9d35c544597ff25cc84f4369, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionText: {fileID: 4377177300285029315}
+  shopController: {fileID: 0}
+  money: {fileID: 0}
+  currentPlant: {fileID: 0}
+  currentField: {fileID: 0}
+  inShop: 0
+  inPlant: 0
+  inFarmField: 0
 --- !u!1 &4377177300285029315
 GameObject:
   m_ObjectHideFlags: 0
@@ -364,6 +370,8 @@ GameObject:
   - component: {fileID: 5201515951818788029}
   - component: {fileID: 5958229615228297760}
   - component: {fileID: 5299355200210592203}
+  - component: {fileID: 6274673065414498532}
+  - component: {fileID: 8457697435791503682}
   - component: {fileID: 4704248535941391882}
   - component: {fileID: 4436276715879531529}
   - component: {fileID: 737883823775651174}
@@ -619,6 +627,49 @@ MonoBehaviour:
   CurrentHP: 0
   Damage: 10
   KnockBackDistance: 2
+  RegenTime: 5
+  RegenAmount: 1
+  RegenTickRate: 1
+  hpSlider: {fileID: 0}
+--- !u!114 &6274673065414498532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4829207529452668834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a668d419cd5eb7489554f56a689cd9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentMoney: 1000
+  currentWater: 100
+--- !u!114 &8457697435791503682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4829207529452668834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edfc48243d1cc6642bb350ea61958a1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventoryManager: {fileID: 0}
+  FieldBuilder: {fileID: 0}
+  _plantation: {fileID: 0}
+  _uiController: {fileID: 0}
+  _FieldCount: {fileID: 0}
+  _BuildingMode: {fileID: 0}
+  Tooltip: {fileID: 0}
+  Deadscreen: {fileID: 0}
+  MoneyText: {fileID: 0}
+  WaterText: {fileID: 0}
+  isBuildingEnabled: 0
+  isTooltipOpen: 0
+  isDeadscreenEnabled: 0
 --- !u!50 &4704248535941391882
 Rigidbody2D:
   serializedVersion: 5

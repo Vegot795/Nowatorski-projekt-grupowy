@@ -201,6 +201,12 @@ public class InventoryManager : MonoBehaviour
 
     public void ThrowOutOfEquipment(ItemSO item, int amount)
     {
+        if(currentHeldSlot == null || currentHeldSlot.ItemInSlot != item)
+        {
+            Debug.LogWarning("Current held slot is null or does not contain the specified item.");
+            return;
+        }
+
         GameObject PickupItem = Instantiate(itemPickupPrefab, gameObject.transform.position, Quaternion.identity);
         PickupItem.GetComponent<Collider2D>().enabled = false;
         ItemPickup itemPickup = PickupItem.GetComponent<ItemPickup>();
