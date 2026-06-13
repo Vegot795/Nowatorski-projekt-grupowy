@@ -143,6 +143,7 @@ public class CharacterBasics : MonoBehaviour
             gameObject.transform.position = SpawnPosition;
             sr.enabled = true;
             gameObject.GetComponent<Money>().currentMoney -= moneyPenalty;
+            CurrentHP = MaxHP;
         }
     }
 
