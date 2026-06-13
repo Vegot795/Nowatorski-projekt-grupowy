@@ -17,7 +17,7 @@ public class MobSpawner : MonoBehaviour
 
     void Start()
     {
-        if(FlyingEyePrefab == null)
+        if (FlyingEyePrefab == null)
         {
             FlyingEyePrefab = Resources.Load<GameObject>("FlyingEye");
         }
@@ -41,6 +41,31 @@ public class MobSpawner : MonoBehaviour
                 }
             }
         }
+
+    }
+    void FixedUpdate()
+    {
+        RmoveDead();
+    }
+    void RmoveDead()
+    {
+        if (currentSpawnedEnemies != null)
+        {
+            for (int i = 0; i < currentSpawnedEnemies.Count; i++)
+            {
+                CharacterBasics enemiehp = currentSpawnedEnemies[i].gameObject.GetComponent<CharacterBasics>();
+                if (enemiehp.CurrentHP <= 0)
+                {
+                    Destroy(currentSpawnedEnemies[i].gameObject);
+                    currentSpawnedEnemies.RemoveAt(i);
+
+                }
+            }
+
+
+
+        }
+
     }
 
     private GameObject SpawnEnemy(GameObject enemy)
@@ -73,6 +98,7 @@ public class MobSpawner : MonoBehaviour
 
     public void RemoveEnemyFromList(FlyingEyeController enemy)
     {
+        Debug.Log("Remove enem");
         currentSpawnedEnemies.Remove(enemy);
     }
 
