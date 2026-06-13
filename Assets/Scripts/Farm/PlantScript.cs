@@ -118,7 +118,7 @@ public class PlantScript : MonoBehaviour
             farmScript.isOccupied = false;
             sr.enabled = false;
             Money money = FindAnyObjectByType<Money>();
-            money.currentMoney += 10;
+            money.currentMoney += 25;
             growSlider.gameObject.SetActive(false);
 
             /*
