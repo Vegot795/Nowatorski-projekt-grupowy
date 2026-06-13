@@ -21495,6 +21495,11 @@ PrefabInstance:
       propertyPath: m_ActionEvents.Array.data[14].m_ActionName
       value: UI/TrackedDeviceOrientation
       objectReference: {fileID: 0}
+    - target: {fileID: 5958229615228297760, guid: df39f441c40bda94ca331f2affe28adc,
+        type: 3}
+      propertyPath: inventoryManager
+      value: 
+      objectReference: {fileID: 1916478263}
     - target: {fileID: 6823459795230916344, guid: df39f441c40bda94ca331f2affe28adc,
         type: 3}
       propertyPath: m_LocalScale.z
@@ -22171,6 +22176,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3420149485308349775, guid: a7b3fd5084c435643a64d52179e2b4c2,
     type: 3}
   m_PrefabInstance: {fileID: 1231603945}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &344159698 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6433638396095446410, guid: 334dc47bc4c5eaf4aa1e69d4d10195a8,
+    type: 3}
+  m_PrefabInstance: {fileID: 483353428}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &427566724
 PrefabInstance:
@@ -32243,6 +32254,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6764185779407637171, guid: a7b3fd5084c435643a64d52179e2b4c2,
+        type: 3}
+      propertyPath: Money
+      value: 
+      objectReference: {fileID: 1916478264}
     - target: {fileID: 6905917916907693799, guid: a7b3fd5084c435643a64d52179e2b4c2,
         type: 3}
       propertyPath: isCurrentHeldSlot
@@ -35626,7 +35642,7 @@ GameObject:
   - component: {fileID: 1690602889}
   m_Layer: 0
   m_Name: Grid
-  m_TagString: Untagged
+  m_TagString: FarmGrid
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -40086,7 +40102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edfc48243d1cc6642bb350ea61958a1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryManager: {fileID: 0}
+  inventoryManager: {fileID: 1916478263}
   FieldBuilder: {fileID: 826452336}
   _plantation: {fileID: 1253984115}
   _uiController: {fileID: 1028788544}
@@ -40112,7 +40128,7 @@ MonoBehaviour:
   allSlots: []
   allItems: []
   currentHeldSlot: {fileID: 515092682}
-  uicontroller: {fileID: 0}
+  uicontroller: {fileID: 1916478255}
   itemPickupPrefab: {fileID: 1619094540894141360, guid: 967530759c6576c46858e014aff777b4,
     type: 3}
   plantPreview: {fileID: 1311486458055454584, guid: 575f91d6b1ca4824a81ae08a8f226ba3,
@@ -40142,7 +40158,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 483353428}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 344159698}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b9bbc087c667e94db2e19e9df43b8ba, type: 3}
@@ -40504,6 +40520,11 @@ PrefabInstance:
       objectReference: {fileID: 1959612339}
     - target: {fileID: 2683689559796664561, guid: a4bf3c5b67e99a7468cdcce7933c24c8,
         type: 3}
+      propertyPath: fieldPrefabGO
+      value: 
+      objectReference: {fileID: 344159698}
+    - target: {fileID: 2683689559796664561, guid: a4bf3c5b67e99a7468cdcce7933c24c8,
+        type: 3}
       propertyPath: destroyIndicatorPrefab
       value: 
       objectReference: {fileID: 5947056422025563016, guid: 3337f18583de5654482f554c05c7dd55,
@@ -40601,6 +40622,7 @@ PrefabInstance:
         type: 2}
     m_RemovedComponents:
     - {fileID: 5881871935737784176, guid: a4bf3c5b67e99a7468cdcce7933c24c8, type: 3}
+    - {fileID: 6197706847317682162, guid: a4bf3c5b67e99a7468cdcce7933c24c8, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 3462032460063120835, guid: a4bf3c5b67e99a7468cdcce7933c24c8,
