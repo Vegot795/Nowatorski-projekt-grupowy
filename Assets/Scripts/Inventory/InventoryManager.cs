@@ -18,6 +18,7 @@ public class InventoryManager : MonoBehaviour
     public GameObject itemPickupPrefab;
     public GameObject plantPreview;
 
+
     [SerializeField] private GameObject inventoryUI;
     [SerializeField] private GameObject ToolbarUI;
 
@@ -28,6 +29,7 @@ public class InventoryManager : MonoBehaviour
     List<string> itemTypes = new List<string> { "Seed", "Item" };
 
     private bool isInvOpen = true;
+
     private Grid grid;
     private GameObject seedPreviewInstance;
     private Vector3 spawnPos;
@@ -36,15 +38,16 @@ public class InventoryManager : MonoBehaviour
     {
         uicontroller = GetComponent<UI_Controller>();
         grid = GameObject.FindWithTag("FarmGrid").GetComponent<Grid>();
-        if (inventorySlots != null)
+        if (inventorySlots == null)
         {
             inventoryUI = GameObject.Find("InventoryUI");
         }
 
-        if (toolbarSlots != null)
+        if (toolbarSlots == null)
         {
             ToolbarUI = GameObject.Find("ToolbarUI");
         }
+
 
         foreach (var toolbarSlot in ToolbarUI.GetComponentsInChildren<InventorySlot>())
         {
@@ -61,6 +64,7 @@ public class InventoryManager : MonoBehaviour
         }
 
         allSlots = toolbarSlots.Concat(inventorySlots).ToList();
+
 
         inventoryUI.SetActive(false);
         isInvOpen = false;

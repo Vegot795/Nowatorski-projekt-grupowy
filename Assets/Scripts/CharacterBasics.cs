@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,6 +9,9 @@ public class CharacterBasics : MonoBehaviour
     public int CurrentHP;
     public int Damage = 10;
     public int KnockBackDistance = 2;
+    public float RegenTime = 5f;
+    public int RegenAmount = 1;
+    public float RegenTickRate = 1f;
 
     private Rigidbody2D rb;
     private Animator animator;
@@ -15,15 +19,27 @@ public class CharacterBasics : MonoBehaviour
     private bool isKnockedBack = false;
     private float knockbackTimer = 0f;
     private float knockbackDuration = 0.2f;
+    private ContactFilter2D knockbackFilter;
+    private readonly List<RaycastHit2D> knockbackHits = new List<RaycastHit2D>();
+    private const float knockbackCollisionOffset = 0.05f;
     private MobSpawner spawner;
     [SerializeField] private Slider hpSlider;
     private bool isPlayer;
+
+    private float regenTimer = 0f;
+    private float regenTickTimer = 0f;
 
     void Start()
     {
         CurrentHP = MaxHP;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+
+        knockbackFilter = new ContactFilter2D();
+        knockbackFilter.useLayerMask = true;
+        knockbackFilter.layerMask = LayerMask.GetMask("Ground", "Wall");
+        knockbackFilter.useTriggers = false;
+
         if(spawner == null)
         {
             spawner = FindAnyObjectByType<MobSpawner>();
@@ -62,9 +78,29 @@ public class CharacterBasics : MonoBehaviour
         {
             knockbackTimer -= Time.deltaTime;
             if (knockbackTimer <= 0f)
-            {
                 isKnockedBack = false;
-            }
+        }
+
+        if (isPlayer)
+            HandleRegeneration();
+    }
+
+    private void HandleRegeneration()
+    {
+        if (regenTimer > 0f)
+        {
+            regenTimer -= Time.deltaTime;
+            return;
+        }
+
+        if (CurrentHP >= MaxHP) return;
+
+        regenTickTimer -= Time.deltaTime;
+        if (regenTickTimer <= 0f)
+        {
+            CurrentHP = Mathf.Min(CurrentHP + RegenAmount, MaxHP);
+            regenTickTimer = RegenTickRate;
+            UpdateHealthBar();
         }
     }
 
@@ -79,18 +115,12 @@ public class CharacterBasics : MonoBehaviour
         KnockBack(knockbackDirection, KnockBackDistance);
         isKnockedBack = true;
         knockbackTimer = knockbackDuration;
-        hpSlider.value = CurrentHP;
+
         if (isPlayer)
         {
-            Image fillImage = hpSlider.fillRect.GetComponent<Image>();
-            if (fillImage != null)
-            {
-                float hpPerCent = (float)CurrentHP / MaxHP;
-                Color max = new Color(12f / 255f, 255f / 255f, 0f / 255f, 1f);      // Green #0CFF00
-                Color min = new Color(255f / 255f, 0f / 255f, 20f / 255f, 1f);      // Red #FF0014
-                fillImage.color = Color.Lerp(min, max, hpPerCent);
-            }
+            regenTimer = RegenTime;
         }
+        UpdateHealthBar();
     }
 
     private void Die()
@@ -106,7 +136,20 @@ public class CharacterBasics : MonoBehaviour
     {
         if (rb != null)
         {
-            Vector2 knockback = direction.normalized * distance;
+            Vector2 normalizedDirection = direction.normalized;
+            float knockbackDistance = distance;
+
+            int count = rb.Cast(normalizedDirection, knockbackFilter, knockbackHits, knockbackDistance);
+            for (int i = 0; i < count; i++)
+            {
+                float allowedDistance = knockbackHits[i].distance - knockbackCollisionOffset;
+                if (allowedDistance < knockbackDistance)
+                {
+                    knockbackDistance = Mathf.Max(allowedDistance, 0f);
+                }
+            }
+
+            Vector2 knockback = normalizedDirection * knockbackDistance;
             rb.MovePosition(rb.position + knockback);
         }
     }
@@ -132,6 +175,36 @@ public class CharacterBasics : MonoBehaviour
         if (hpSlider != null)
         {
             hpSlider.value = CurrentHP;
+        }
+    }
+
+    private bool StopRegenerate()
+    {
+        RegenTime -= Time.deltaTime;
+        if(RegenTime <= 0)
+        {
+            RegenTime = 0;
+            return true;
+        }
+
+        return false;
+    }
+
+    private void UpdateHealthBar()
+    {
+        if (hpSlider == null) return;
+        hpSlider.value = CurrentHP;
+
+        if (isPlayer && hpSlider.fillRect != null)
+        {
+            Image fillImage = hpSlider.fillRect.GetComponent<Image>();
+            if (fillImage != null)
+            {
+                float hpPerCent = (float)CurrentHP / MaxHP;
+                Color max = new Color(12f / 255f, 255f / 255f, 0f / 255f, 1f); // Green #0CFF00
+                Color min = new Color(255f / 255f, 0f / 255f, 20f / 255f, 1f); // Red #FF0014
+                fillImage.color = Color.Lerp(min, max, hpPerCent);
+            }
         }
     }
 }

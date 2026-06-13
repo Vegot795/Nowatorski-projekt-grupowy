@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.AppUI.UI;
 using UnityEngine;
 
 public class UI_Controller : MonoBehaviour
@@ -6,10 +7,12 @@ public class UI_Controller : MonoBehaviour
     public InventoryManager inventoryManager;
     public GameObject FieldBuilder;
     public PlantationScript _plantation;
-    public bool isBuildingEnabled = false;
     public GameObject _uiController;
     public TextMeshProUGUI _FieldCount;
     public TextMeshProUGUI _BuildingMode;
+    public GameObject Tooltip;
+    public bool isBuildingEnabled = false;
+    public bool isTooltipOpen = false;
 
     void Start()
     {
@@ -33,6 +36,14 @@ public class UI_Controller : MonoBehaviour
                 _BuildingMode = buildingMode.GetComponent<TextMeshProUGUI>();
             }
         }
+
+        if (Tooltip == null)
+        {
+            Tooltip = GameObject.Find("Tooltip");
+        }
+
+        isTooltipOpen = false;
+        Tooltip.SetActive(false);
     }
 
 
@@ -108,5 +119,22 @@ public class UI_Controller : MonoBehaviour
     public void OnThrowOutOfEquipment()
     {
         inventoryManager.ThrowOutOfEquipment(inventoryManager.currentHeldSlot.ItemInSlot, 1);
+    }
+
+    public void ToggleTooltip()
+    {
+        if (Tooltip != null)
+        {
+            if (isTooltipOpen)
+            {
+                Tooltip.SetActive(false);
+                isTooltipOpen = false;
+            }
+            else
+            {
+                Tooltip.SetActive(true);
+                isTooltipOpen = true;
+            }
+        }
     }
 }

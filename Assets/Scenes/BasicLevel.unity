@@ -927,6 +927,11 @@ PrefabInstance:
       propertyPath: m_ActionEvents.Array.data[14].m_ActionName
       value: UI/TrackedDeviceOrientation
       objectReference: {fileID: 0}
+    - target: {fileID: 5299355200210592203, guid: df39f441c40bda94ca331f2affe28adc,
+        type: 3}
+      propertyPath: hpSlider
+      value: 
+      objectReference: {fileID: 1101877913}
     - target: {fileID: 6823459795230916344, guid: df39f441c40bda94ca331f2affe28adc,
         type: 3}
       propertyPath: m_LocalScale.z
@@ -1616,6 +1621,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GameController (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4047163151934784758, guid: 2f0bc798239f89846ae2453bf6696229,
+        type: 3}
+      propertyPath: timeGap
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4047163151934784758, guid: 2f0bc798239f89846ae2453bf6696229,
+        type: 3}
+      propertyPath: spawnChance
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4047163151934784758, guid: 2f0bc798239f89846ae2453bf6696229,
         type: 3}
@@ -2379,6 +2394,12 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4836880756736781875, guid: 124903872701cb54e9ea41b311e4a87a,
     type: 3}
   m_PrefabInstance: {fileID: 492156601}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &507132583 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3295259571775507987, guid: a7b3fd5084c435643a64d52179e2b4c2,
+    type: 3}
+  m_PrefabInstance: {fileID: 1231603945}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &515092682 stripped
 MonoBehaviour:
@@ -5446,6 +5467,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1095724751}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1101877913 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2466203714792285036, guid: a7b3fd5084c435643a64d52179e2b4c2,
+    type: 3}
+  m_PrefabInstance: {fileID: 1231603945}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1114374174
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6144,11 +6177,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 749943597984310725, guid: a7b3fd5084c435643a64d52179e2b4c2,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 242.4
       objectReference: {fileID: 0}
     - target: {fileID: 928278179963319395, guid: a7b3fd5084c435643a64d52179e2b4c2,
         type: 3}
@@ -7505,6 +7533,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3295259571775507987, guid: a7b3fd5084c435643a64d52179e2b4c2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3317984531695775148, guid: a7b3fd5084c435643a64d52179e2b4c2,
         type: 3}
       propertyPath: m_Sprite
@@ -8100,6 +8133,11 @@ PrefabInstance:
     - target: {fileID: 4062365532713395123, guid: a7b3fd5084c435643a64d52179e2b4c2,
         type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4102486126962369727, guid: a7b3fd5084c435643a64d52179e2b4c2,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4182036631957229975, guid: a7b3fd5084c435643a64d52179e2b4c2,
@@ -11159,6 +11197,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8514338378471858941, guid: a7b3fd5084c435643a64d52179e2b4c2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8530048784378722522, guid: a7b3fd5084c435643a64d52179e2b4c2,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -11578,6 +11621,25 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9167862036056611651, guid: a7b3fd5084c435643a64d52179e2b4c2,
+        type: 3}
+      propertyPath: m_text
+      value: 'L - Plant watering
+
+        G - Change build/destroy mode
+
+        B
+        - Toggler farm build
+
+        T - Shop
+
+        P - Plant harvesting
+
+        Tab
+        - Inventory
+
+        Esc - Pause'
       objectReference: {fileID: 0}
     - target: {fileID: 9206433593723628065, guid: a7b3fd5084c435643a64d52179e2b4c2,
         type: 3}
@@ -14787,10 +14849,12 @@ MonoBehaviour:
   inventoryManager: {fileID: 0}
   FieldBuilder: {fileID: 826452336}
   _plantation: {fileID: 1253984115}
-  isBuildingEnabled: 0
   _uiController: {fileID: 1028788544}
   _FieldCount: {fileID: 44753447}
   _BuildingMode: {fileID: 27014960}
+  Tooltip: {fileID: 507132583}
+  isBuildingEnabled: 0
+  isTooltipOpen: 0
 --- !u!114 &1916478263
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14830,7 +14894,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a668d419cd5eb7489554f56a689cd9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentMoney: 100000
+  currentMoney: 1000
   currentWater: 100
 --- !u!1001 &1976912752
 PrefabInstance:

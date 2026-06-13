@@ -42,16 +42,14 @@ public partial class PatrolAction : Action
             return Initialize();
         }
 
-        // Check if the agent is knocked back - if so, don't move
         CharacterBasics characterBasics = Agent.Value.GetComponent<CharacterBasics>();
         if (characterBasics != null && characterBasics.IsKnockedBack())
         {
-            // Stop moving during knockback, let CharacterBasics handle it
             if (m_Rigidbody2D != null)
             {
                 m_Rigidbody2D.linearVelocity = Vector2.zero;
             }
-            return Status.Running;  // Keep patrol active but paused
+            return Status.Running;
         }
 
         m_CurrentPosition = Agent.Value.transform.position;
@@ -90,9 +88,28 @@ public partial class PatrolAction : Action
             return Status.Failure;
         }
 
-        float randomX = UnityEngine.Random.Range(bounds.xMin, bounds.xMax);
-        float randomY = UnityEngine.Random.Range(bounds.yMin, bounds.yMax);
-        m_TargetPoint = new Vector2(randomX, randomY);
+        const int maxAttempts = 30;
+        Vector3Int targetCell = Vector3Int.zero;
+        bool foundTile = false;
+        for (int i = 0; i < maxAttempts; i++)
+        {
+            int randomX = UnityEngine.Random.Range(bounds.xMin, bounds.xMax);
+            int randomY = UnityEngine.Random.Range(bounds.yMin, bounds.yMax);
+            targetCell = new Vector3Int(randomX, randomY, 0);
+            if (Ground.Value.HasTile(targetCell))
+            {
+                foundTile = true;
+                break;
+            }
+        }
+
+        if (!foundTile)
+        {
+            return Status.Failure;
+        }
+
+        Vector3 worldPoint = Ground.Value.GetCellCenterWorld(targetCell);
+        m_TargetPoint = new Vector2(worldPoint.x, worldPoint.y);
 
         m_Rigidbody2D = Agent.Value.GetComponent<Rigidbody2D>();
 

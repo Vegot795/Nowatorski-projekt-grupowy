@@ -463,6 +463,7 @@ MonoBehaviour:
     type: 2}
   m_BlackboardVariableOverridesList:
   - rid: 8322082019708502802
+  - rid: 8807572225570898007
   m_OriginalGraph: {fileID: -4498357456619237313, guid: 9120e0d8aea18a9479283af655f3082d,
     type: 2}
   m_IsInitialised: 0
@@ -479,6 +480,15 @@ MonoBehaviour:
           m_Value1: 0
         Name: Self
         m_Value: {fileID: 5938065652223395557}
+    - rid: 8807572225570898007
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 2311123159933350584
+          m_Value1: 6762580565275411105
+        Name: Vision Range
+        m_Value: 15
 --- !u!114 &309778129717179746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -491,10 +501,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 469794a7e91af9a479f3cb9f65b957e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHP: 100
+  MaxHP: 40
   CurrentHP: 0
   Damage: 10
   KnockBackDistance: 2
+  RegenTime: 5
+  RegenAmount: 1
+  RegenTickRate: 1
   hpSlider: {fileID: 0}
 --- !u!114 &3562549111855386359
 MonoBehaviour:

@@ -1,4 +1,3 @@
-using Mono.Cecil.Cil;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
@@ -253,6 +252,11 @@ public class PlayerController : MonoBehaviour
         {
             //interactionDetector.TryInteract();
         }
+    }
+
+    public void OnToolTip()
+    {
+        uiController.ToggleTooltip();
     }
     #endregion
 
