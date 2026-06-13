@@ -11,8 +11,12 @@ public class UI_Controller : MonoBehaviour
     public TextMeshProUGUI _FieldCount;
     public TextMeshProUGUI _BuildingMode;
     public GameObject Tooltip;
+    public GameObject Deadscreen;
+    public GameObject MoneyText;
+    public GameObject WaterText;
     public bool isBuildingEnabled = false;
     public bool isTooltipOpen = false;
+    public bool isDeadscreenEnabled = false;
 
     void Start()
     {
@@ -37,6 +41,11 @@ public class UI_Controller : MonoBehaviour
             }
         }
 
+        if(Deadscreen == null)
+        {
+            Deadscreen = GameObject.Find("Deadscreen");
+        }
+
         if (Tooltip == null)
         {
             Tooltip = GameObject.Find("Tooltip");
@@ -44,6 +53,9 @@ public class UI_Controller : MonoBehaviour
 
         isTooltipOpen = false;
         Tooltip.SetActive(false);
+
+        isDeadscreenEnabled = false;
+        Deadscreen.SetActive(false);
     }
 
 
@@ -135,6 +147,15 @@ public class UI_Controller : MonoBehaviour
                 Tooltip.SetActive(true);
                 isTooltipOpen = true;
             }
+        }
+    }
+
+    public void ToggleDeadscreen(bool state)
+    {
+        if(Deadscreen != null) 
+        {
+            Deadscreen.SetActive(state);
+            isDeadscreenEnabled = state;
         }
     }
 }

@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
+using Unity.Profiling;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,6 +14,8 @@ public class CharacterBasics : MonoBehaviour
     public float RegenTime = 5f;
     public int RegenAmount = 1;
     public float RegenTickRate = 1f;
+    public Vector3 SpawnPosition;
+    public int moneyPenalty = 100;
 
     private Rigidbody2D rb;
     private Animator animator;
@@ -31,6 +35,7 @@ public class CharacterBasics : MonoBehaviour
 
     void Start()
     {
+        SpawnPosition = transform.position;
         CurrentHP = MaxHP;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
@@ -128,8 +133,26 @@ public class CharacterBasics : MonoBehaviour
         if (gameObject == Resources.Load<GameObject>("FlyingEye"))
         {
             spawner.RemoveEnemyFromList(gameObject.GetComponent<FlyingEyeController>());
+            Destroy(gameObject);
         }
-        Destroy(gameObject);
+        else if (isPlayer)
+        {
+            SpriteRenderer sr = gameObject.GetComponent<SpriteRenderer>();
+            sr.enabled = false;
+            StartCoroutine(ShowDeadScreenSequence(2f));
+            gameObject.transform.position = SpawnPosition;
+            sr.enabled = true;
+            gameObject.GetComponent<Money>().currentMoney -= moneyPenalty;
+        }
+    }
+
+    private IEnumerator ShowDeadScreenSequence(float time)
+    {
+        gameObject.GetComponent<UI_Controller>().ToggleDeadscreen(true);
+
+        yield return new WaitForSeconds(time);
+        gameObject.GetComponent<UI_Controller>().ToggleDeadscreen(false);
+
     }
 
     private void KnockBack(Vector2 direction, int distance)
