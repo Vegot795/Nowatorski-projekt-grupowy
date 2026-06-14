@@ -61,9 +61,6 @@ public class MobSpawner : MonoBehaviour
 
                 }
             }
-
-
-
         }
 
     }

@@ -3,57 +3,50 @@ using Unity.Behavior;
 using UnityEngine;
 using Action = Unity.Behavior.Action;
 using Unity.Properties;
-using UnityEngine.Tilemaps;
 
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "Patrol", story: "Patrol Nearby area", category: "Action", id: "af63d86a38dd118a6ecbc39eb8449d7c")]
 public partial class PatrolAction : Action
 {
     [SerializeReference] public BlackboardVariable<float> Speed;
+    [SerializeReference] public BlackboardVariable<GameObject> Agent;
     [SerializeReference] public BlackboardVariable<float> PatrolRange;
     [SerializeReference] public BlackboardVariable<float> ARRIVAL_THRESHOLD;
-    [SerializeReference] public BlackboardVariable<GameObject> Agent;
+    [SerializeReference] public BlackboardVariable<bool> PlayerInVision;
     [SerializeReference] public BlackboardVariable<GameObject> Target;
-    [SerializeReference] public BlackboardVariable<float> VisionRange;
-    [SerializeReference] public BlackboardVariable<Tilemap> Ground;
+    [SerializeReference] public BlackboardVariable<float> VisionRange = new BlackboardVariable<float>(3f);
 
     private Vector2 m_CurrentPosition;
     private Vector2 m_TargetPoint;
     private Rigidbody2D m_Rigidbody2D;
-    private bool m_isInitialized = false;
+    private bool m_isInitialized;
 
     protected override Status OnStart()
     {
-        if (Agent?.Value == null || PatrolRange == null || Speed == null || ARRIVAL_THRESHOLD == null || Ground?.Value == null)
+        if (Agent?.Value == null || Speed == null || PatrolRange == null || ARRIVAL_THRESHOLD == null)
         {
             return Status.Failure;
         }
 
+        m_isInitialized = false;
         return Initialize();
     }
 
     protected override Status OnUpdate()
     {
-        if (Agent?.Value == null || PatrolRange == null || Speed == null || ARRIVAL_THRESHOLD == null || Ground?.Value == null)
+        if (Agent?.Value == null || Speed == null || ARRIVAL_THRESHOLD == null)
         {
+            return Status.Failure;
+        }
+
+        if (IsPlayerInVision())
+        {
+            StopMovement();
             return Status.Failure;
         }
 
         if (!m_isInitialized)
         {
-            return Initialize();
-        }
-
-        CharacterBasics characterBasics = Agent.Value.GetComponent<CharacterBasics>();
-        if (characterBasics != null && characterBasics.IsKnockedBack())
-        {
-            StopMovement();
-            return Status.Running;
-        }
-
-        if (IsTargetInVisionRange())
-        {
-            StopMovement();
             return Status.Failure;
         }
 
@@ -62,19 +55,19 @@ public partial class PatrolAction : Action
 
         if (distance <= ARRIVAL_THRESHOLD.Value)
         {
-            StopMovement();
             return Status.Success;
         }
 
         Vector2 direction = (m_TargetPoint - m_CurrentPosition).normalized;
+        Vector2 movement = direction * Speed.Value * Time.deltaTime;
 
         if (m_Rigidbody2D != null)
         {
-            m_Rigidbody2D.linearVelocity = direction * Speed.Value;
+            m_Rigidbody2D.MovePosition(m_CurrentPosition + movement);
         }
         else
         {
-            Agent.Value.transform.position = m_CurrentPosition + direction * Speed.Value * Time.fixedDeltaTime;
+            Agent.Value.transform.position = m_CurrentPosition + movement;
         }
 
         return Status.Running;
@@ -88,37 +81,17 @@ public partial class PatrolAction : Action
 
     private Status Initialize()
     {
-        BoundsInt bounds = Ground.Value.cellBounds;
+        m_CurrentPosition = Agent.Value.transform.position;
 
-        if (bounds.size.x == 0 || bounds.size.y == 0)
-        {
-            return Status.Failure;
-        }
+        float randomX = UnityEngine.Random.Range(
+            m_CurrentPosition.x - PatrolRange.Value,
+            m_CurrentPosition.x + PatrolRange.Value);
 
-        const int maxAttempts = 30;
-        Vector3Int targetCell = Vector3Int.zero;
-        bool foundTile = false;
+        float randomY = UnityEngine.Random.Range(
+            m_CurrentPosition.y - PatrolRange.Value,
+            m_CurrentPosition.y + PatrolRange.Value);
 
-        for (int i = 0; i < maxAttempts; i++)
-        {
-            int randomX = UnityEngine.Random.Range(bounds.xMin, bounds.xMax);
-            int randomY = UnityEngine.Random.Range(bounds.yMin, bounds.yMax);
-            targetCell = new Vector3Int(randomX, randomY, 0);
-
-            if (Ground.Value.HasTile(targetCell))
-            {
-                foundTile = true;
-                break;
-            }
-        }
-
-        if (!foundTile)
-        {
-            return Status.Failure;
-        }
-
-        Vector3 worldPoint = Ground.Value.GetCellCenterWorld(targetCell);
-        m_TargetPoint = new Vector2(worldPoint.x, worldPoint.y);
+        m_TargetPoint = new Vector2(randomX, randomY);
 
         m_Rigidbody2D = Agent.Value.GetComponent<Rigidbody2D>();
         m_isInitialized = true;
@@ -126,16 +99,28 @@ public partial class PatrolAction : Action
         return Status.Running;
     }
 
-    private bool IsTargetInVisionRange()
+    private bool IsPlayerInVision()
     {
-        if (Target?.Value == null || VisionRange == null)
+        if (PlayerInVision != null && PlayerInVision.Value)
+        {
+            return true;
+        }
+
+        GameObject target = Target?.Value;
+
+        if (target == null)
+        {
+            target = GameObject.FindGameObjectWithTag("Player");
+        }
+
+        if (target == null || VisionRange == null)
         {
             return false;
         }
 
         float distanceToTarget = Vector2.Distance(
             Agent.Value.transform.position,
-            Target.Value.transform.position);
+            target.transform.position);
 
         return distanceToTarget <= VisionRange.Value;
     }

@@ -30,14 +30,18 @@ public class InventoryManager : MonoBehaviour
 
     private bool isInvOpen = true;
 
-    private Grid grid;
-    private GameObject seedPreviewInstance;
-    private Vector3 spawnPos;
+    private PlantingSeedsScript plantingSeedsScript;
 
     public void Start()
     {
         uicontroller = GetComponent<UI_Controller>();
-        grid = GameObject.FindWithTag("FarmGrid").GetComponent<Grid>();
+        plantingSeedsScript = GetComponent<PlantingSeedsScript>();
+
+        if (plantingSeedsScript == null)
+        {
+            plantingSeedsScript = gameObject.AddComponent<PlantingSeedsScript>();
+        }
+
         if (inventorySlots == null)
         {
             inventoryUI = GameObject.Find("InventoryUI");
@@ -73,8 +77,6 @@ public class InventoryManager : MonoBehaviour
 
     void Update()
     {
-        spawnPos = GetPotentialSpawnPos();
-
         /*if (Input.GetKeyDown(KeyCode.O))
         {
             addItemToInv(testItem, 30);
@@ -262,162 +264,21 @@ public class InventoryManager : MonoBehaviour
     #region // -------------------------------- Seed Plant/Preview Code -------------------------------
     public void PlantHeldSeeds()
     {
-        if (currentHeldSlot.ItemInSlot is SeedSO seed)
-        {
-            spawnPos = GetPotentialSpawnPos();
-
-            if (ValidateConditions())
-            {
-                if (FindSeedParent().GetComponent<FarmScript>().isOccupied == false)
-                {
-                    Debug.Log($"Planting seed at {spawnPos}");
-                    GameObject plantInstance = Instantiate(seed.plantPrefab, spawnPos, Quaternion.identity, transform);
-                    SpriteRenderer sr = plantInstance.GetComponent<SpriteRenderer>();
-                    if (FindSeedParent() != null)
-                    {
-                        plantInstance.transform.SetParent(FindSeedParent().transform);
-                        FindSeedParent().GetComponent<FarmScript>().isOccupied = true;
-                    }
-                    plantInstance.transform.localScale = new Vector3(1f, 1f, 1f);
-                    sr.sortingLayerName = "Plants";
-                    sr.sortingOrder = 1;
-
-                    currentHeldSlot.RemoveItemAmount(1);
-                }
-
-            }
-            else
-            {
-                Debug.Log("ValidateConditions() failed in PlantHeldSeeds()");
-            }
-        }
-
+        plantingSeedsScript.PlantHeldSeeds(currentHeldSlot);
     }
+
     public void HandleSeedPreview()
     {
-        Vector3 mousePosition = Input.mousePosition;
-
-        if (ValidateConditions())
-        {
-            if (currentHeldSlot.ItemInSlot is SeedSO seed && currentHeldSlot != null)
-            {
-                if (seedPreviewInstance == null)
-                {
-                    seedPreviewInstance = Instantiate(plantPreview);
-                    seedPreviewInstance.GetComponent<SpriteRenderer>().sprite = seed.adultStage[1];
-                    seedPreviewInstance.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 50);
-                    seedPreviewInstance.GetComponent<SpriteRenderer>().sortingLayerName = "Preview";
-                    seedPreviewInstance.GetComponent<SpriteRenderer>().sortingOrder = 1;
-                    seedPreviewInstance.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-                }
-
-                spawnPos = GetPotentialSpawnPos();
-
-                seedPreviewInstance.transform.position = spawnPos;
-                seedPreviewInstance.transform.rotation = Quaternion.identity;
-            }
-        }
-        else
-        {
-            DestroySeedPrefabPreview();
-        }
+        plantingSeedsScript.HandleSeedPreview(currentHeldSlot, plantPreview);
     }
-
-    private bool ValidateConditions()
-    {
-        if (uicontroller == null)
-        {
-            //Debug.LogWarning("UI Controller reference is null.");
-            return false;
-        }
-
-        if (currentHeldSlot == null || currentHeldSlot.ItemInSlot == null)
-        {
-            //Debug.LogWarning("No item is currently held.");
-            return false;
-        }
-
-        if (!(currentHeldSlot.ItemInSlot is SeedSO seed))
-        {
-            //Debug.LogWarning("Currently held item is not a seed.");
-            return false;
-        }
-
-        var (isOverFarmField, farmField) = IsObjectUnderCursorAFarmField();
-        //Debug.Log($"Is over farm field: {isOverFarmField}, Farm field object: {farmField?.name ?? "None"}");
-
-        if (!isOverFarmField)
-        {
-            //Debug.LogWarning("Not over a farm field.");
-            return false;
-        }
-
-        if (farmField != null)
-        {
-            FarmScript fs = farmField.GetComponent<FarmScript>();
-            if (fs != null && fs.isOccupied)
-            {
-                Debug.LogWarning("Farm field is already occupied.");
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private (bool, GameObject) IsObjectUnderCursorAFarmField()
-    {
-        Vector3 mousePosition = Input.mousePosition;
-        mousePosition.z = -Camera.main.transform.position.z;
-        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-
-        Collider2D hit = Physics2D.OverlapPoint(worldPosition);
-        //Debug.Log($"OverlapPoint hit: {hit?.name ?? "None"} at position {worldPosition}");
-
-        if (hit != null && hit.CompareTag("FarmField"))
-        {
-            return (true, hit.gameObject);
-        }
-        return (false, null);
-    }
-
 
     public void DestroySeedPrefabPreview()
     {
-        if (seedPreviewInstance != null)
-        {
-            Destroy(seedPreviewInstance);
-            seedPreviewInstance = null;
-        }
+        plantingSeedsScript.DestroySeedPrefabPreview();
     }
 
     #endregion
 
-    #region // -------------------------------- Helpers -----------------------------------------------
-    public Vector3 GetPotentialSpawnPos()
-    {
-        Vector3 mousePosition = Input.mousePosition;
-        mousePosition.z = Mathf.Abs(Camera.main.transform.position.z);
-        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-        Vector3Int cellPosition = grid.WorldToCell(worldPosition);
-        Vector3 spawnPosition = grid.GetCellCenterWorld(cellPosition);
-        //spawnPosition.y += 0.2f;
-        return spawnPosition;
-    }
-    private GameObject FindSeedParent()
-    {
-        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-        Collider2D hit = Physics2D.OverlapPoint(worldPosition);
-
-        if (hit != null && hit.CompareTag("FarmField"))
-        {
-            return hit.gameObject;
-        }
-
-        return null;
-    }
-
-    #endregion
     //save
     public void SaveInventory()
     {
