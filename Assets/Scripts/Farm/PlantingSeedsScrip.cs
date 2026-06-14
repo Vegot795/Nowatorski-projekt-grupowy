@@ -1,6 +1,3 @@
-using NUnit.Framework;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlantingSeedsScript : MonoBehaviour
@@ -8,94 +5,169 @@ public class PlantingSeedsScript : MonoBehaviour
     public SeedSO Seed;
     public SeedSO[] Seeds;
 
-    private GameObject plantPreview;
+    private GameObject seedPreviewInstance;
     private Grid grid;
-    private InventorySlot currentItem;
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        grid = GameObject.FindWithTag("FarmGrid").GetComponent<Grid>();
+        EnsureGrid();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void PlantHeldSeeds(InventorySlot currentHeldSlot)
     {
-    }
-
-    public void HandlePlantPreview(SeedSO seed)
-    {
-        GameObject plantPrefab = seed.plantPrefab;
-
-        if (grid == null)
+        if (currentHeldSlot == null || !(currentHeldSlot.ItemInSlot is SeedSO seed))
         {
-            Debug.LogWarning("Grid not set in PlantingSeedsScrip.");
             return;
         }
 
+        GameObject seedParent = FindSeedParent();
+
+        if (!ValidateConditions(currentHeldSlot, seedParent))
+        {
+            Debug.Log("ValidateConditions() failed in PlantHeldSeeds()");
+            return;
+        }
+
+        FarmScript farmScript = seedParent.GetComponent<FarmScript>();
+
+        if (farmScript == null || farmScript.isOccupied)
+        {
+            return;
+        }
+
+        Vector3 spawnPosition = GetPotentialSpawnPos();
+        Debug.Log($"Planting seed at {spawnPosition}");
+        GameObject plantInstance = Instantiate(seed.plantPrefab, spawnPosition, Quaternion.identity, seedParent.transform);
+        SpriteRenderer sr = plantInstance.GetComponent<SpriteRenderer>();
+        farmScript.isOccupied = true;
+        plantInstance.transform.localScale = new Vector3(1f, 1f, 1f);
+
+        if (sr != null)
+        {
+            sr.sortingLayerName = "Plants";
+            sr.sortingOrder = 1;
+        }
+
+        currentHeldSlot.RemoveItemAmount(1);
+    }
+
+    public void HandleSeedPreview(InventorySlot currentHeldSlot, GameObject plantPreview)
+    {
+        GameObject seedParent = FindSeedParent();
+
+        if (!ValidateConditions(currentHeldSlot, seedParent))
+        {
+            DestroySeedPrefabPreview();
+            return;
+        }
+
+        if (currentHeldSlot.ItemInSlot is SeedSO seed)
+        {
+            if (seedPreviewInstance == null)
+            {
+                seedPreviewInstance = Instantiate(plantPreview);
+                SpriteRenderer sr = seedPreviewInstance.GetComponent<SpriteRenderer>();
+
+                if (sr != null)
+                {
+                    sr.sprite = seed.adultStage[1];
+                    sr.color = new Color(1f, 1f, 1f, 0.5f);
+                    sr.sortingLayerName = "Preview";
+                    sr.sortingOrder = 1;
+                }
+
+                seedPreviewInstance.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            }
+
+            seedPreviewInstance.transform.position = GetPotentialSpawnPos();
+            seedPreviewInstance.transform.rotation = Quaternion.identity;
+        }
+    }
+
+    public void DestroySeedPrefabPreview()
+    {
+        if (seedPreviewInstance != null)
+        {
+            Destroy(seedPreviewInstance);
+            seedPreviewInstance = null;
+        }
+    }
+
+    private bool ValidateConditions(InventorySlot currentHeldSlot, GameObject farmField)
+    {
+        if (!EnsureGrid() || Camera.main == null)
+        {
+            return false;
+        }
+
+        if (currentHeldSlot == null || currentHeldSlot.ItemInSlot == null)
+        {
+            return false;
+        }
+
+        if (!(currentHeldSlot.ItemInSlot is SeedSO))
+        {
+            return false;
+        }
+
+        if (farmField == null)
+        {
+            return false;
+        }
+
+        FarmScript fs = farmField.GetComponent<FarmScript>();
+
+        if (fs != null && fs.isOccupied)
+        {
+            Debug.LogWarning("Farm field is already occupied.");
+            return false;
+        }
+
+        return true;
+    }
+
+    private Vector3 GetPotentialSpawnPos()
+    {
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition.z = Mathf.Abs(Camera.main.transform.position.z);
+        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        Vector3Int cellPosition = grid.WorldToCell(worldPosition);
+        return grid.GetCellCenterWorld(cellPosition);
+    }
+
+    private GameObject FindSeedParent()
+    {
         if (Camera.main == null)
         {
-            Debug.LogWarning("No main camera found.");
-            return;
+            return null;
         }
 
-        if (plantPreview == null)
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition.z = Mathf.Abs(Camera.main.transform.position.z);
+        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        Collider2D[] hits = Physics2D.OverlapPointAll(worldPosition);
+
+        foreach (Collider2D hit in hits)
         {
-            plantPreview = Instantiate(plantPrefab);
-            SetPreviewMaterial(plantPreview, 0.5f);
-            var sr = plantPreview.GetComponent<SpriteRenderer>();
-            if (sr != null)
+            if (hit != null && hit.CompareTag("FarmField"))
             {
-                sr.sortingLayerName = "Ground";
-                sr.sortingOrder = 1;
+                return hit.gameObject;
             }
         }
 
-
-        Vector3 worldPoint3 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 worldPoint2 = new Vector2(worldPoint3.x, worldPoint3.y);
-
-        Collider2D hit = Physics2D.OverlapPoint(worldPoint2);
-        if (hit != null && hit.CompareTag("FarmField"))
-        {
-            Vector3Int cellPosition = grid.WorldToCell(worldPoint3);
-            Vector3 spawnPosition = grid.GetCellCenterWorld(cellPosition);
-            plantPreview.transform.position = spawnPosition;
-            plantPreview.transform.rotation = Quaternion.identity;
-
-            var sr = plantPreview.GetComponent<SpriteRenderer>();
-            if (sr != null && seed != null) sr.sprite = seed.plantPrefab.GetComponent<SpriteRenderer>().sprite;
-        }
-        else
-        {
-            if (plantPreview != null)
-            {
-                Destroy(plantPreview);
-                plantPreview = null;
-            }
-            Debug.Log("Mouse is not over a farm field.");
-        }
+        return null;
     }
 
-    private void SetPreviewMaterial(GameObject previewObj, float alpha)
+    private bool EnsureGrid()
     {
-        var renderers = previewObj.GetComponentsInChildren<Renderer>();
-        foreach (var renderer in renderers)
+        if (grid != null)
         {
-            foreach (var mat in renderer.materials)
-            {
-                Color color = mat.color;
-                color.a = alpha;
-                mat.color = color;
-                mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-                mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                mat.SetInt("_ZWrite", 0);
-                mat.DisableKeyword("_ALPHATEST_ON");
-                mat.EnableKeyword("_ALPHABLEND_ON");
-                mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-                mat.renderQueue = 3000;
-            }
+            return true;
         }
+
+        GameObject farmGrid = GameObject.FindWithTag("FarmGrid");
+        grid = farmGrid != null ? farmGrid.GetComponent<Grid>() : null;
+
+        return grid != null;
     }
 }
