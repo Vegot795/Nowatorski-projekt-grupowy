@@ -760,6 +760,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PickupItemPrefab (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1619094540894141360, guid: 967530759c6576c46858e014aff777b4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5910479015232901253, guid: 967530759c6576c46858e014aff777b4,
         type: 3}
       propertyPath: item
@@ -2233,6 +2238,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ShopNPC (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1275158911019416558, guid: 50ba58ffa986cce4aaa1f541a0ae9ca1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8300145681913511779, guid: 50ba58ffa986cce4aaa1f541a0ae9ca1,
         type: 3}
@@ -5339,6 +5349,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: WaterText
       objectReference: {fileID: 0}
+    - target: {fileID: 4209938232259741555, guid: a7b3fd5084c435643a64d52179e2b4c2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4276871191910864282, guid: a7b3fd5084c435643a64d52179e2b4c2,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -7347,6 +7362,11 @@ PrefabInstance:
     - target: {fileID: 6125520426821326879, guid: a7b3fd5084c435643a64d52179e2b4c2,
         type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6131037036769984376, guid: a7b3fd5084c435643a64d52179e2b4c2,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6133434611297736025, guid: a7b3fd5084c435643a64d52179e2b4c2,
@@ -10240,6 +10260,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PickupItemPrefab
       objectReference: {fileID: 0}
+    - target: {fileID: 1619094540894141360, guid: 967530759c6576c46858e014aff777b4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5910479015232901253, guid: 967530759c6576c46858e014aff777b4,
         type: 3}
       propertyPath: item
@@ -10557,12 +10582,12 @@ PrefabInstance:
     - target: {fileID: 2395793475524344303, guid: 10b92670fe59ebb41add52cc11bb7b47,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2395793475524344303, guid: 10b92670fe59ebb41add52cc11bb7b47,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3497809415799393582, guid: 10b92670fe59ebb41add52cc11bb7b47,
         type: 3}
@@ -10614,6 +10639,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5854339091214314560, guid: 10b92670fe59ebb41add52cc11bb7b47,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5854339091214314560, guid: 10b92670fe59ebb41add52cc11bb7b47,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8072969531908067175, guid: 10b92670fe59ebb41add52cc11bb7b47,
         type: 3}
       propertyPath: m_Name
@@ -10636,6 +10671,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Plantation
+      objectReference: {fileID: 0}
+    - target: {fileID: 596013367159295750, guid: a4bf3c5b67e99a7468cdcce7933c24c8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2683689559796664561, guid: a4bf3c5b67e99a7468cdcce7933c24c8,
         type: 3}
