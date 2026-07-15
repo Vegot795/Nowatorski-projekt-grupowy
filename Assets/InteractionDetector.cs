@@ -1,5 +1,7 @@
+using NUnit.Framework;
 using TMPro;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class InteractionDetector : MonoBehaviour
 {
@@ -13,6 +15,8 @@ public class InteractionDetector : MonoBehaviour
     [SerializeField] private bool inShop = false;
     [SerializeField] private bool inPlant = false;
     [SerializeField] private bool inFarmField = false;
+
+    public List<GameObject> collisions = new List<GameObject>();
 
 
     void Start()
@@ -79,53 +83,19 @@ public class InteractionDetector : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Shop"))
-        {
-            inShop = true;
-            //ShowText("Press T to open shop");
-        }
-
-        if (collision.CompareTag("Plant"))
-        {
-            PlantScript plant = collision.GetComponent<PlantScript>();
-
-            if (plant != null && plant.isHarvestable)
-            {
-                currentPlant = collision.gameObject;
-                inPlant = true;
-
-                //ShowText("Press P to harvest");
-            }
-        }
-        if (collision.CompareTag("FarmField"))
-        {
-            Debug.Log("Entered field");
-            currentField = collision.gameObject;
-            inFarmField = true;
-        }
+        collisions.Add(collision.gameObject);
+        Debug.Log($"Collided with {collision.gameObject.name}");
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Shop"))
+        collisions.Remove(collision.gameObject);
+        Debug.Log($"Exited collision with {collision.gameObject.name}");
+        
+        if(collision.gameObject.GetComponent<ShopNPCScript>() != null)
         {
-            inShop = false;
+            ShopController.Instance.CloseShop();
         }
-
-        if (collision.CompareTag("Plant"))
-        {
-            inPlant = false;
-            currentPlant = null;
-        }
-        if (collision.CompareTag("FarmField"))
-        {
-
-            inFarmField = false;
-            currentField = null;
-            //ShowText("Press T to open shop");
-        }
-
-
     }
 
 

@@ -42,6 +42,13 @@ public class ShopController : MonoBehaviour
         isShopOpen = false;
     }
 
+    public void ToggleShop()
+    {
+        if (isShopOpen)
+            CloseShop();
+        else
+            OpenShop();
+    }
 }
 
 

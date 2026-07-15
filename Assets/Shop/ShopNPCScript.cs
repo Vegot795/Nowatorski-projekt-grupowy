@@ -14,13 +14,7 @@ public class ShopNPCScript : MonoBehaviour, IInteraction
             return;
         }
 
-        if (ShopController.Instance.shopPanel.activeSelf)
-        {
-            ShopController.Instance.CloseShop();
-        }
-        else
-        {
-            ShopController.Instance.OpenShop();
-        }
+        ShopController.Instance.ToggleShop();
+        Debug.Log("Interacted with Shop NPC");
     }
 }
