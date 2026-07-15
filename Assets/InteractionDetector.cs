@@ -28,55 +28,31 @@ public class InteractionDetector : MonoBehaviour
 
     void Update()
     {
-        HandleShopInput();
-        HandlePlantInput();
-        HandleFieldInput();
+
     }
 
-    private void HandleShopInput()
+    public void WaterPlant()
     {
-        if (!inShop) return;
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition.z = Mathf.Abs(Camera.main.transform.position.z);
+        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
 
-        if (Input.GetKeyDown(KeyCode.T))
+        Collider2D[] hits = Physics2D.OverlapPointAll(worldPosition);
+        Debug.Log($"Hits: {hits.Length}");
+
+        foreach (Collider2D hit in hits)
         {
-            if (shopController.isShopOpen)
-                shopController.CloseShop();
-            else
-                shopController.OpenShop();
-        }
-    }
+            FarmScript field = hit.GetComponentInParent<FarmScript>();
+            Debug.Log($"Hit: {hit.gameObject.name}, Field: {field?.gameObject.name}");
 
-    private void HandlePlantInput()
-    {
-        if (!inPlant) return;
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            if (currentPlant == null) return;
-
-            PlantScript plant = currentPlant.GetComponent<PlantScript>();
-
-            if (plant != null && plant.isHarvestable)
+            if (field != null && collisions.Contains(field.gameObject))
             {
-                plant.HarvestPlant();
-            }
-        }
-    }
-    private void HandleFieldInput()
-    {
-        if (!inFarmField) return;
+                if (money == null || money.currentWater < 10) return;
 
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            if (currentField == null) return;
-            if (money == null || money.currentWater < 10) return;
-
-            FarmScript field = currentField.GetComponent<FarmScript>();
-
-            if (field != null)
-            {
                 field.WaterTheField();
                 money.currentWater -= 10;
+                Debug.Log($"Watered field: {field.gameObject.name}, Remaining water: {money.currentWater}");
+                return;
             }
         }
     }

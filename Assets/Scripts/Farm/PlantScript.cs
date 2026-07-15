@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlantScript : MonoBehaviour
+public class PlantScript : MonoBehaviour, IInteraction
 {
     public SeedSO seedData;
 
@@ -131,5 +131,9 @@ public class PlantScript : MonoBehaviour
 
             Destroy(gameObject);
         }
+    }
+    public void Interact()
+    {
+        HarvestPlant();
     }
 }

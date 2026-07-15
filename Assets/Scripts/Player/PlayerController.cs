@@ -298,6 +298,11 @@ public class PlayerController : MonoBehaviour //, IInteraction
     {
         uiController.ToggleTooltip();
     }
+
+    public void OnWaterPlant()
+    {
+        interactionDetector.WaterPlant();
+    }
     #endregion
 
 }
