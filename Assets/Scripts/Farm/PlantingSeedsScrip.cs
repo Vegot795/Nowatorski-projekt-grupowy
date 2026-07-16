@@ -51,6 +51,8 @@ public class PlantingSeedsScript : MonoBehaviour
         currentHeldSlot.RemoveItemAmount(1);
     }
 
+   
+
     public void HandleSeedPreview(InventorySlot currentHeldSlot, GameObject plantPreview)
     {
         GameObject seedParent = FindSeedParent();

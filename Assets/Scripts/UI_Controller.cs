@@ -1,3 +1,4 @@
+using System.Linq;
 using TMPro;
 using Unity.AppUI.UI;
 using UnityEngine;
@@ -18,7 +19,6 @@ public class UI_Controller : MonoBehaviour
     public bool isTooltipOpen = false;
     public bool isDeadscreenEnabled = false;
     public bool isAnyTabOpen = false;
-    public 
 
     void Start()
     {
@@ -98,12 +98,60 @@ public class UI_Controller : MonoBehaviour
 
     public void OnSave()
     {
-        _plantation.Save();
+        if (_plantation != null)
+        {
+            _plantation.SaveFarm();
+        }
+
+        CharacterBasics playerBasics = GetPlayerCharacterBasics();
+        if (playerBasics != null)
+        {
+            SaveSystem.SavePlayer(playerBasics);
+        }
+
+        if (inventoryManager != null)
+        {
+            inventoryManager.SaveInventory();
+        }
     }
 
     public void OnLoad()
     {
-        _plantation.Load();
+        if (_plantation != null)
+        {
+            _plantation.LoadFarm();
+        }
+
+        CharacterBasics playerBasics = GetPlayerCharacterBasics();
+        if (playerBasics != null)
+        {
+            playerBasics.LoadPlayer();
+        }
+
+        if (inventoryManager != null)
+        {
+            inventoryManager.LoadInventory();
+        }
+    }
+
+    private CharacterBasics GetPlayerCharacterBasics()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+        if (player == null)
+        {
+            Debug.LogError("Cannot save/load player: no GameObject with tag Player found.");
+            return null;
+        }
+
+        CharacterBasics characterBasics = player.GetComponent<CharacterBasics>();
+
+        if (characterBasics == null)
+        {
+            Debug.LogError("Cannot save/load player: Player does not have CharacterBasics.");
+        }
+
+        return characterBasics;
     }
 
     private void IndicateBuildingMode()

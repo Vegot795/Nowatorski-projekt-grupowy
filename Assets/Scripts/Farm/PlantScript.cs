@@ -5,10 +5,10 @@ public class PlantScript : MonoBehaviour, IInteraction
 {
     public SeedSO seedData;
 
-    [SerializeField] private int currentStage = 0;
+    [SerializeField] public int currentStage = 0;
     [SerializeField] private float dropRadius = 0.5f;
 
-    private float currentGrowth;
+    public float currentGrowth;
     private float baseGrowthTime;
     public bool isHarvestable = false;
     private bool posToAdultMoved = false;
@@ -135,5 +135,24 @@ public class PlantScript : MonoBehaviour, IInteraction
     public void Interact()
     {
         HarvestPlant();
+    }
+
+    public void RestoreGrowthState(int savedStage, float savedGrowth, bool savedHarvestable)
+    {
+        currentStage = savedStage;
+        currentGrowth = savedGrowth;
+        isHarvestable = savedHarvestable;
+        if (currentStage >= growthStages.Length)
+        {
+            currentStage = growthStages.Length - 1;
+        }
+        currentSprite = growthStages[currentStage];
+        sr.sprite = currentSprite;
+        if (currentStage >= seedData.babyStage.Length && !posToAdultMoved)
+        {
+            transform.position += new Vector3(0, 0.2f, 0);
+            transform.localScale = new Vector3(2f, 2f, 2f);
+            posToAdultMoved = true;
+        }
     }
 }

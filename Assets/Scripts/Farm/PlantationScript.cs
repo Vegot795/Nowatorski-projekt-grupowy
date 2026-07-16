@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class PlantationScript : MonoBehaviour
 {
+    public static PlantationScript instance;
     public int level = 1;
     public int maxFieldCount;
     public FarmScript[] _fields;
@@ -25,6 +26,8 @@ public class PlantationScript : MonoBehaviour
     private PlayerController _playerController;
     private GameObject hitObject = null;
 
+
+    [SerializeField] private SeedSO[] seeds;
 
     void Start()
     {
@@ -216,7 +219,115 @@ public class PlantationScript : MonoBehaviour
     }
     #endregion
 
-    #region//-----------------ELSE------------------
+    #region// ---------------- SAVE/LOAD --------------
+
+    public void SaveFarm()
+    {
+        _fields = GetComponentsInChildren<FarmScript>();
+        SaveSystem.SaveFarm(_fields.ToList());
+    }
+
+    public void LoadFarm()
+    {
+        FarmSaveDataList dataList = SaveSystem.LoadFarm();
+
+        if (dataList == null)
+        {
+            return;
+        }
+
+        foreach (FarmScript field in _fields)
+        {
+            if (field != null)
+            {
+                Destroy(field.gameObject);
+            }
+        }
+
+        foreach (FarmSaveData farmData in dataList.farms)
+        {
+            LoadField(farmData);
+        }
+
+        _fields = GetComponentsInChildren<FarmScript>();
+    }
+
+    public void LoadField(FarmSaveData data)
+    {
+        Vector3 position = new Vector3(
+            data.DataFieldPosition[0],
+            data.DataFieldPosition[1],
+            data.DataFieldPosition[2]
+        );
+
+        FarmScript newField = Instantiate(fieldPrefab, position, Quaternion.identity, transform);
+
+        SpriteRenderer spriteRenderer = newField.GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.sortingLayerName = "Ground";
+            spriteRenderer.sortingOrder = 1;
+        }
+
+        newField.isWatered = data.DataIsWatered;
+        newField.isOccupied = data.DataIsOccupied;
+        newField.waterTimer = data.DataWaterTimer;
+
+        if (data.DataPlant != null)
+        {
+            LoadPlant(data.DataPlant, newField);
+        }
+    }
+
+    public void LoadPlant(PlantSaveData saveData, FarmScript farmField)
+    {
+        SeedSO seed = FindSeedByName(saveData.DataSeedName);
+
+        if (seed == null)
+        {
+            Debug.LogError($"Could not load plant. Seed not found: {saveData.DataSeedName}");
+            return;
+        }
+
+        GameObject loadedPlantInstance = Instantiate(
+            seed.plantPrefab,
+            farmField.transform.position,
+            Quaternion.identity,
+            farmField.transform
+        );
+
+        PlantScript plantScript = loadedPlantInstance.GetComponent<PlantScript>();
+
+        if (plantScript == null)
+        {
+            Debug.LogError($"Loaded plant prefab does not have PlantScript: {seed.plantPrefab.name}");
+            return;
+        }
+
+        plantScript.RestoreGrowthState(
+            saveData.DataCurrentGrowthStage,
+            saveData.DataCurrentGrowth,
+            saveData.DataIsHarvestable
+        );
+
+        farmField.isOccupied = true;
+    }
+
+    private SeedSO FindSeedByName(string seedName)
+    {
+        foreach (SeedSO seed in seeds)
+        {
+            if (seed != null && seed.name == seedName)
+            {
+                return seed;
+            }
+        }
+
+        return null;
+    }
+
+    #endregion
+
     public void DestroyFieldPrefabPreview()
     {
         if (fieldPreviewInstance != null)
@@ -251,57 +362,6 @@ public class PlantationScript : MonoBehaviour
             }
         }
     }
-    #endregion
-
-    #region// ---------------- SAVE/LOAD --------------
-
-    public void Save(string saveKey = "fields_save")
-    {
-        FieldDataList dataList = new FieldDataList();
-        foreach (var field in _fields)
-        {
-            dataList.fields.Add(new FieldData { position = field.transform.position });
-        }
-        string json = JsonUtility.ToJson(dataList);
-        PlayerPrefs.SetString(saveKey, json);
-        PlayerPrefs.Save();
-    }
-
-    public void Load(string saveKey = "fields_save")
-    {
-        if (PlayerPrefs.HasKey(saveKey))
-        {
-            string json = PlayerPrefs.GetString(saveKey);
-            FieldDataList dataList = JsonUtility.FromJson<FieldDataList>(json);
-            foreach (var fieldData in dataList.fields)
-            {
-                Instantiate(fieldPrefab, fieldData.position, Quaternion.identity, transform);
-            }
-            _fields = GetComponentsInChildren<FarmScript>();
-        }
-    }
-
-    public void LoadFields(string saveKey = "fields_save")
-    {
-        if (!PlayerPrefs.HasKey(saveKey)) return;
-
-        foreach (var field in _fields)
-        {
-            Destroy(field.gameObject);
-        }
-
-        string json = PlayerPrefs.GetString(saveKey);
-        FieldDataList dataList = JsonUtility.FromJson<FieldDataList>(json);
-
-        foreach (var fieldData in dataList.fields)
-        {
-            var newField = Instantiate(fieldPrefab, fieldData.position, Quaternion.identity, transform);
-            newField.GetComponent<SpriteRenderer>().sortingLayerName = "Ground";
-            newField.GetComponent<SpriteRenderer>().sortingOrder = 1;
-        }
-        _fields = GetComponentsInChildren<FarmScript>();
-    }
-    #endregion
 
     private void SetLayerRecursively(GameObject obj, int newLayer)
     {
