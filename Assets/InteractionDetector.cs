@@ -1,5 +1,7 @@
+using NUnit.Framework;
 using TMPro;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class InteractionDetector : MonoBehaviour
 {
@@ -14,6 +16,8 @@ public class InteractionDetector : MonoBehaviour
     [SerializeField] private bool inPlant = false;
     [SerializeField] private bool inFarmField = false;
 
+    public List<GameObject> collisions = new List<GameObject>();
+
 
     void Start()
     {
@@ -24,108 +28,50 @@ public class InteractionDetector : MonoBehaviour
 
     void Update()
     {
-        HandleShopInput();
-        HandlePlantInput();
-        HandleFieldInput();
+
     }
 
-    private void HandleShopInput()
+    public void WaterPlant()
     {
-        if (!inShop) return;
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition.z = Mathf.Abs(Camera.main.transform.position.z);
+        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
 
-        if (Input.GetKeyDown(KeyCode.T))
+        Collider2D[] hits = Physics2D.OverlapPointAll(worldPosition);
+        Debug.Log($"Hits: {hits.Length}");
+
+        foreach (Collider2D hit in hits)
         {
-            if (shopController.isShopOpen)
-                shopController.CloseShop();
-            else
-                shopController.OpenShop();
-        }
-    }
+            FarmScript field = hit.GetComponentInParent<FarmScript>();
+            Debug.Log($"Hit: {hit.gameObject.name}, Field: {field?.gameObject.name}");
 
-    private void HandlePlantInput()
-    {
-        if (!inPlant) return;
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            if (currentPlant == null) return;
-
-            PlantScript plant = currentPlant.GetComponent<PlantScript>();
-
-            if (plant != null && plant.isHarvestable)
+            if (field != null && collisions.Contains(field.gameObject))
             {
-                plant.HarvestPlant();
-            }
-        }
-    }
-    private void HandleFieldInput()
-    {
-        if (!inFarmField) return;
+                if (money == null || money.currentWater < 10) return;
 
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            if (currentField == null) return;
-            if (money == null || money.currentWater < 10) return;
-
-            FarmScript field = currentField.GetComponent<FarmScript>();
-
-            if (field != null)
-            {
                 field.WaterTheField();
                 money.currentWater -= 10;
+                Debug.Log($"Watered field: {field.gameObject.name}, Remaining water: {money.currentWater}");
+                return;
             }
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Shop"))
-        {
-            inShop = true;
-            //ShowText("Press T to open shop");
-        }
-
-        if (collision.CompareTag("Plant"))
-        {
-            PlantScript plant = collision.GetComponent<PlantScript>();
-
-            if (plant != null && plant.isHarvestable)
-            {
-                currentPlant = collision.gameObject;
-                inPlant = true;
-
-                //ShowText("Press P to harvest");
-            }
-        }
-        if (collision.CompareTag("FarmField"))
-        {
-            Debug.Log("Entered field");
-            currentField = collision.gameObject;
-            inFarmField = true;
-        }
+        collisions.Add(collision.gameObject);
+        Debug.Log($"Collided with {collision.gameObject.name}");
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Shop"))
+        collisions.Remove(collision.gameObject);
+        Debug.Log($"Exited collision with {collision.gameObject.name}");
+        
+        if(collision.gameObject.GetComponent<ShopNPCScript>() != null)
         {
-            inShop = false;
+            ShopController.Instance.CloseShop();
         }
-
-        if (collision.CompareTag("Plant"))
-        {
-            inPlant = false;
-            currentPlant = null;
-        }
-        if (collision.CompareTag("FarmField"))
-        {
-
-            inFarmField = false;
-            currentField = null;
-            //ShowText("Press T to open shop");
-        }
-
-
     }
 
 

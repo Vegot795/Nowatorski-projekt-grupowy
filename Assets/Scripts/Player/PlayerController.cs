@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour //, IInteraction
 {
     public enum Direction
     {
@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     Rigidbody2D rb;
     Animator animator;
     CapsuleCollider2D damageCol;
+    CircleCollider2D interactionCol;
     CharacterBasics CB;
     List<RaycastHit2D> castCollisions = new List<RaycastHit2D>();
     SwordAttack sword;
@@ -38,6 +39,7 @@ public class PlayerController : MonoBehaviour
     public InventoryManager inventoryManager;
     void Start()
     {
+        
         _plantation = Object.FindFirstObjectByType<PlantationScript>();
         uiController = Object.FindFirstObjectByType<UI_Controller>();
         if (inventoryManager == null)
@@ -49,6 +51,7 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         interactionDetector = GetComponentInChildren<InteractionDetector>();
+        interactionCol = GetComponentInChildren<CircleCollider2D>();
 
         UnlockMovement();
     }
@@ -154,6 +157,11 @@ public class PlayerController : MonoBehaviour
         animator.ResetTrigger("onAttack");
         swordAttack.StopAttack();
     }
+    #region ---------------- Interaction with other objects ----------------------------
+
+
+
+    #endregion
 
     #region ------------------------ Bindings for UI / Inventory / Shop ------------------------
     public void OnFire()
@@ -246,17 +254,54 @@ public class PlayerController : MonoBehaviour
         inventoryManager.MoveCurrentSlot(-1);
     }
 
-    public void OnInteraction(InputValue value)
+    public void OnInteraction()
     {
-        if (value.isPressed)
+        GameObject target = null;
+        if (interactionDetector.collisions.Count == 1)
         {
-            //interactionDetector.TryInteract();
+            target = interactionDetector.collisions[0];
         }
+        else if (interactionDetector.collisions.Count > 1)
+        {
+            target = GetClosestTarget(interactionDetector.collisions);        
+        }
+
+        IInteraction interactable = target.GetComponent<IInteraction>();
+
+        if (interactable != null)
+        {
+            interactable.Interact();
+        }
+    }       
+
+    private GameObject GetClosestTarget(List<GameObject> targets)
+    {
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition.z = Mathf.Abs(Camera.main.transform.position.z);
+        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+
+        GameObject closestTarget = null;
+        foreach (GameObject target in targets)
+        {
+            Vector3 targetPos = target.transform.position;
+            float distance = Vector3.Distance(worldPosition, targetPos);
+            if (closestTarget == null || distance < Vector3.Distance(worldPosition, closestTarget.transform.position))
+            {
+                closestTarget = target;
+            }
+        }
+
+        return closestTarget;
     }
 
     public void OnToolTip()
     {
         uiController.ToggleTooltip();
+    }
+
+    public void OnWaterPlant()
+    {
+        interactionDetector.WaterPlant();
     }
     #endregion
 

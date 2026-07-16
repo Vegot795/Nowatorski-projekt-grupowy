@@ -17,6 +17,8 @@ public class UI_Controller : MonoBehaviour
     public bool isBuildingEnabled = false;
     public bool isTooltipOpen = false;
     public bool isDeadscreenEnabled = false;
+    public bool isAnyTabOpen = false;
+    public 
 
     void Start()
     {
@@ -65,17 +67,7 @@ public class UI_Controller : MonoBehaviour
         IndicateBuildingMode();
     }
 
-    public void ToggleBuildMenu()
-    {
-        if (!isBuildingEnabled)
-        {
-            EnableBuildMenu();
-        }
-        else
-        {
-            DisableBuildMenu();
-        }
-    }
+    
 
     private void EnableBuildMenu()
     {
@@ -133,6 +125,7 @@ public class UI_Controller : MonoBehaviour
         inventoryManager.ThrowOutOfEquipment(inventoryManager.currentHeldSlot.ItemInSlot, 1);
     }
 
+    #region ----- UI Screen Toggles -----
     public void ToggleTooltip()
     {
         if (Tooltip != null)
@@ -158,4 +151,17 @@ public class UI_Controller : MonoBehaviour
             isDeadscreenEnabled = state;
         }
     }
+
+    public void ToggleBuildMenu()
+    {
+        if (!isBuildingEnabled)
+        {
+            EnableBuildMenu();
+        }
+        else
+        {
+            DisableBuildMenu();
+        }
+    }
+    #endregion
 }
