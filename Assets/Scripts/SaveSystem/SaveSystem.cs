@@ -68,4 +68,42 @@ public static class SaveSystem
             return (InventorySaveData)formatter.Deserialize(stream);
         }
     }
+
+    public static void SaveFarm(List<FarmScript> farmFields)
+    {
+        FarmSaveDataList saveData = new FarmSaveDataList();
+
+        foreach (FarmScript farmScript in farmFields)
+        {
+            if (farmScript != null)
+            {
+                saveData.farms.Add(new FarmSaveData(farmScript));
+            }
+        }
+
+        BinaryFormatter formatter = new BinaryFormatter();
+        string path = Application.persistentDataPath + "/farm.data";
+
+        using (FileStream stream = new FileStream(path, FileMode.Create))
+        {
+            formatter.Serialize(stream, saveData);
+        }
+    }
+
+    public static FarmSaveDataList LoadFarm()
+    {
+        string path = Application.persistentDataPath + "/farm.data";
+
+        if (!File.Exists(path))
+        {
+            Debug.LogError("Farm save file not found");
+            return null;
+        }
+
+        BinaryFormatter formatter = new BinaryFormatter();
+        using (FileStream stream = new FileStream(path, FileMode.Open))
+        {
+            return (FarmSaveDataList)formatter.Deserialize(stream);
+        }
+    }
 }

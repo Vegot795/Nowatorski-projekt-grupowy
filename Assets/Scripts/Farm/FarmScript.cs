@@ -6,11 +6,12 @@ using UnityEngine.UI;
 public class FarmScript : MonoBehaviour
 {
     public float baseWaterTimer = 30f;
-    [SerializeField] private float waterTimer;
+    public float waterTimer;
     public bool isWatered = false;
     public float growSpeed = 1f;
     public bool isOccupied = false;
     public List<Slider> statsSliders;
+   
     private void Awake()
     {
         statsSliders = new List<Slider>(GetComponentsInChildren<Slider>(true));

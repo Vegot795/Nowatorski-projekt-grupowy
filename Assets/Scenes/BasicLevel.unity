@@ -10516,6 +10516,47 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 2683689559796664561, guid: a4bf3c5b67e99a7468cdcce7933c24c8,
         type: 3}
+      propertyPath: seeds.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2683689559796664561, guid: a4bf3c5b67e99a7468cdcce7933c24c8,
+        type: 3}
+      propertyPath: 'seeds.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: ff252481044f1254ca2cd09c315dcdaa,
+        type: 2}
+    - target: {fileID: 2683689559796664561, guid: a4bf3c5b67e99a7468cdcce7933c24c8,
+        type: 3}
+      propertyPath: 'seeds.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: a5eba53ac63fd5e428930f8d4e39f7eb,
+        type: 2}
+    - target: {fileID: 2683689559796664561, guid: a4bf3c5b67e99a7468cdcce7933c24c8,
+        type: 3}
+      propertyPath: 'seeds.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 20556b9dbe2257143840b84ab1316152,
+        type: 2}
+    - target: {fileID: 2683689559796664561, guid: a4bf3c5b67e99a7468cdcce7933c24c8,
+        type: 3}
+      propertyPath: 'seeds.Array.data[3]'
+      value: 
+      objectReference: {fileID: 11400000, guid: ee495d58a485628408fb8d5784614060,
+        type: 2}
+    - target: {fileID: 2683689559796664561, guid: a4bf3c5b67e99a7468cdcce7933c24c8,
+        type: 3}
+      propertyPath: 'seeds.Array.data[4]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 1e91914ac99eb374aa3c27f3bd7cd660,
+        type: 2}
+    - target: {fileID: 2683689559796664561, guid: a4bf3c5b67e99a7468cdcce7933c24c8,
+        type: 3}
+      propertyPath: 'seeds.Array.data[5]'
+      value: 
+      objectReference: {fileID: 11400000, guid: b977f30568fa88a459e82aff7ac0e6f3,
+        type: 2}
+    - target: {fileID: 2683689559796664561, guid: a4bf3c5b67e99a7468cdcce7933c24c8,
+        type: 3}
       propertyPath: destroyIndicatorPrefab
       value: 
       objectReference: {fileID: 5947056422025563016, guid: 3337f18583de5654482f554c05c7dd55,
